@@ -4,7 +4,7 @@ title:      二分法求解方程根               # 标题
 subtitle:   Bisection     #副标题
 date:       2019-02-24              # 时间
 author:     Wh1isper                      # 作者
-header-img: img/post-bg-debug.png    #这篇文章标题背景图片
+header-img: img/post-bg-coffee.jpeg    #这篇文章标题背景图片
 catalog: true                       # 是否归档
 tags:                               #标签
     - 计算方法
