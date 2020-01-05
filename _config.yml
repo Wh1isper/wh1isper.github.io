@@ -101,5 +101,9 @@ friends: [
     {
         title: "HITSZ",
         href: "http://www.hitsz.edu.cn/index.html"
+    },
+    {
+        title: "Bohan-hu",
+        href: "https://github.com/Bohan-hu"
     }
 ]
