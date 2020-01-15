@@ -54,7 +54,7 @@ HTTP攻击分为响应端和请求端
 [HTTP Evader](https://noxxi.de/research.html)：https://noxxi.de/research.html
 
 
-[技术讨论 \| 在HTTP协议层面绕过WAF](https://www.freebuf.com/news/193659.html)：https://www.freebuf.com/news/193659.html
+[技术讨论 在HTTP协议层面绕过WAF](https://www.freebuf.com/news/193659.html)：https://www.freebuf.com/news/193659.html
 
 
 
