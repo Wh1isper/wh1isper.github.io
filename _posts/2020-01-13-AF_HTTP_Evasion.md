@@ -26,7 +26,7 @@ HTTP攻击分为响应端和请求端
 
 ## 1.1 HTTP响应端绕过原理 ##
 
-![](img/HTTP-EVASION-Img/response_eva_principle.jpg)
+![](https://raw.githubusercontent.com/Wh1isper/wh1isper.github.io/master/img/HTTP-EVASION-Img/response_eva_principle.jpg)
 
 介绍响应端绕过原理之前，先要了解关于浏览器的两个重要特点：
 
@@ -54,7 +54,7 @@ HTTP攻击分为响应端和请求端
 [HTTP Evader](https://noxxi.de/research.html)：https://noxxi.de/research.html
 
 
-[技术讨论 | 在HTTP协议层面绕过WAF](https://www.freebuf.com/news/193659.html)：https://www.freebuf.com/news/193659.html
+[技术讨论 \| 在HTTP协议层面绕过WAF](https://www.freebuf.com/news/193659.html)：https://www.freebuf.com/news/193659.html
 
 
 
