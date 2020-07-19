@@ -14,13 +14,13 @@ tags:                               #标签
 
 # 什么是Tornado
 
-[Tornado](http://www.tornadoweb.org/) is a Python web framework and asynchronous networking library, originally developed at [FriendFeed](http://friendfeed.com/). By using non-blocking network I/O, Tornado can scale to tens of thousands of open connections, making it ideal for [long polling](http://en.wikipedia.org/wiki/Push_technology#Long_polling), [WebSockets](http://en.wikipedia.org/wiki/WebSocket), and other applications that require a long-lived connection to each user.
+> [Tornado](http://www.tornadoweb.org/) is a Python web framework and asynchronous networking library, originally developed at [FriendFeed](http://friendfeed.com/). By using non-blocking network I/O, Tornado can scale to tens of thousands of open connections, making it ideal for [long polling](http://en.wikipedia.org/wiki/Push_technology#Long_polling), [WebSockets](http://en.wikipedia.org/wiki/WebSocket), and other applications that require a long-lived connection to each user.
+>
+> [Tornado](http://www.tornadoweb.org/)是一个Python Web框架和异步网络库，最初由[FriendFeed](http://friendfeed.com/)开发。通过使用非阻塞网络I / O，Tornado可以扩展到成千上万的开放连接，使其非常适合 [长时间轮询](http://en.wikipedia.org/wiki/Push_technology#Long_polling)， [WebSocket](http://en.wikipedia.org/wiki/WebSocket)和其他需要与每个用户建立长期连接的应用程序。
+>
+> --以上内容摘自官方文档
 
-[Tornado](http://www.tornadoweb.org/)是一个Python Web框架和异步网络库，最初由[FriendFeed](http://friendfeed.com/)开发。通过使用非阻塞网络I / O，Tornado可以扩展到成千上万的开放连接，使其非常适合 [长时间轮询](http://en.wikipedia.org/wiki/Push_technology#Long_polling)， [WebSocket](http://en.wikipedia.org/wiki/WebSocket)和其他需要与每个用户建立长期连接的应用程序。
-
---以上内容摘自官方文档
-
-关键词：异步、非阻塞
+**关键词：非阻塞,  [long polling](http://en.wikipedia.org/wiki/Push_technology#Long_polling), [WebSockets](http://en.wikipedia.org/wiki/WebSocket)**
 
 Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等于一万的并发，下表是和一些其他Web框架与服务器的对比（引用于维基百科：https://zh.wikipedia.org/wiki/Tornado）:
 
@@ -41,6 +41,36 @@ Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等
 这篇教程的适用人群：有一定Python基础，想要入门Python异步编程/Tornado框架。
 
 你可以使用Windows环境或Linux环境完成本教程的全部内容，本篇教程要求Python3.5以上，使用新的await以及async关键字。本教程假设已有前端，前端代码可以在上面的文档仓库下载到，教程内容仅关于后端实现。
+
+# 你需要了解的前置知识
+
+## 什么是异步
+
+想要了解异步，首先要了解同步的概念。
+
+这里我们所说的同步，是同步处理而不是时钟同步。所谓同步处理，即同一时间内只执行一个任务，任务处理完之后再执行第二个任务。以做饭的过程举例，可能有买菜、切菜、烧水、煮菜这四个过程，那么同步操作就是严格的执行买菜-切菜-烧水-煮菜这样的顺序。
+
+相反，异步处理不用阻塞当前线程来等待处理完成，而是允许后续操作，直至其它线程将处理完成，并回调通知此线程。仔细观察上面提到的做饭的流程，可以发现，或许在切菜的过程中就可以开始烧水，水烧开之后关火即可省去一部分等待的时间，而切菜的同时烧水，这就是异步！
+
+实际上，这里将人当作了一个单核的CPU，同一时间只能执行一项任务，需要注意的是，切菜是一项持续性任务，需要从头到尾的占用人（从头到尾占用CPU，CPU密集），而烧水则只需要人开火，并在水烧开之后关火，这之间不需要持续占用人，人可以转去做别的事（让出CPU），只需要在水烧开之后通知人即可（任务完成后通知CPU）
+
+我们生活中有许多这样的例子，如等待洗衣机洗衣服、等待水烧开、等待外卖送达，人不会傻等，我们也没有理由让CPU傻等，因此，通过异步操作，可以大幅减少CPU傻等的时间。如登录流程中，后端需要访问数据库来验证用户名密码，等待数据库返回的时间，CPU就可以去做一些别的事情，以此压榨出更多的性能。
+
+一句话总结：异步就是在一项任务阻塞时（水还没开），主动让出CPU，让CPU执行其他任务，等待这项任务的阻塞状态结束时（水烧开了），通知CPU返回处理
+
+## I/O多路复用
+
+### select
+
+### poll
+
+### epoll
+
+## 任务队列
+
+## GIL锁
+
+## Python异步解决方案：协程
 
 # Hello World！
 
@@ -69,7 +99,11 @@ This example does not use any of Tornado’s asynchronous features; for that see
 
 本教程不涉及使用tornado渲染前端页面，如果想要了解这方面的知识，请参考[simple chat room](https://github.com/tornadoweb/tornado/tree/stable/demos/chat)
 
-# 可供参考的学习资料
+# 可供参考的
+
+# 学习资料
 
 tornado官方文档：https://www.tornadoweb.org/en/stable/
+
+Python 进阶 协程 Async 异步编程原理和应用： https://www.bilibili.com/video/BV1qJ411a7kZ
 
