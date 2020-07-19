@@ -22,7 +22,7 @@ tags:                               #标签
 
 **关键词：非阻塞,  [long polling](http://en.wikipedia.org/wiki/Push_technology#Long_polling), [WebSockets](http://en.wikipedia.org/wiki/WebSocket)**
 
-Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等于一万的并发，下表是和一些其他Web框架与服务器的对比（引用于维基百科：https://zh.wikipedia.org/wiki/Tornado）:
+Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等于一万的并发，下表是和一些其他Web框架与服务器的对比（引用于维基百科：[https://zh.wikipedia.org/wiki/Tornado](https://zh.wikipedia.org/wiki/Tornado)）:
 
 **处理器为 AMD Opteron, 主频2.4GHz, 4核**
 
@@ -36,7 +36,7 @@ Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等
 
 # 这篇教程的意义
 
-通过这篇教程，我将手把手带你搭建一个高性能的tornado问卷调查系统后端，以此熟悉tornado框架，入门Python异步编程。本教程基于本人在大三期间的软件设计实践课程项目，以下是本教程的文档仓库：https://github.com/Wh1isper/QuestionnaireSystemDoc。
+通过这篇教程，我将手把手带你搭建一个高性能的tornado问卷调查系统后端，以此熟悉tornado框架，入门Python异步编程。本教程基于本人在大三期间的软件设计实践课程项目，以下是本教程的文档仓库：[https://github.com/Wh1isper/QuestionnaireSystemDoc](https://github.com/Wh1isper/QuestionnaireSystemDoc)
 
 这篇教程的适用人群：有一定Python基础，想要入门Python异步编程/Tornado框架。
 
@@ -105,7 +105,7 @@ This example does not use any of Tornado’s asynchronous features; for that see
 
 # 学习资料
 
-tornado官方文档：https://www.tornadoweb.org/en/stable/
+tornado官方文档：[https://www.tornadoweb.org/en/stable/](https://www.tornadoweb.org/en/stable/)
 
-Python 进阶 协程 Async 异步编程原理和应用： https://www.bilibili.com/video/BV1qJ411a7kZ
+Python 进阶 协程 Async 异步编程原理和应用： [https://www.bilibili.com/video/BV1qJ411a7kZ](https://www.bilibili.com/video/BV1qJ411a7kZ)
 
