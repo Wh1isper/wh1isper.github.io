@@ -58,6 +58,8 @@ Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等
 
 一句话总结：异步就是在一项任务阻塞时（水还没开），主动让出CPU，让CPU执行其他任务，等待这项任务的阻塞状态结束时（水烧开了），通知CPU返回处理
 
+![](https://raw.githubusercontent.com/Wh1isper/wh1isper.github.io/master/img/questionnaire/tbyb.png)
+
 ## I/O多路复用
 
 ### select
