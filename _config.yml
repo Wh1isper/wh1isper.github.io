@@ -2,9 +2,9 @@
 title: Wh1isper
 SEOTitle: Wh1ipser的博客 | BY Wh1isper
 header-img: img/Xia/xia001.jpg
-email: 9573586@qq.com
+email: jizhongsheng@qianxin.com
 description: "Wh1ipser的博客"
-keyword: "后端开发， C++， 哈工大深圳，Wh1ipser的博客，Wh1isper"
+keyword: "哈工大深圳，Wh1ipser的博客，Wh1isper"
 url: "https://wh1isper.github.io/"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/Wh1isper/wh1isperblog.github.io" # you code repository
@@ -105,5 +105,9 @@ friends: [
     {
         title: "Bohan-hu",
         href: "https://github.com/Bohan-hu"
+    },
+    {
+        title: "奇安信",
+        href: "https://www.qianxin.com/"
     }
 ]
