@@ -1,14 +1,14 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:      Tornado实战教程-基本介绍    # 标题 
-subtitle:   Tornado tutorial intro	 #副标题
-date:       2020-07-19             # 时间
+title:      Tornado实战教程-基本介绍			   # 标题 
+subtitle:   Tornado tutorial intro		 #副标题
+date:       2020-07-19              # 时间
 author:     Wh1isper                      # 作者
 header-img: img/post-bg-2015.jpg    #这篇文章标题背景图片
 catalog: true                       # 是否归档
 tags:                               #标签
     - Tornado教程
-	- python
+    - python
     - 问卷系统后端
 ---
 
