@@ -42,7 +42,9 @@ Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等
 
 你可以使用Windows环境或Linux环境完成本教程的全部内容，本篇教程要求Python3.5以上，使用新的await以及async关键字。本教程假设已有前端，前端代码可以在上面的文档仓库下载到，教程内容仅关于后端实现。
 
-# 你需要了解的前置知识
+# 你需要了解的前置知识 or 底层原理
+
+以下内容选读，你可以选择边学边了解，也可以直接看完，后面慢慢领会
 
 ## 什么是异步
 
@@ -62,17 +64,34 @@ Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等
 
 ## I/O多路复用
 
-### select
+这里不多赘述，有太多博文网站已经聊过这个技术：[I/O多路复用技术（multiplexing）是什么？](https://www.zhihu.com/question/28594409)
 
-### poll
+## 事件循环（event loop）
 
-### epoll
+[事件循环](https://docs.python.org/zh-cn/3.7/library/asyncio-eventloop.html)
 
-## 任务队列
+事件循环是asyncio的核心，异步任务的运行、任务完成之后的回调、网络IO操作、子进程的运行，都是通过事件循环完成的。更详细的内容，结合下面的[理解 Python asyncio](https://lotabout.me/2017/understand-python-asyncio/ )学习
 
 ## GIL锁
 
+**在Python多线程下，每个线程的执行方式：**
+1.获取GIL
+2.执行代码直到sleep或者是python虚拟机将其挂起。
+3.释放GIL
+
+**可见，某个线程想要执行，必须先拿到GIL，我们可以把GIL看作是“通行证”，并且在一个python进程中，GIL只有一个。拿不到通行证的线程，就不允许进入CPU执行。**
+
+
+
+在python2.x里，GIL的释放逻辑是当前线程遇见IO操作或者ticks计数达到100（ticks可以看作是python自身的一个计数器，专门做用于GIL，每次释放后归零，这个计数可以通过 sys.setcheckinterval 来调整），进行释放。
+
+而每次释放GIL锁，线程进行锁竞争、切换线程，会消耗资源。并且由于GIL锁存在，python里一个进程永远只能同时执行一个线程(拿到GIL的线程才能执行)，这就是为什么在多核CPU上，python的多线程效率并不高。
+
+[cookbook的分析](https://python3-cookbook.readthedocs.io/zh_CN/latest/c12/p09_dealing_with_gil_stop_worring_about_it.html)
+
 ## Python异步解决方案：协程
+
+这篇博文已经讲的非常详细了：[理解 Python asyncio](https://lotabout.me/2017/understand-python-asyncio/ )
 
 # Hello World！
 
@@ -101,9 +120,7 @@ This example does not use any of Tornado’s asynchronous features; for that see
 
 本教程不涉及使用tornado渲染前端页面，如果想要了解这方面的知识，请参考[simple chat room](https://github.com/tornadoweb/tornado/tree/stable/demos/chat)
 
-# 可供参考的
-
-# 学习资料
+# 可供参考的学习资料
 
 tornado官方文档：[https://www.tornadoweb.org/en/stable/](https://www.tornadoweb.org/en/stable/)
 
