@@ -1,7 +1,7 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
 title:      Tornado实战教程-需求分析			   # 标题 
-subtitle:   Tornado tutorial intro		 #副标题
+subtitle:   Tornado tutorial demand analysiss		 #副标题
 date:       2020-08-21              # 时间
 author:     Wh1isper                      # 作者
 header-img: img/post-bg-2015.jpg    #这篇文章标题背景图片
