@@ -60,6 +60,7 @@ class LoginHandler(BaseHandler):
         # 获取post请求数据 访问数据库进行用户验证并记录登录
         # 接口约定：https://github.com/Wh1isper/QuestionnaireSystemDoc/blob/master/%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89/%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1-2020.05.17-V1.0.md#%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95api
         # 成功将set-cookie:user 存有加密后的用户id
+        
         json_data = self.get_json_data()
         if not json_data:
             return self.raise_HTTP_error(403, self.MISSING_DATA)
@@ -67,24 +68,35 @@ class LoginHandler(BaseHandler):
         pwd = json_data.get('pwd')
         check_code = json_data.get('check_code')
         # 必填项确认
+        
         if not (email and pwd and check_code):
             return self.raise_HTTP_error(403, self.MISSING_DATA)
         # 验证码确认
+        
         if not self.valid_checkcode(check_code):
             return self.raise_HTTP_error(403, self.CHECK_CODE_ERROR)
         # 用户鉴权
+        
         # 非协程方式
+        
         # user_id = self.valid_user(email, pwd)
+        
         # 协程方式
+        
         user_id = await self.valid_user(email, pwd)
         if not user_id:
             return self.raise_HTTP_error(403, self.USER_PWD_ERROR)
         # 登录记录
+        
         # 非协程方式
+        
         # self.login_record(user_id)
+        
         # 协程方式
+        
         await self.login_record(user_id)
         # 发放权限
+        
         self.set_secure_cookie("user", user_id, 				 expires_days=USER_AUTH_EXPIRE_DAY)
         ...
 ```
@@ -98,8 +110,11 @@ class LoginHandler(BaseHandler):
     ...
     def valid_user(self, email: Text, pwd: Text) -> Text or None:
         # 验证用户
+        
         # 第一步验证邮箱是否注册，返回用户ID
+        
         # 第二步验证用户ID与密码是否对应
+        
         def valid_email(email: Text) -> Text or None:
             engine = self.get_engine()
             with engine.acquire() as conn:
@@ -146,8 +161,11 @@ class LoginHandler(BaseHandler):
     ...
     async def valid_user(self, email: Text, pwd: Text) -> Text or None:
         # 验证用户
+        
         # 第一步验证邮箱是否注册，返回用户ID
+        
         # 第二步验证用户ID与密码是否对应
+        
         async def valid_email(email: Text) -> Text or None:
             engine = await self.get_engine()
             async with engine.acquire() as conn:
