@@ -93,6 +93,8 @@ Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等
 
 这篇博文已经讲的非常详细了：[理解 Python asyncio](https://lotabout.me/2017/understand-python-asyncio/ )
 
+如果上面的文章太过于深入，无法理解，可以先阅读本教程后面的章节
+
 # Hello World！
 
 Here is a simple “Hello, world” example web app for Tornado:
