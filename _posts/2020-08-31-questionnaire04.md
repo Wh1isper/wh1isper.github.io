@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:      Tornado实战教程-以携程的方式做用户认证			   # 标题 
+title:      Tornado实战教程-以协程的方式做用户认证			   # 标题 
 subtitle:   Tornado tutorial Coroutine user management		 #副标题
 date:       2020-08-23              # 时间
 author:     Wh1isper                      # 作者
