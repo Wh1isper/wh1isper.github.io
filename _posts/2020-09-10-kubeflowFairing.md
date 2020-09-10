@@ -1,7 +1,7 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
 title:      小无相功：利用Fairing实现一处代码云上本地两处运行	# 标题 
-subtitle:   Kubeflow Fairing  tutorial 	 #副标题
+subtitle:   Kubeflow Fairing tutorial 	 #副标题
 date:       2020-09-10              # 时间
 author:     Wh1isper                      # 作者
 header-img: img/post-bg-2015.jpg    #这篇文章标题背景图片
