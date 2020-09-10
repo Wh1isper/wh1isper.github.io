@@ -143,6 +143,7 @@ from kubeflow.fairing.kubernetes.utils import volume_mounts, get_resource_mutato
  
 SECRET_NAME = 'fairing'
 # 这里使用了本地仓库，如果没有，可以使用阿里云容器镜像服务
+
 DOCKER_REGISTRY = 'docker.airange.cn/kubeflow'
 fairing.config.set_builder('append',
                            base_image='docker.airange.cn/kubeflow/fairing:py37',
@@ -190,18 +191,31 @@ fairing.config.set_deployer('job', pod_spec_mutators=[
 
 ```python
 # Copyright 2018 Google Inc. All Rights Reserved.
+
 #
+
 # Licensed under the Apache License, Version 2.0 (the "License");
+
 # you may not use this file except in compliance with the License.
+
 # You may obtain a copy of the License at
+
 #
+
 #     http://www.apache.org/licenses/LICENSE-2.0
+
 #
+
 # Unless required by applicable law or agreed to in writing, software
+
 # distributed under the License is distributed on an "AS IS" BASIS,
+
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
 # See the License for the specific language governing permissions and
+
 # limitations under the License.
+
  
 import argparse
 import logging
@@ -213,7 +227,9 @@ import urllib.request
 from sklearn.impute import SimpleImputer as Imputer
  
 # rawgithub被墙，使用代理加速
+
 # TRAINING_URL="https://raw.githubusercontent.com/kubeflow/examples/master/xgboost_ames_housing/ames_dataset/train.csv"
+
 TRAINING_URL="https://g.ioiox.com/https://raw.githubusercontent.com/kubeflow/examples/master/xgboost_ames_housing/ames_dataset/train.csv"
 TRAINING_FILE="train.csv"
  
