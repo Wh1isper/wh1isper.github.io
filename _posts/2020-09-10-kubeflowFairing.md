@@ -24,7 +24,7 @@ tags:                               #标签
 
 Kubeflow Fairing简化了在混合云环境中构建、训练和部署机器学习（ML）**训练任务**的过程，通过使用Fairing SDK并添加几行代码，即可从Python代码或Jupyter Notebook中，**本地**或在**云端**运行ML的**训练任务**。在训练任务结束后，可以**直接**或**借助KFServing**将训练过的模型部署为预测接口。
 
-![img](https://raw.githubusercontent.com/Wh1isper/wh1isper.github.io/master/img/fairing/image2020-8-24_15-23-49.png)
+![](https://raw.githubusercontent.com/Wh1isper/wh1isper.github.io/master/img/fairing/image2020-8-24_15-23-49.png)
 
 Fairing在机器学习工作流中的位置
 
