@@ -94,7 +94,7 @@ tags:                               #标签
 
 方法：它以自助采样(bootstrap sampling)为基础.给定包含m个样本的数据集D，我们对它进行采样产生数据集 D′：每次随机从D中挑选出一个样本，将其拷贝放入D′, 然后再将该样本放回初始数据集D中，使得该样本在下次采样时仍有可能被采样到；这个过程重复执行m次后，我们就得到可包含m个样本数据的数据集D′,这就是自助采样的结果.样本在m次采样中始终不被采到到概率为
 
-![img](https://bkimg.cdn.bcebos.com/formula/efd2f4bd66b5edd8c5a8a85ba8f4f85d.svg)
+![img](https://raw.githubusercontent.com/Wh1isper/wh1isper.github.io/master/img/DS/gs1.png)
 
 由此可知通过自助采样，初始数据集D中约有36.8%的样本未出现在采样数据集D′中。于是我们可将D′ 用作训练集，D∖D′用作测试集。
 
