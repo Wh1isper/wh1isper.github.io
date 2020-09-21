@@ -42,7 +42,7 @@ tags:                               #标签
 
 [![img](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Simple_random_sampling.PNG/300px-Simple_random_sampling.PNG)](https://zh.wikipedia.org/wiki/File:Simple_random_sampling.PNG)
 
-选择简单随机样本的示意图
+<center>选择简单随机样本的示意图</center>
 
 **简单随机抽样**（simple random sampling），也叫纯随机抽样。从总体N个单位中随机地抽取n个单位作为样本，使得每一个容量为样本都有相同的概率被抽中。特点是：每个样本单位被抽中的概率相等，样本的每个单位完全独立，彼此间无一定的关联性和排斥性。简单随机抽样是其它各种抽样形式的基础。通常只是在总体单位之间差异程度较小和数目较少时，才采用这种方法[[1\]](https://zh.wikipedia.org/wiki/抽樣#cite_note-1)。
 
@@ -50,7 +50,7 @@ tags:                               #标签
 
 [![img](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Systematic_sampling.PNG/350px-Systematic_sampling.PNG)](https://zh.wikipedia.org/wiki/File:Systematic_sampling.PNG)
 
-使用系统抽样技术选择随机样本的示意图
+<center>使用系统抽样技术选择随机样本的示意图</center>
 
 **系统抽样**（systematic sampling），也称等距抽样。将总体中的所有单位按一定顺序排列，在规定的范围内随机地抽取一个单位作为初始单位，然后按事先规定好的规则确定其他样本单位。先从数字1到k之间随机抽取一个数字r作为初始单位，以后依次取r+k、r+2k……等单位。这种方法操作简便，可提高估计的精度。
 
@@ -58,7 +58,7 @@ tags:                               #标签
 
 [![img](https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Stratified_sampling.PNG/300px-Stratified_sampling.PNG)](https://zh.wikipedia.org/wiki/File:Stratified_sampling.PNG)
 
-使用分层抽样技术选择随机样本的示意图
+<center>使用分层抽样技术选择随机样本的示意图</center>
 
 **[分层抽样](https://zh.wikipedia.org/wiki/分层抽样)**（stratified sampling）。将抽样单位按某种特征或某种规则划分为不同的层，然后从不同的层中独立、随机地抽取样本。从而保证样本的结构与总体的结构比较相近，从而提高估计的精度。难点是如何按照特征划分为不同的层。
 
