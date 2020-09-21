@@ -1,7 +1,7 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
 title:      数据抽样相关笔记	# 标题 
-subtitle:   Data Simple 	 #副标题
+subtitle:   Data Simpling Note 	 #副标题
 date:       2020-09-21              # 时间
 author:     Wh1isper                      # 作者
 header-img: img/post-bg-2015.jpg    #这篇文章标题背景图片
@@ -15,6 +15,8 @@ tags:                               #标签
 
 
 # 数据抽样相关笔记
+
+
 
 ## [抽样]([https://zh.wikipedia.org/wiki/%E6%8A%BD%E6%A8%A3](https://zh.wikipedia.org/wiki/抽樣))
 
@@ -58,8 +60,9 @@ tags:                               #标签
 
 使用分层抽样技术选择随机样本的示意图
 
-**[分层抽样](https://zh.wikipedia.org/wiki/分层抽样)**（stratified sampling）。将抽样单位按某种特征或某种规则划分为不同的层，然后从不同的层中独立、随机地抽取样本。从而保证样本的结构与总体的结构比较相近，从而提高估计的精度。
+**[分层抽样](https://zh.wikipedia.org/wiki/分层抽样)**（stratified sampling）。将抽样单位按某种特征或某种规则划分为不同的层，然后从不同的层中独立、随机地抽取样本。从而保证样本的结构与总体的结构比较相近，从而提高估计的精度。难点是如何按照特征划分为不同的层。
 
 #### 整群抽样
 
-**整群抽样**（cluster sampling）。将总体中若干个单位合并为组，抽样时直接抽取群，然后对中选群中的所有单位全部实施调查。抽样时只需群的抽样框，可简化工作量，缺点是估计的精度较差[[2\]](https://zh.wikipedia.org/wiki/抽樣#cite_note-2)。
+**整群抽样**（cluster sampling）。将总体中若干个单位合并为组，抽样时直接抽取群，然后对中选群中的所有单位全部实施调查。抽样时只需群的抽样框，可简化工作量，缺点是估计的精度较差[[2\]](https://zh.wikipedia.org/wiki/抽樣#cite_note-2)。比如美国总统选举，直接抽取某个郡的选民，则可能出现明显的倾向。
+
