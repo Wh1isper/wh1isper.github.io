@@ -128,7 +128,7 @@ tags:                               #标签
 
 [长尾](https://baike.baidu.com/item/长尾)效应，英文名称Long Tail Effect。“头”（head）和“尾”（tail）是两个统计学名词。正态曲线中间的突起部分叫“头”；两边相对平缓的部分叫“尾”。从人们需求的角度来看，大多数的需求会集中在头部，而这部分我们可以称之为流行，而分布在尾部的需求是个性化的，零散的小量的需求。而这部分差异化的、少量的需求会在[需求曲线](https://baike.baidu.com/item/需求曲线/3351682)上面形成一条长长的“尾巴”，而所谓长尾效应就在于它的数量上，将所有非流行的市场累加起来就会形成一个比流行市场还大的市场。
 
-![img](https://bkimg.cdn.bcebos.com/pic/e61190ef76c6a7ef1a782d9af5faaf51f3de6634?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U4MA==,g_7,xp_5,yp_5)
+![File:Long tail.svg](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Long_tail.svg/800px-Long_tail.svg.png)
 
 #### 训练成本高：
 
