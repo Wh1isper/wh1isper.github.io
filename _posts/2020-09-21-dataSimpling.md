@@ -198,9 +198,9 @@ Borderline-SMOTE基于SMOTE做了改进，添加了阈值
 
 #### 基于级联组合的样本移除算法
 
-BalanceCascade算法，基于Booststrapping思想，通过有监督学习的方式训练出一组分类器来去除大众类中需要经过下采样而去除的样本
-
-
+BalanceCascade算法，基于Bootstrapping思想，通过有监督学习的方式训练出一组分类器来去除大众类中需要经过下采样而去除的样本
 
 #### 在线难样本挖掘算法
+
+Online hard example mining（OHEM）算法：一种利用Bootstrapping技术，基于卷积神经网络的目标检测方法
 
