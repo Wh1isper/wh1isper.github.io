@@ -269,3 +269,14 @@ my words：
 
 进入互联网时代后，调查方法不再局限于访谈，爬虫也成了一种调查方法。同时，抽样的手段也从抽取一部分人进行访谈，获得抽样数据，转换到了利用爬虫或记录等方法获取大数据，再使用概率抽样的方式对总体数据进行抽取，加速训练。
 
+
+
+## 参考文献
+
+1. SMOTE: Synthetic Minority Over-sampling Technique（2002）https://arxiv.org/pdf/1106.1813.pdf
+2. 分布式数据分层抽样技术及其在目标检测领域的应用研究_黎敏讷（2017）http://gb.oversea.cnki.net/KCMS/detail/detail.aspx?filename=1018997231.nh&dbcode=CMFD&dbname=CMFD2019
+3. 胡健颖，孙山泽. 抽样调查的理论、方法和应用. 北京大学出版社:北京, 2000.6. [ISBN 7-301-04547-6](https://zh.wikipedia.org/wiki/Special:网络书源/7301045476).
+4. 金勇进，蒋妍，李序颖. 抽样技术. 中国人民大学出版社:北京, 2002.6. [ISBN 7-300-04079-9](https://zh.wikipedia.org/wiki/Special:网络书源/7300040799)
+5. Chambers, R L, and Skinner, C J (editors) (2003), *Analysis of Survey Data*, Wiley, [ISBN](https://en.wikipedia.org/wiki/ISBN_(identifier)) [0-471-89987-9](https://en.wikipedia.org/wiki/Special:BookSources/0-471-89987-9)
+6. 大数据挖掘的均匀抽样设计及数值分析_李毅（2015）http://gb.oversea.cnki.net/KCMS/detail/detail.aspx?filename=TJLT201504001&dbcode=CJFD&dbname=CJFD2015
+7. Data Sampling Methods to Deal With the Big Data Multi-Class Imbalance Problem https://www.mdpi.com/2076-3417/10/4/1276/pdf
