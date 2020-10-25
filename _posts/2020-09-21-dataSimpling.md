@@ -16,7 +16,7 @@ tags:                               #标签
 
 # 数据抽样相关笔记
 
-
+![](https://raw.githubusercontent.com/Wh1isper/wh1isper.github.io/master/img/DS/datasampling.png)
 
 ## [抽样]([https://zh.wikipedia.org/wiki/%E6%8A%BD%E6%A8%A3](https://zh.wikipedia.org/wiki/抽樣))
 
