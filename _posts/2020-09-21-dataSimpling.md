@@ -141,6 +141,8 @@ tags:                               #标签
 
 ### 困难
 
+![](https://raw.githubusercontent.com/Wh1isper/wh1isper.github.io/master/img/DS/%E6%8A%BD%E6%A0%B7%E7%BA%A6%E6%9D%9F.png)
+
 #### 数据不平衡：利用分层抽样减少数据不平衡的情况
 
 ##### 长尾现象
