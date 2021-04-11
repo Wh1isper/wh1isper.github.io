@@ -2,7 +2,7 @@
 layout:     post                    # 使用的布局（不需要改）
 title:      Hadoop3.2单机配置	# 标题 
 subtitle:   Hadoop3.2 Standalone 	 #副标题
-date:       2021-04-01              # 时间
+date:       2021-04-11              # 时间
 author:     Wh1isper                      # 作者
 header-img: img/post-bg-2015.jpg    #这篇文章标题背景图片
 catalog: true                       # 是否归档
