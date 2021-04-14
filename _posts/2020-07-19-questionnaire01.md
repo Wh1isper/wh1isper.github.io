@@ -99,7 +99,7 @@ Tornado有着优异的性能。它试图解决C10k问题，即处理大于或等
 
 Here is a simple “Hello, world” example web app for Tornado:
 
-```
+```python
 import tornado.ioloop
 import tornado.web
 
