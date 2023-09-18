@@ -10,12 +10,6 @@ jobs:
       - name: Check Out
         uses: actions/checkout@v3
 
-      - name: Clone Repo
-        uses: actions/checkout@v3
-        with:
-          repository: Username/Repository
-          path: .deploy_git
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
