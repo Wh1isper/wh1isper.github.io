@@ -104,5 +104,5 @@ theme: fluid
 deploy:
   type: git
   repo: git@github.com:Wh1isper/wh1isper.github.io.git
-  branch: master
+  branch: gh-pages
 
