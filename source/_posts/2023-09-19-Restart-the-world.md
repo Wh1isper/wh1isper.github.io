@@ -2,7 +2,7 @@
 layout:     post                    # 使用的布局（不需要改）
 title:      欢迎来到我的博客——博客重启计划               # 标题 
 subtitle:   Restart the world #副标题
-date:       2023年9月18日             # 时间
+date:       2023-09-19 00:04             # 时间
 author:     Wh1isper                      # 作者
 catalog: true                       # 是否归档
 tags:                               #标签
