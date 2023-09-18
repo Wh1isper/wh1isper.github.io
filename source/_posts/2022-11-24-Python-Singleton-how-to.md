@@ -17,7 +17,6 @@ category:
     # - 读书笔记
     - 技术分享
 ---
-
 # 简单直接
 
 发现很多朋友不知道单例如何实现，如果你想要求一个类一定是一个单例，那么最好的方式应该是用metaclass的方式，如下
@@ -43,7 +42,6 @@ class MyClass(BaseClass, metaclass=Singleton):
     pass
 ```
 
-
 如果你不确定，但是在使用中需要缓存，那你最好写一个manager，缓存实例化的类，而不是在类这里定义一个单例
 
 ```python
@@ -51,7 +49,7 @@ class MyClass(BaseClass, metaclass=Singleton):
 class Manager(object):
     _cache = dict()
     _class_map = dict()
-    
+  
     @classmethod
     def get(cls, name, *arg, **kwargs)
         return cls._cache.setdefault(name, cls._class_map[name](*arg, **kwargs))
@@ -62,7 +60,7 @@ class Manager(object):
 
 > 感谢[@MansfieldLee](https://github.com/MansfieldLee)提到这个问题
 
-一般来说，Python程序不太在乎多线程性能（因为GIL），人们通常利用协程+进程的方式解决问题。在协程中，以下代码块没有`await`，因此可以认为是同步的，因此单例的实现也是线程安全的
+一般来说，Python程序不太在乎多线程性能（因为GIL），人们通常利用协程+进程的方式解决问题。在协程中，以下代码块没有 `await`，可以认为是同步的，因此单例的实现也是线程安全的
 
 ```python
     # 这个方法没有await，是线程安全的
