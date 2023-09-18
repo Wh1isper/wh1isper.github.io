@@ -1,0 +1,39 @@
+name: Deployment
+on: push
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    name: Deployment
+
+    steps:
+      - name: Check Out
+        uses: actions/checkout@v3
+
+      - name: Clone Repo
+        uses: actions/checkout@v3
+        with:
+          repository: Username/Repository
+          path: .deploy_git
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "wh1isper"
+          git config --global user.email "9573586@qq.com"
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+      - name: Deploy
+        run: |
+          npm install --location=global hexo-cli
+          npm install
+          hexo d
