@@ -3,13 +3,19 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Wh1isper
+title: Wh1isper's Blog
 subtitle: "Wh1ipser's Blog"
-description: ''
+description: ""
 keywords:
 author: Wh1isper
 language: zh-CN
-timezone: 'Asia/Shanghai'
+timezone: "Asia/Shanghai"
+
+index:
+  slogan:
+    enable: true
+
+    text: "重剑无锋，大巧不工。"
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
@@ -37,7 +43,7 @@ titlecase: false # Transform title into titlecase
 external_link:
   enable: true # Open external links in new tab
   field: site # Apply to the whole site
-  exclude: ''
+  exclude: ""
 filename_case: 0
 render_drafts: false
 post_asset_folder: false
@@ -47,21 +53,21 @@ highlight:
   enable: true
   line_number: true
   auto_detect: false
-  tab_replace: ''
+  tab_replace: ""
   wrap: true
   hljs: false
 prismjs:
   enable: false
   preprocess: true
   line_number: true
-  tab_replace: ''
+  tab_replace: ""
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
-  path: ''
+  path: ""
   per_page: 10
   order_by: -date
 
@@ -81,7 +87,7 @@ meta_generator: true
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
 ## updated_option supports 'mtime', 'date', 'empty'
-updated_option: 'mtime'
+updated_option: "mtime"
 
 # Pagination
 ## Set per_page to 0 to disable pagination
@@ -106,3 +112,22 @@ deploy:
   repo: git@github.com:Wh1isper/wh1isper.github.io.git
   branch: gh-pages
 
+post:
+  meta:
+    author: # 作者，优先根据 front-matter 里 author 字段，其次是 hexo 配置中 author 值
+      enable: false
+    date: # 文章日期，优先根据 front-matter 里 date 字段，其次是 md 文件日期
+      enable: true
+      format: "LL a" # 格式参照 ISO-8601 日期格式化 See: http://momentjs.cn/docs/#/parsing/string-format/
+    wordcount: # 字数统计
+      enable: true
+      format: "{} 字"
+    min2read: # 估计阅读全文需要的时长
+      enable: true
+      awl: 2
+      wpm: 60
+      format: "{} 分钟"
+    views: # 浏览量计数
+      enable: true
+      source: "leancloud"
+      format: "{} 次"
