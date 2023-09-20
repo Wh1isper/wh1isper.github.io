@@ -16,7 +16,9 @@ category:
 ---
 # 如何沟通：掌握正确的沟通流程
 
-写这篇文章的直接动机是我在社区和工作中听到、看到的一些问题，在B站视频[《我是学生我很闲 求带我贡献Github装逼》](https://www.bilibili.com/video/BV1vu4y1X7ZZ/)中，一个自称哈工大的研究生发了一个看似态度很好，但实际上非常不尊重别人的comment，我觉得这个问题在大部分人当中都存在（包括很多工作了一段时间的同事），所以我觉得有必要从我自身的感受和经验来谈谈如何沟通这个问题。
+写这篇文章的直接动机是我在社区和工作中听到、看到的一些问题，在B站视频[《我是学生我很闲 求带我贡献Github装逼》](https://www.bilibili.com/video/BV1vu4y1X7ZZ/)中，一个自称哈工大的研究生发了一个看似态度很好，但实际上非常不尊重别人的comment，我只能说太tm真实了，我甚至能脑补出伸手党的语气：怎么啦，我好意参加项目，好声好气求人都不行？
+
+对，不行。
 
 ## 与提问的智慧
 
@@ -144,3 +146,17 @@ category:
 > 试探性的反问以引出更多的细节。 如果你做得好，提问者可以学到点东西 —— 你也可以。试试将蠢问题转变成好问题，别忘了我们都曾是新手。
 > 尽管对那些懒虫抱怨一声 RTFM 是正当的，但能指出文件的位置（即使只是建议个 Google 搜索关键词）会更好。
 > 如果你决定回答，就请给出好的答案。 当别人正在用错误的工具或方法时别建议笨拙的权宜之计（workaround），应推荐更好的工具，重新界定问题。
+
+## 补充材料
+
+看看别人是怎么被喷的（下一个comment就是一个非常好的正例）：https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/issues/1508#issuecomment-1662365628
+
+看看别人是如何与我沟通的：https://github.com/Wh1isper/jupyter_kernel_executor/issues/8
+
+看看我是如何提出我的想法的：
+- https://github.com/jupyter-server/jupyter_server/issues/1274#issuecomment-1657944667
+- https://github.com/jupyterlab/jupyterlab/issues/12455
+
+
+
+
