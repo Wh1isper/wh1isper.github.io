@@ -1,0 +1,113 @@
+<mxfile host="65bd71144e">
+    <diagram id="1WNU9-KQs_Xf4ARZTfLo" name="第 1 页">
+        <mxGraphModel dx="907" dy="2275" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="38" value="透明代理（可选、反代、负载均衡等）" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;gradientColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="147" y="510" width="560" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="334" y="310" width="300" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="&lt;span style=&quot;color: rgb(240, 240, 240); font-family: Helvetica; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(42, 37, 47); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;chimera_llm&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="344" y="320" width="100" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="GRPC(chimra-proto)" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="5" target="14">
+                    <mxGeometry x="0.4942" y="8" relative="1" as="geometry">
+                        <mxPoint y="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="21" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="5" target="19">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="5" target="20">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="backend" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="354" y="390" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="UI" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="504" y="390" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="应用层" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="754" y="375" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="用户管理" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="234" y="320" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="对话管理" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="234" y="355" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="开放API" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="234" y="390" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="应用功能" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="234" y="430" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="chimera_llama_grpc" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="264" y="605" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="edgeStyle=none;html=1;fontSize=14;dashed=1;" edge="1" parent="1" source="17" target="14">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="facebookresearch/&lt;br&gt;llama" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;gradientColor=none;dashed=1;" vertex="1" parent="1">
+                    <mxGeometry x="14" y="605" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="" style="edgeStyle=none;html=1;fontSize=14;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="19" target="25">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="19" target="24">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="chimera_huggingface" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="424" y="605" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="chimera_pangu" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="574" y="605" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="接入层" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="754" y="620" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="..." style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="494" y="715" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="baichuan" style="whiteSpace=wrap;html=1;fontSize=14;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="324" y="715" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="封装模型形成GRPC服务" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="154" y="585" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="" style="edgeStyle=none;html=1;fontSize=14;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="31" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="Web用户" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=14;gradientColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="549" y="180" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="" style="edgeStyle=none;html=1;fontSize=14;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="33" target="5">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="394" y="320" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="33" value="插件开发者" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=14;gradientColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="398" y="180" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="36" target="14">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="其他服务接入chimera_proto" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;gradientColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="14" y="390" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="代理层" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="754" y="510" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="Mongo" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fontSize=14;gradientColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="680" y="300" width="60" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="Token序列化数据" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fontSize=14;gradientColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="680" y="400" width="60" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
