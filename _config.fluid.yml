@@ -568,7 +568,7 @@ post:
       awl: 2
       # 每分钟阅读字数，如果大部分是技术文章可适度调低
       # Words per minute
-      wpm: 60
+      wpm: 200
 
     # 浏览量计数
     # Number of visits
