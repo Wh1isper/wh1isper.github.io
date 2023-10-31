@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:      Hadoop3.2单机部署教程	# 标题 
+title:      🔧Hadoop3.2单机部署教程	# 标题 
 subtitle:   Hadoop3.2 Standalone 	 #副标题
 date:       2021-04-11              # 时间
 author:     Wh1isper                      # 作者

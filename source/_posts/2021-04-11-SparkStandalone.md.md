@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:      Spark部署教程	# 标题 
+title:      🔧Spark部署教程	# 标题 
 subtitle:   Deploy Spark in a simple way	 #副标题
 date:       2021-04-11              # 时间
 author:     Wh1isper                      # 作者

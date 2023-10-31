@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:      Python单例类Singleton样例	# 标题 
+title:      🚀Python单例类Singleton样例	# 标题 
 subtitle:   Python Singleton Example	 #副标题
 date:       2022-11-14              # 时间
 author:     Wh1isper                      # 作者
