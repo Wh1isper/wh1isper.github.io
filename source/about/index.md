@@ -34,3 +34,6 @@ date: 2023-09-18 20:57:08
 <td><img src=/img/wepay-qr.png />
 <td> <img src=/img/alipay-qr.jpg />
 </tr></table>
+
+
+Sponsor me via PayPal: https://paypal.me/wh1isper?country.x=C2&locale.x=zh_XC
