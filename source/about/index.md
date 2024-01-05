@@ -1,16 +1,13 @@
 ---
 title: about
 layout: about
-date: 2023-09-18 20:57:08
+date: 2024-01-05 11:24:00
 ---
 ### 简介
 
 17级本科毕业于哈尔滨工业大学（深圳）计算机专业
 
-目前从事数据安全相关工作：Python/DevOps/eBPF(observing data usage)
-
-欢迎Follow我的工作账户[@wunder957](https://github.com/wunder957) 以及我们的开源组织[@hitsz-ids](https://github.com/hitsz-ids/)
-
+中高级Python开发工程师，主要从事科学计算软件开发、AIOps等领域
 
 ![Wh1isper's GitHub stats](https://github-readme-stats.vercel.app/api?username=wh1isper&count_private=true)
 
@@ -18,13 +15,25 @@ date: 2023-09-18 20:57:08
 
 ### 社区贡献
 
-- Jupyter Contributor
-- [Sparglim✨](https://github.com/Wh1isper/sparglim/): makes PySpark App Configurable and Deploy Spark Connect Server Easier!
+Individual projects:
+- [sparglim](https://github.com/Wh1isper/sparglim): Makes PySpark App Configurable and Deploy Spark Connect Server Easier!
+
+[hitsz-ids](https://github.com/hitsz-ids) projects:
+- [duetector](https://github.com/hitsz-ids/duetector): A detector based on eBPF technology for metering data usage behaviour.
+- [synthetic-data-generator](https://github.com/hitsz-ids/synthetic-data-generator): Focused on quickly generating high-quality structured tabular data.
+
+Contributed projects:
+- [jupyter_server](https://github.com/jupyter-server/jupyter_server): The backend—i.e. core services, APIs, and REST endpoints—to Jupyter web applications.
+- [jupyter_server_terminals](https://github.com/jupyter-server/jupyter_server_terminals): A Jupyter Server Extension Providing Support for Terminals.
+- [jupyverse](https://github.com/jupyter-server/jupyverse): A Jupyter server based on FastAPI 🚀.
+- [jupyterhub/oauthenticator](https://github.com/jupyterhub/oauthenticator): OAuth + JupyterHub Authenticator = OAuthenticator.
+- [terminado](https://github.com/jupyter/terminado): Terminals served by tornado websockets.
 
 ### 近期
 
-- 研究eBPF在数据安全、数据使用可观测的相关实现
-- 学习Rust、OS、编译原理
+- 🔧 Developing on [duetector](https://github.com/hitsz-ids/duetector), A detector based on eBPF technology for metering data usage behaviour
+- 🔧 Developing on [synthetic-data-generator](https://github.com/hitsz-ids/synthetic-data-generator): Focused on quickly generating high-quality structured tabular data.
+- 📕 Learning and dive into Rust, Compiliers, OS
 
 ### 捐赠
 
