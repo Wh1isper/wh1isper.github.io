@@ -16,13 +16,16 @@ date: 2024-01-05 11:24:00
 ### 社区贡献
 
 Individual projects:
+
 - [sparglim](https://github.com/Wh1isper/sparglim): Makes PySpark App Configurable and Deploy Spark Connect Server Easier!
 
 [hitsz-ids](https://github.com/hitsz-ids) projects:
+
 - [duetector](https://github.com/hitsz-ids/duetector): A detector based on eBPF technology for metering data usage behaviour.
 - [synthetic-data-generator](https://github.com/hitsz-ids/synthetic-data-generator): Focused on quickly generating high-quality structured tabular data.
 
 Contributed projects:
+
 - [jupyter_server](https://github.com/jupyter-server/jupyter_server): The backend—i.e. core services, APIs, and REST endpoints—to Jupyter web applications.
 - [jupyter_server_terminals](https://github.com/jupyter-server/jupyter_server_terminals): A Jupyter Server Extension Providing Support for Terminals.
 - [jupyverse](https://github.com/jupyter-server/jupyverse): A Jupyter server based on FastAPI 🚀.
@@ -31,8 +34,7 @@ Contributed projects:
 
 ### 近期
 
-- 🔧 Developing on [duetector](https://github.com/hitsz-ids/duetector), A detector based on eBPF technology for metering data usage behaviour
-- 🔧 Developing on [synthetic-data-generator](https://github.com/hitsz-ids/synthetic-data-generator): Focused on quickly generating high-quality structured tabular data.
+- 🚀AI for text to video AIGC generation [@Morph Studio](https://www.morphstudio.com/)
 - 📕 Learning and dive into Rust, Compiliers, OS
 
 ### 捐赠
@@ -43,6 +45,5 @@ Contributed projects:
 <td><img src=/img/wepay-qr.png />
 <td> <img src=/img/alipay-qr.jpg />
 </tr></table>
-
 
 Sponsor me via PayPal: https://paypal.me/wh1isper?country.x=C2&locale.x=zh_XC
