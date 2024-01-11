@@ -951,7 +951,7 @@ about:
   banner_img: /img/tag-bg-o.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
-  avatar: /img/avatar-june.jpg
+  avatar: /img/avatar-cyberpunk.png
   name: "Wh1isper"
   intro: "Python engineer | DevOps | Data Security"
   # 更多图标可从 https://hexo.fluid-dev.com/docs/icon/ 查找，`class` 代表图标的 css class，添加 `qrcode` 后，图标不再是链接而是悬浮二维码
