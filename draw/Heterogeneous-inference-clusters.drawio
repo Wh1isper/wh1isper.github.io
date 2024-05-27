@@ -1,11 +1,11 @@
 <mxfile host="65bd71144e">
     <diagram id="hWmZJ9ZLRhe6eKEpdjt4" name="第 1 页">
-        <mxGraphModel dx="2856" dy="2090" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="2463" dy="2090" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="24" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="-270" y="50" width="580" height="430" as="geometry"/>
+                    <mxGeometry x="-100" y="50" width="410" height="430" as="geometry"/>
                 </mxCell>
                 <mxCell id="9" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="500" y="50" width="810" height="430" as="geometry"/>
@@ -300,8 +300,14 @@
                 <mxCell id="87" value="Shared&lt;br&gt;High Preformance Storage" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;labelBackgroundColor=none;" vertex="1" parent="1">
                     <mxGeometry x="1187" y="80" width="107.5" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="92" value="多个Replica共享一个模型存储" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="1330" y="107.5" width="180" height="30" as="geometry"/>
+                <mxCell id="92" value="多个Replica共享一个模型存储&lt;br&gt;or&lt;br&gt;每个Replica都下载一次模型（无高性能共享存储时，使用local最快）" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=2" vertex="1" parent="1">
+                    <mxGeometry x="1320" y="30" width="390" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="95" value="Business Cluster" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="-90" y="60" width="140" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="96" value="Inference&lt;br&gt;Cluster" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="1196" y="430" width="90" height="50" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
