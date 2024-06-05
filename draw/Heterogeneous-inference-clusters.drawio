@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="hWmZJ9ZLRhe6eKEpdjt4" name="第 1 页">
-        <mxGraphModel dx="1600" dy="1663" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="2553" dy="2076" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -18,7 +18,7 @@
                         <mxPoint x="5" y="1" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="2" value="morph-matrix-connector" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="2" value="moriarty-matrix-connector" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="130" y="170" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="21" value="Proxy Event" style="edgeStyle=none;html=1;exitX=0.114;exitY=1.036;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;exitPerimeter=0;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;" parent="1" source="3" target="6" edge="1">
@@ -70,7 +70,7 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="3" value="morph-matrix-operator" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="3" value="moriarty-matrix-operator" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="540" y="170" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="16" style="edgeStyle=none;html=1;exitX=0.994;exitY=0.324;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;exitPerimeter=0;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;" parent="1" source="4" edge="1">
@@ -171,16 +171,11 @@
                         <mxPoint x="-12" y="1" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="39" value="Morgana" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                <mxCell id="39" value="Backend Service" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="-60" y="170" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="44" value="Progress..." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=2" parent="1" vertex="1">
                     <mxGeometry x="70" y="330" width="80" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="76" style="edgeStyle=none;html=1;" parent="1" source="49" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="932.5" y="240" as="targetPoint"/>
-                    </mxGeometry>
                 </mxCell>
                 <mxCell id="49" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
                     <mxGeometry x="790" y="80" width="330" height="240" as="geometry"/>
@@ -220,7 +215,7 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="59" value="morph-sm-sidecar" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+                <mxCell id="59" value="moriarty-sidecar" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
                     <mxGeometry x="810" y="160" width="105" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="72" value="Publish Event" style="edgeStyle=none;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;dashed=1;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;" parent="1" source="61" target="20" edge="1">
@@ -241,7 +236,7 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="61" value="morph-sm-endpoint" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+                <mxCell id="61" value="moriarty-endpoint" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
                     <mxGeometry x="992.5" y="160" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="62" value="One Deployment" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
@@ -264,7 +259,7 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="80" value="Load imge/video/internel..." style="edgeStyle=none;html=1;exitX=1;exitY=0;exitDx=0;exitDy=52.5;exitPerimeter=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;labelBackgroundColor=default;" parent="1" source="78" target="61" edge="1">
+                <mxCell id="80" value="Load model and input data" style="edgeStyle=none;html=1;exitX=1;exitY=0;exitDx=0;exitDy=52.5;exitPerimeter=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;labelBackgroundColor=default;" parent="1" source="78" target="61" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="1190" y="540"/>
@@ -286,7 +281,7 @@
                         <mxPoint x="-6" y="-16" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="84" value="morph-sm-init" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+                <mxCell id="84" value="moriarty-init" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
                     <mxGeometry x="810" y="107.5" width="100" height="35" as="geometry"/>
                 </mxCell>
                 <mxCell id="88" value="" style="edgeStyle=none;html=1;labelBackgroundColor=default;" parent="1" source="87" target="81" edge="1">
@@ -299,9 +294,6 @@
                 </mxCell>
                 <mxCell id="87" value="Shared&lt;br&gt;High Preformance Storage" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;labelBackgroundColor=none;" parent="1" vertex="1">
                     <mxGeometry x="1187" y="80" width="107.5" height="80" as="geometry"/>
-                </mxCell>
-                <mxCell id="92" value="多个Replica共享一个模型存储&lt;br&gt;or&lt;br&gt;每个Replica都下载一次模型（无高性能共享存储时，使用local最快）" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=2" parent="1" vertex="1">
-                    <mxGeometry x="1320" y="30" width="390" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="95" value="Business Cluster" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=14;" parent="1" vertex="1">
                     <mxGeometry x="-90" y="60" width="140" height="30" as="geometry"/>
