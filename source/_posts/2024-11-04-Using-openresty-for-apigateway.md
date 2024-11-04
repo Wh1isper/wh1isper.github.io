@@ -53,6 +53,6 @@ When you need more advanced features like circuit breaking, retries, or rate lim
 
 ## The Implementation(WIP)
 
-> You can find the source code of this post in [Github]()
+> You can find the source code of this post in [Github](https://github.com/Wh1isper/openresty-api-gateway-example)
 
 Here, I plan to provide a production-ready implementation example. While it may be somewhat complex, it ensures a high level of security.
