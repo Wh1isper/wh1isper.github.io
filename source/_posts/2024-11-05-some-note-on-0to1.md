@@ -44,13 +44,23 @@ Using public cloud services, especially cloud-hosted Kubernetes, significantly r
 
 ### Expand the team too late
 
-
+We often hesitate to recruit new engineers, fearing that they may not quickly contribute to the team's workload and might instead increase communication and training costs. However, continuously delaying the recruitment of new engineers will only worsen the team's situation. As the number of features that need maintenance increases, existing engineers will have to divert their time from developing new features to maintaining old ones. What’s often overlooked is that maintaining legacy features can be a great entry point for new engineers, much like a "good first issue." Those lower-priority bugs and requirements are well-suited for onboarding new engineers.
 
 ## What I missed along the way
 
 ### Forgot Data Collection and ETL systems
 
+Data collection and analysis are crucial in business decision-making. When a team lacks BI experts, engineers often forget to incorporate the need for data collection and analysis during the design and implementation of systems. I only realized this after our product had been live for a while: the CEO frequently requires various metrics, such as daily active users, monthly active users, and retention rates, but often doesn't know how these metrics should be defined within our product. The backend team also cannot simply provide a statistical answer to an undefined metric. 
+
+Looking back, we didn’t have any BI experts involved in the initial system design to address these issues; instead, we relied on some marketing terminology without understanding the actual meanings behind those terms and how to calculate them.
+
 ### DID NOT be Granted Authorization for distribution of benefits
+
+As the product evolves and the team continues to collaborate, certain individuals will inevitably step into important roles, whether consciously or unconsciously. Our task is to recognize these individuals' leadership positions and grant them sufficient authority to help them manage the team more effectively. When a person has responsibilities without the corresponding authority (and benefits associated with those responsibilities), they often end up feeling disheartened after their energy is depleted, which can have a very negative impact on the team's operations and morale.
+
+When we identify someone as increasingly important to the team, we should provide them with more opportunities for advancement and support. This approach helps build a tiered engineering team and fosters a sense of unity within the group.
+
+A significant pitfall occurs when the CEO wants to manage every individual but assigns important responsibilities to certain employees without sharing the necessary authority with them. This situation effectively places the overall risk of the company in the hands of those employees, who may not have sufficient incentives to perform well, especially if they are individual contributors with fixed salaries—meaning they lack both the authority and the rewards associated with those responsibilities. **In my view, this scenario often results from the CEO's desire to control everything and their focus on role-playing rather than on the success of the team**. Employees may struggle to recognize this dynamic, often only realizing later that they have been let down.
 
 ## Conclusion
 
