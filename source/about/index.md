@@ -34,7 +34,7 @@ Contributed projects:
 
 ### 近期
 
-- 🚀AI for text to video AIGC generation [@Morph Studio](https://www.morphstudio.com/)
+- 🚀 Working on AIGC now!
 - 📕 Learning and dive into Rust, Compiliers, OS
 
 ### 捐赠
