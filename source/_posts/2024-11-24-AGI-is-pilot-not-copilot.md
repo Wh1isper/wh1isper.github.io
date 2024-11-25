@@ -4,7 +4,7 @@ title: ⭐️AGI is the pilot, not the copilot # 标题
 subtitle: AGI is the pilot, not the copilot #副标题
 date: 2024-11-24 # 时间
 author: Wh1isper # 作者
-banner_img: /img/post-bg-coffee.jpeg
+banner_img: /img/post-bg-universe.jpg
 catalog: true # 是否归档
 tags: #标签
   - 随笔

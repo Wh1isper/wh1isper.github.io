@@ -4,7 +4,7 @@ title: 🔧Build API Gateway with OpenResty # 标题
 subtitle: Build API Gateway with OpenResty(in lua) #副标题
 date: 2024-11-04 # 时间
 author: Wh1isper # 作者
-banner_img: /img/post-bg-coffee.jpeg
+banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档
 tags: #标签
   - 架构解析

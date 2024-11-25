@@ -4,7 +4,7 @@ title: AIGC for what? The future of AIGC # 标题
 subtitle: The future of AIGC #副标题
 date: 2024-11-07 # 时间
 author: Wh1isper # 作者
-banner_img: /img/post-bg-coffee.jpeg
+banner_img: /img/post-bg-universe.jpg
 catalog: true # 是否归档
 tags: #标签
   - thinking
