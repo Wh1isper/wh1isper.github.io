@@ -4,7 +4,7 @@ title: Human in loop-prompt management and CMS # 标题
 subtitle: Human in loop-prompt management and CMS #副标题
 date: 2024-12-15 # 时间
 author: Wh1isper # 作者
-banner_img: /img/post-bg-coffee.jpeg
+banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档
 tags: #标签
   - Prompt management

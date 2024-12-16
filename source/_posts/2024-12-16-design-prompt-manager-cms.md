@@ -4,7 +4,7 @@ title: Design prompt manager CMS  # 标题
 subtitle: Design prompt manager CMS #副标题
 date: 2024-12-16 # 时间
 author: Wh1isper # 作者
-banner_img: /img/post-bg-coffee.jpeg
+banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档
 tags: #标签
   - Prompt management
