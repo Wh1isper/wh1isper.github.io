@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:      ❓如何沟通：掌握正确的沟通流程	# 标题 
+title:      ❓如何沟通：掌握正确的沟通流程	# 标题
 subtitle:   如何沟通：掌握正确的沟通流程 	 #副标题
 date:       2023-09-20              # 时间
 author:     Wh1isper                      # 作者
@@ -156,7 +156,3 @@ category:
 看看我是如何提出我的想法的：
 - https://github.com/jupyter-server/jupyter_server/issues/1274#issuecomment-1657944667
 - https://github.com/jupyterlab/jupyterlab/issues/12455
-
-
-
-

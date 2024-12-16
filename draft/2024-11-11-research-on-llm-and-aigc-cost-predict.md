@@ -10,7 +10,7 @@ tags: #标签
   - AIGC
   - LLM
   - cost tracking
-  - big data 
+  - big data
   - data analysis
   - startup
 category:

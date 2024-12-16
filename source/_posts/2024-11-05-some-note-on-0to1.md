@@ -32,7 +32,7 @@ This has enabled each developer to deploy both the development and production en
 
 ### Model and segment the business
 
-Analyzing the business and abstracting it is essential. Initially, I intended to design the backend as a monolith, but I later realized that there were many reusable functionalities and modules, along with varying update and release cycles for each module. 
+Analyzing the business and abstracting it is essential. Initially, I intended to design the backend as a monolith, but I later realized that there were many reusable functionalities and modules, along with varying update and release cycles for each module.
 
 As a result, I divided the system into three distinct parts: **infrastructure** (including user management, storage, subscriptions, etc.), **business systems** (covering canvas business, social business, and AI tool business), and **inference systems** (encompassing queue connectors, schedulers, and inference clusters across different cloud regions). These three systems have clear boundaries and dependencies, allowing developers to quickly identify and resolve issues while also clearly delineating development responsibilities.
 
@@ -50,7 +50,7 @@ We often hesitate to recruit new engineers, fearing that they may not quickly co
 
 ### Forgot Data Collection and ETL systems
 
-Data collection and analysis are crucial in business decision-making. When a team lacks BI experts, engineers often forget to incorporate the need for data collection and analysis during the design and implementation of systems. I only realized this after our product had been live for a while: the CEO frequently requires various metrics, such as daily active users, monthly active users, and retention rates, but often doesn't know how these metrics should be defined within our product. The backend team also cannot simply provide a statistical answer to an undefined metric. 
+Data collection and analysis are crucial in business decision-making. When a team lacks BI experts, engineers often forget to incorporate the need for data collection and analysis during the design and implementation of systems. I only realized this after our product had been live for a while: the CEO frequently requires various metrics, such as daily active users, monthly active users, and retention rates, but often doesn't know how these metrics should be defined within our product. The backend team also cannot simply provide a statistical answer to an undefined metric.
 
 Looking back, we didn’t have any BI experts involved in the initial system design to address these issues; instead, we relied on some marketing terminology without understanding the actual meanings behind those terms and how to calculate them.
 
