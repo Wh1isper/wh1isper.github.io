@@ -77,13 +77,13 @@ For now, the focus should be on building a solid foundation with the following:
 1. **Dynamic Prompt Distribution**: Ensuring efficient and real-time delivery of prompts.
 2. **Version Control and Rollbacks**: Providing a reliable mechanism to manage and revert prompt changes.
 
-![first-version-cms](../img/2024-12-16-design-prompt-manager-cms/version0.png)
+![First version of prompt manager CMS](../img/2024-12-16-design-prompt-manager-cms/version0.png)
 
 For a better user experience, we need to support local debug and upload in CMS SDK, in which they can debug, test, and upload prompts directly.
 
 ## Adding all components
 
-![full-feature-cms](../img/2024-12-16-design-prompt-manager-cms/full-feature.png)
+![Final version of prompt manager CMS](../img/2024-12-16-design-prompt-manager-cms/full-feature.png)
 
 For continuous integration, we can use webhook to trigger a new integration for LLM tasks. It may be a series of metrics tests to test the metric scores of this version of prompt or parrallelly generate many projects for many scenarios. In this stage, we don't need local debug and upload in CMS SDK cause we can use webhook to trigger a new integration and the number of scenarios we need to test does not allow us to test in local way.
 
