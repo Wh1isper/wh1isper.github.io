@@ -85,8 +85,8 @@ For a better user experience, we need to support local debug and upload in CMS S
 
 ![full-feature-cms](../img/2024-12-16-design-prompt-manager-cms/full-feature.png)
 
+For continuous integration, we can use webhook to trigger a new integration for LLM tasks. It may be a series of metrics tests to test the metric scores of this version of prompt or parrallelly generate many projects for many scenarios. In this stage, we don't need local debug and upload in CMS SDK cause we can use webhook to trigger a new integration and the number of scenarios we need to test does not allow us to test in local way.
+
 For LLM observability tools, we only need to replace the native LLM SDK to _Observed LLM SDK_ for automated data collection.
 
 For A/B Testing and Experimentation, we can add a new module to define testing groups and criteria, in plugin way.
-
-For continuous integration, we can use webhook to trigger a new integration for LLM tasks. It may be a series of metrics tests to test the metric scores of this version of prompt.
