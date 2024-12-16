@@ -30,4 +30,6 @@ jobs:
         run: |
           npm install --location=global hexo-cli
           npm install
+
+          echo "blog.wh1isper.top" > ./public/CNAME
           hexo d
