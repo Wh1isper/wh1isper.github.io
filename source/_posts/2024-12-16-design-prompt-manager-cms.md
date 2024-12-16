@@ -20,7 +20,6 @@ category:
   - 技术分享
 ---
 
-In the [previous article](https://blog.wh1isper.top/2024/12/14/2024-12-15-human-in-loop/), we discussed topics related to Prompt CMS. In this blog, I want to dive deeper into the role of Prompt CMS in LLM-driven products.
+In the [previous article](https://blog.wh1isper.top/2024/12/14/2024-12-15-human-in-loop/), I discussed topics related to Prompt CMS. In this blog, I want to dive deeper into the role of Prompt CMS in LLM-driven products.
 
 ## Design principles
-
