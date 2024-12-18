@@ -29,9 +29,9 @@ I’m planning to build a GitHub Issue search assistant based on RAG (Retrieval-
 
 ![architecture](../img/2024-12-17-improve-github-issue-search/architecture.png)
 
-### User Case: Searching for Issue Solutions by Describing the Problem
+## User Case: Searching for Issue Solutions by Describing the Problem
 
-#### Scenario:
+### Scenario:
 
 A user encounters a problem during development, such as an error or unexpected behavior in their code or a tool they are using. Instead of searching through GitHub Issues manually or relying on vague error messages, they describe the problem in natural language to the search assistant and get back relevant issue reports, possible solutions, or related discussions.
 
@@ -102,9 +102,9 @@ _Additionally, pull request #1245 includes a patch that addresses this error in 
 3. **Real-Time Updates**: If the system has internet access, it can pull the latest discussions or solutions, ensuring the user gets the most current and accurate information.
 4. **Enhanced User Experience**: Instead of relying on vague search terms, the user interacts with the system in natural language, making it more intuitive and faster to get solutions.
 
-### User Case: Searching for Issues Based on Desired Features or Requirements
+## User Case: Searching for Issues Based on Desired Features or Requirements
 
-#### Scenario:
+### Scenario:
 
 A user wants to implement a specific feature or solve a problem, and instead of manually searching through documentation or repositories, they describe their desired functionality or requirement to the search assistant. The system then checks if there are any existing GitHub Issues or discussions related to that need.
 
