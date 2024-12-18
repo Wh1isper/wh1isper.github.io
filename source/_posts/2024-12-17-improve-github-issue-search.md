@@ -1,7 +1,7 @@
 ---
 layout: post # 使用的布局（不需要改）
-title: Improve GitHub Issue Search-The LLM way # 标题
-subtitle: Improve GitHub Issue Search-The LLM way #副标题
+title: Improve GitHub Issue's Search-the LLM way # 标题
+subtitle: Improve GitHub Issue's Search-The LLM way #副标题
 date: 2024-12-17 # 时间
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
