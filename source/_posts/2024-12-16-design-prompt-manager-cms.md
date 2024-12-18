@@ -79,7 +79,7 @@ For now, the focus should be on building a solid foundation with the following:
 
 ![First version of prompt manager CMS](../img/2024-12-16-design-prompt-manager-cms/version0.png)
 
-For a better user experience, we need to support local debug and upload in CMS SDK, in which they can debug, test, and upload prompts directly.
+For a better user experience, we need to support local debug and upload in CMS SDK, in which they can debug, test, and upload prompts directly. Addtionally, once a prompt is used, SDK can also report the `task_id` or something like that for tracking.
 
 ## Adding all components
 
