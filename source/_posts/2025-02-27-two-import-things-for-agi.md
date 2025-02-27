@@ -24,3 +24,13 @@ category:
 回顾我们之前在[基于LLM的AIOS](https://blog.wh1isper.top/2024/12/22/2024-12-23-llm-as-os/)的讨论，我们认为Context和Agent(Autonomous)是两个最重要的概念，通过它们实现Code Generation，从而将AIOS建立在目前的计算机系统之上。其中，Agent(Autonomous)的本质是通过工程化的设计，将更多的LLM算力投入到实现一个目标中，这于测试时计算[(1)](https://arxiv.org/abs/2408.03314)的概念不谋而合，我们将此作为“使用更多算力，获得更多智能”的工程化手段。
 
 第二则是Context，我们曾设想用一个Apple Vision之类的硬件来收集上下文，投入到某个设计好的Agent之中，而这几乎要求一个封闭而完整的生态体系，有很大的实施难度。不过目前我们从[MCP](https://modelcontextprotocol.io/introduction)中获得了灵感，通过Agent设计来驱动模型自主获得上下文，各个厂商或个人开发提供自身上下文的服务，将这个领域从封闭转向开放，或许Agent设计中一个重大的部分就是如何设计Agent、模型、MCP Server三方的交互和驱动。[cline](https://github.com/cline/cline)项目给我们做了一个很好的例子，虽然有很多不完善的地方，但是其精细的Prompt控制、代码上下文管理、MCP交互让我们看到了Coding Agent的更高上限。
+
+
+拓展阅读：
+
+- Jina AI: [DeepSearch 与 DeepResearch 的设计和实现](https://mp.weixin.qq.com/s/-pPhHDi2nz8hp5R3Lm_mww)
+- [Jeff Dean & Noam Shazeer – 25 years at Google: from PageRank to AGI](https://www.youtube.com/watch?v=v0gjI__RyCY&t=1722s)
+- [Satya Nadella – Microsoft’s AGI Plan & Quantum Breakthrough](https://www.youtube.com/watch?v=4GLSzuYXh6w&t=2294s)
+- [LLMs.txt](https://llmstxt.org/)
+
+**关注我们的最新研究：https://github.com/ai-zerolab**
