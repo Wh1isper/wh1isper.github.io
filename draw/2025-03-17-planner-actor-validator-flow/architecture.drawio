@@ -86,6 +86,9 @@
                 <mxCell id="21" value="Re-runnable workflow" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=2;fontFamily=Comic Sans MS;" parent="1" vertex="1">
                     <mxGeometry x="530" y="498" width="140" height="30" as="geometry"/>
                 </mxCell>
+                <mxCell id="25" value="Plan-Act-Validate Flow" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Comic Sans MS;fontSize=17;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="414" y="760" as="geometry"/>
+                </mxCell>
             </root>
         </mxGraphModel>
     </diagram>
