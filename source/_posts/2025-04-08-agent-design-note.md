@@ -48,6 +48,16 @@ category:
 
 > 我们应当建造赛道，而非规定每一个运动员的跑步姿势！
 
+### Thinking Tool更适合Agent
+
+在过程中，LLM可以调用Thinking Tool就行“思考”，这比Extended Think和Deep-Claude的模式更加“本质”和自然，我们经常可以看到模型在任务执行过程中进行Thinking。
+
+通常我们可以通过引导多轮对话的方式明确需求，但在执行过程中的发现的问题，通过Thinking工具可以让AI更好地发散思路，达到更好的效果。
+
+并非说Reasoning无用，而是二者可以有机结合，互为补充，Thinking Tool可以通过外挂的方式赋予非Reasoning在任务开始和过程中思考的能力。
+
+> 我观察到任务开始和进行中都有Thinking的调用。特别是在信息收集的Tool调用前后，比如搜索前后用Thinking来整理思路和搜索到的结果
+
 ### Meta Agent：进一步研究方向
 
 当我们调整 tool 和 prompt 的时候，我们或许可以让 AI 来为 AI 设计 tool 和 prompt。通过一个 Meta Agent（或 Meta Tool），对 Tool 进行自动化设计和优化。
