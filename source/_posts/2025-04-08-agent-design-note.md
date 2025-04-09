@@ -50,7 +50,7 @@ category:
 
 ### Thinking Tool更适合Agent
 
-在过程中，LLM可以调用Thinking Tool就行“思考”，这比Extended Think和Deep-Claude的模式更加“本质”和自然，我们经常可以看到模型在任务执行过程中进行Thinking。
+在过程中，LLM可以调用Thinking Tool进行“思考”，这比Extended Think和Deep-Claude的模式更加“本质”和自然，我们经常可以看到模型在任务执行过程中进行Thinking。
 
 通常我们可以通过引导多轮对话的方式明确需求，但在执行过程中的发现的问题，通过Thinking工具可以让AI更好地发散思路，达到更好的效果。
 
