@@ -48,6 +48,17 @@ category:
 
 > 我们应当建造赛道，而非规定每一个运动员的跑步姿势！
 
+### 一些当前的问题
+
+> 例如，在IT自动化基准测试ITBench中，代理在高达25.2%的网络安全场景中错误地标记任务为“已解决”
+
+当前LLM被上下文影响很容易认为自己确实解决了问题。类似于人类的[motivated reasoning](https://en.wikipedia.org/wiki/Motivated_reasoning)问题
+
+> 难以一次编写出可以编译通过的代码
+
+通常都需要多轮对话进行错误修复，这导致了非常长的响应时间。
+
+
 ### Thinking Tool更适合Agent
 
 在过程中，LLM可以调用Thinking Tool进行“思考”，这比Extended Think和Deep-Claude的模式更加“本质”和自然，我们经常可以看到模型在任务执行过程中进行Thinking。
