@@ -1,24 +1,3 @@
----
-layout: post # 使用的布局（不需要改）
-title: pymupdf4llm-mcp - Best pdf2llm mcp for your agent # 标题
-subtitle: pymupdf4llm-mcp - Best pdf2llm mcp for your agent #副标题
-date: 2025-04-30 # 时间
-author: Wh1isper # 作者
-banner_img: /img/post-bg-unix-linux.jpg
-catalog: true # 是否归档
-tags: #标签
-  - LLM
-  - Agent
-  - MCP
-category:
-  #   - 随笔
-  #   - 时评
-  #   - 读书笔记
-  - 技术分享
----
-
-
-
 # pymupdf4llm-mcp: Enhancing LLM Agents with High-Quality PDF Context
 
 ## Introduction
@@ -27,11 +6,11 @@ In the rapidly evolving landscape of AI agents, providing high-quality context t
 
 As the developer of [lightblue-ai](https://github.com/ai-zerolab/lightblue-ai), I found myself needing a reliable, LLM-friendly PDF parsing tool that could preserve both textual content and the spatial relationships of elements like images. After evaluating various options, pymupdf4llm emerged as the standout solution, offering complete textual extraction and accurate image placement.
 
-This led to the creation of pymupdf4llm-mcp, a Model Context Protocol (MCP) server that makes this powerful PDF parsing capability easily accessible to LLM agents.
+This led to the creation of [pymupdf4llm-mcp](https://github.com/pymupdf/pymupdf4llm-mcp), a Model Context Protocol (MCP) server that makes this powerful PDF parsing capability easily accessible to LLM agents.
 
 ## What is pymupdf4llm-mcp?
 
-pymupdf4llm-mcp is an MCP server that wraps the functionality of pymupdf4llm, providing a standardized interface for converting PDF documents to markdown format. This conversion is specifically optimized for consumption by Large Language Models.
+[pymupdf4llm-mcp](https://github.com/pymupdf/pymupdf4llm-mcp) is an MCP server that wraps the functionality of pymupdf4llm, providing a standardized interface for converting PDF documents to markdown format. This conversion is specifically optimized for consumption by Large Language Models.
 
 The tool leverages the robust PDF parsing capabilities of PyMuPDF (formerly MuPDF) and enhances it with features specifically designed for LLM consumption:
 
