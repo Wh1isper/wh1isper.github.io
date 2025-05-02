@@ -6,6 +6,8 @@ In the rapidly evolving landscape of AI agents, providing high-quality context t
 
 As the developer of [lightblue-ai](https://github.com/ai-zerolab/lightblue-ai), I found myself needing a reliable, LLM-friendly PDF parsing tool that could preserve both textual content and the spatial relationships of elements like images. After evaluating various options, pymupdf4llm emerged as the standout solution, offering complete textual extraction and accurate image placement.
 
+While I could have directly implemented this tool within my own agent framework, I realized the value of making pymupdf4llm accessible to other agent developers. This is where the Model Context Protocol (MCP) became invaluable – it provides a standardized way for closed agent systems to integrate external tools. By creating an MCP wrapper for pymupdf4llm, I could enable other developers to immediately leverage official best practices for PDF parsing without needing to spend time discovering optimal configurations and implementations themselves.
+
 This led to the creation of [pymupdf4llm-mcp](https://github.com/pymupdf/pymupdf4llm-mcp), a Model Context Protocol (MCP) server that makes this powerful PDF parsing capability easily accessible to LLM agents.
 
 ## What is pymupdf4llm-mcp?
