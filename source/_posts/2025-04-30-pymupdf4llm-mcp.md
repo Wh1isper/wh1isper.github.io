@@ -1,3 +1,22 @@
+---
+layout: post # 使用的布局（不需要改）
+title: pymupdf4llm-mcp - Best pdf2llm mcp for your agent # 标题
+subtitle: pymupdf4llm-mcp - Best pdf2llm mcp for your agent #副标题
+date: 2025-04-30 # 时间
+author: Wh1isper # 作者
+banner_img: /img/post-bg-unix-linux.jpg
+catalog: true # 是否归档
+tags: #标签
+  - LLM
+  - Agent
+  - MCP
+category:
+  #   - 随笔
+  #   - 时评
+  #   - 读书笔记
+  - 技术分享
+---
+
 # pymupdf4llm-mcp: Enhancing LLM Agents with High-Quality PDF Context
 
 ## Introduction
