@@ -1,0 +1,759 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#9f9890">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这篇博客整理自两个月以来在深信服实习的所学 HTTP攻击分为响应端和请求端 响应端攻击指服务器对客户端进行攻击，一般的攻击形式为：在HTML页面中插入恶意的js代码等，常见的有shellcode，HTML注入攻击，CSS注入攻击等，其主要利用了浏览器的漏洞，当用户浏览了带有恶意代码的网页，攻击就有可能生效； 请求端攻击指客户端对服务器发送恶意代码，针对服务器的漏洞进行攻击，如在HTTP头部字段注入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="🚀HTTP绕过原理总结">
+<meta property="og:url" content="https://wh1isper.github.io/2020/01/12/2020-01-13-AF_HTTP_Evasion/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="这篇博客整理自两个月以来在深信服实习的所学 HTTP攻击分为响应端和请求端 响应端攻击指服务器对客户端进行攻击，一般的攻击形式为：在HTML页面中插入恶意的js代码等，常见的有shellcode，HTML注入攻击，CSS注入攻击等，其主要利用了浏览器的漏洞，当用户浏览了带有恶意代码的网页，攻击就有可能生效； 请求端攻击指客户端对服务器发送恶意代码，针对服务器的漏洞进行攻击，如在HTTP头部字段注入">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wh1isper.github.io/img/2020-01-13-AF_HTTP_Evasion/response_eva_principle.jpg">
+<meta property="article:published_time" content="2020-01-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-09T03:27:42.671Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="HTTP协议">
+<meta property="article:tag" content="网络安全">
+<meta property="article:tag" content="防火墙绕过">
+<meta property="article:tag" content="深信服">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://wh1isper.github.io/img/2020-01-13-AF_HTTP_Evasion/response_eva_principle.jpg">
+  
+  
+  
+  <title>🚀HTTP绕过原理总结 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wh1isper.github.io","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-hacker.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="在HTTP协议层面绕过AF"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-01-13 00:00" pubdate>
+          2020年1月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">在HTTP协议层面绕过AF</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这篇博客整理自两个月以来在深信服实习的所学</p>
+<p>HTTP攻击分为响应端和请求端</p>
+<p><strong>响应端攻击</strong>指服务器对客户端进行攻击，一般的攻击形式为：在HTML页面中插入恶意的js代码等，常见的有shellcode，HTML注入攻击，CSS注入攻击等，其主要利用了浏览器的漏洞，当用户浏览了带有恶意代码的网页，攻击就有可能生效；</p>
+<p><strong>请求端攻击</strong>指客户端对服务器发送恶意代码，针对服务器的漏洞进行攻击，如在HTTP头部字段注入shellcode或利用vary字段填充打爆服务器缓存等</p>
+<p>这篇博客分享的，是如何利用防火墙和浏览器&#x2F;服务器之间HTTP协议解析的不同，实现让防火墙无法检出恶意代码，实现直接攻击的方法。</p>
+<h1 id="一、HTTP响应端绕过原理"><a href="#一、HTTP响应端绕过原理" class="headerlink" title="一、HTTP响应端绕过原理"></a>一、HTTP响应端绕过原理</h1><h2 id="1-1-HTTP响应端绕过原理"><a href="#1-1-HTTP响应端绕过原理" class="headerlink" title="1.1 HTTP响应端绕过原理"></a>1.1 HTTP响应端绕过原理</h2><p><img src="/../img/2020-01-13-AF_HTTP_Evasion/response_eva_principle.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>介绍响应端绕过原理之前，先要了解关于浏览器的两个重要特点：</p>
+<h3 id="1-1-1浏览器的健壮性"><a href="#1-1-1浏览器的健壮性" class="headerlink" title="1.1.1浏览器的健壮性"></a>1.1.1浏览器的健壮性</h3><p>程序的健壮性，旨在处理实际情况下可能出现的格式错误的数据，使程序不容易崩溃或仍能正确运行，浏览器的健壮性往往体现在解析某些存在错误的网页时，仍能解析出正常的结果，如HTML标签未闭合等小错误，浏览器均可以自行修复。</p>
+<h3 id="1-1-2浏览器的懒惰性"><a href="#1-1-2浏览器的懒惰性" class="headerlink" title="1.1.2浏览器的懒惰性"></a>1.1.2浏览器的懒惰性</h3><p>浏览器的懒惰性不同于健壮性，浏览器的懒惰性在于遇到实践中从未期望过的，无意义的数据时，仍有可能解析成功。从浏览器的角度来看，这并没有害处，因为它仍然以有效的方式处理了数据。但是从审查者，也就是AF的角度来说，很多情况下都会对数据进行不同的解释，这种解释上的差异就会导致绕过。<strong>这一点是很多人所不能理解的，外行常常将健壮性和懒惰性混为一谈。</strong></p>
+<h3 id="1-1-3差异→绕过"><a href="#1-1-3差异→绕过" class="headerlink" title="1.1.3差异→绕过"></a>1.1.3差异→绕过</h3><p>针对以上两点，从AF的角度上来看，均是由于AF与浏览器之间对数据处理的差异而产生的对数据理解的不同，由此，<strong>攻击者可以利用一些手段“绕过”AF的防御，而这些手段对漏洞在浏览器端的生效并无影响。</strong>我们把上述攻击称为“绕过”。</p>
+<p>同时，不同的浏览器处理数据的方式不同，导致的绕过手段也不尽相同。根据我的研究，浏览器可以分为3大类，一类是针对chrome内核，chrome浏览器和大部分国产浏览器都通用的绕过方法，一类是针对IE内核，仅对某些IE版本生效的绕过方法，还有一类是以Firefox为代表的Gecko内核的绕过方法。在本文中，将使用chrome、ie、firefox表示某些绕过手段在特定浏览器生效，同时尽可能的标出版本号。</p>
+<p>看到这里，对HTTP绕过有基本认识的你已经可以试着阅读<strong>参考资料</strong>中的内容了，里面提及了多种绕过手段，本文中将不再赘述。除此之外，对于市面上的AF而言，对字符集的支持可能不是很完善，常常可以通过直接换一种编码的形式形成绕过，一部分原因是其使用的检测引擎过于老旧，导致其过于依赖预处理的解码。</p>
+<h1 id="二、HTTP请求端绕过原理"><a href="#二、HTTP请求端绕过原理" class="headerlink" title="二、HTTP请求端绕过原理"></a>二、HTTP请求端绕过原理</h1><p>目前大家很少关注HTTP请求端的绕过，原因很简单，因为即使绕过了防火墙，攻击的服务器很有可能已经修复了所利用的漏洞，导致耗费人力精力构造的绕过没有效果。其次，很多针对服务器的攻击方法需要发送多次请求，其构造的报文十分精巧，很难有利用协议绕过的空间。</p>
+<p>HTTP请求端的绕过，其涉及影响AF对Body解析的部分，基本与响应端类似。除此之外，HTTP很多请求端攻击是在头部字段或URI上做文章，对此，可以将其中的攻击字段做BASE64编码或escape编码，常常也能形成绕过，这同样是利用了AF针对编码处理的不足。</p>
+<p>建议读者一定读一读HTTP Evader，从浏览器&#x2F;服务器和AF的差异入手，定能找到其中的绕过方法。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>本文部分取自以下网站，并不代表原作者观点，有兴趣还请自行阅读</p>
+<p>失误之处敬请谅解！</p>
+<p><a target="_blank" rel="noopener" href="https://noxxi.de/research.html">HTTP Evader</a>：<a target="_blank" rel="noopener" href="https://noxxi.de/research.html">https://noxxi.de/research.html</a></p>
+<p>这里主要介绍了HTTP响应端常见的绕过手段，附带解释，非常完善！</p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/news/193659.html">技术讨论 在HTTP协议层面绕过WAF</a>：<a target="_blank" rel="noopener" href="https://www.freebuf.com/news/193659.html">https://www.freebuf.com/news/193659.html</a></p>
+<p>这里主要介绍了对chunk变形的绕过手段，可以绕过市面上很多免费的waf</p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>实际上防火墙就是一道墙，如果攻击足够猛，肯定是可以翻越过这道墙的，但在此之前，黑客需要考虑是否耗费如此大的精力物力来翻墙。毕竟，有那么多可爱的肉鸡。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" class="category-chain-item">技术分享</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HTTP%E5%8D%8F%E8%AE%AE/" class="print-no-link">#HTTP协议</a>
+      
+        <a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" class="print-no-link">#网络安全</a>
+      
+        <a href="/tags/%E9%98%B2%E7%81%AB%E5%A2%99%E7%BB%95%E8%BF%87/" class="print-no-link">#防火墙绕过</a>
+      
+        <a href="/tags/%E6%B7%B1%E4%BF%A1%E6%9C%8D/" class="print-no-link">#深信服</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>🚀HTTP绕过原理总结</div>
+      <div>https://wh1isper.github.io/2020/01/12/2020-01-13-AF_HTTP_Evasion/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年1月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/20/2020-09-21-data-sampling/" title="🖊数据抽样相关笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">🖊数据抽样相关笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","appKey":"HpkitfFmB6ANUfvUkWOqP43C","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
