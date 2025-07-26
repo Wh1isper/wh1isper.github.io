@@ -4,7 +4,7 @@ title: Ergonomics to Agent # 标题
 subtitle: Ergonomics to Agent #副标题
 date: 2025-07-05 # 时间
 author: Wh1isper # 作者
-banner_img: /img/post-bg-coffee.jpeg
+banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档
 tags: #标签
   - 产品设计
