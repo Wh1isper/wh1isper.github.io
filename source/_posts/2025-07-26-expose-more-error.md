@@ -3,7 +3,7 @@
 layout: post # 使用的布局（不需要改）
 title: AI Native的产品更应该暴露错误 # 标题
 subtitle: AI Native的产品更应该暴露错误 #副标题
-date: 2025-7-26 # 时间
+date: 2025-07-26 # 时间
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档
