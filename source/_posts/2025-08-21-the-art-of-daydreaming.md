@@ -1,7 +1,7 @@
 ---
 layout: post # 使用的布局（不需要改）
-title:  # 标题
-subtitle:  #副标题
+title: 重拾发呆 # 标题
+subtitle: 重拾发呆 #副标题
 date: 2025-08-21 # 时间
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
