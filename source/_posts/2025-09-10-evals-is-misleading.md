@@ -32,6 +32,8 @@ category:
 
 > 世界上大部分人没有用过AI Coding，以后的AI Coding也不会是现在这个样子
 
+**警惕局部最优**
+
 ## 参考阅读
 
 - X上的一些讨论：https://x.com/justinstorre/status/1964029634796015685
