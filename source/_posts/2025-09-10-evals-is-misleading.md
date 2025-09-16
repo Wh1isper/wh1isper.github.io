@@ -1,7 +1,7 @@
 ---
 layout: post # 使用的布局（不需要改）
-title: evals is misleading? # 标题
-subtitle: evals is misleading? #副标题
+title: Evals is misleading? # 标题
+subtitle: Evals is misleading? #副标题
 date: 2025-09-10 # 时间
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
