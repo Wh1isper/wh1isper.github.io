@@ -1,7 +1,7 @@
 ---
 layout: post # 使用的布局（不需要改）
-title: What is debug agent # 标题
-subtitle: What is debug agent #副标题
+title: Thinking about debug agent # 标题
+subtitle: Thinking about debug agent #副标题
 date: 2025-10-09 # 时间
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
