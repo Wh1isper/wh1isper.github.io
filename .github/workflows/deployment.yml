@@ -31,3 +31,11 @@ jobs:
           npm install --location=global hexo-cli
           npm install
           hexo d
+
+      - name: Ping Search Engines
+        run: |
+          # Ping Google
+          curl -s "https://www.google.com/ping?sitemap=https://blog.wh1isper.top/sitemap.xml"
+          # Ping Bing
+          curl -s "https://www.bing.com/ping?sitemap=https://blog.wh1isper.top/sitemap.xml"
+          echo "Sitemap ping completed"
