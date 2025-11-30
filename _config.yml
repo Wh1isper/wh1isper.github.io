@@ -19,7 +19,7 @@ index:
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://wh1isper.github.io/
+url: https://blog.wh1isper.top/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -111,6 +111,13 @@ deploy:
   type: git
   repo: git@github.com:Wh1isper/wh1isper.github.io.git
   branch: gh-pages
+
+# Sitemap for SEO
+sitemap:
+  path: sitemap.xml
+  rel: false
+  tags: true
+  categories: true
 
 post:
   meta:
