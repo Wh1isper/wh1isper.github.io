@@ -7,7 +7,7 @@ date: 2024-01-05 11:24:00
 
 17级本科哈尔滨工业大学（深圳）计算机专业，于2021年毕业。
 
-- Python & Rust
+- Python & Rust & TypeScript & Golang
 - 微服务、分布式、AWS/GCP、虚拟化和存储
 - Cloud IDE & Coding Agent
 - 网络安全、数据安全
