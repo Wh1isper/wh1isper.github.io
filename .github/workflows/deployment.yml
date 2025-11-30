@@ -32,10 +32,9 @@ jobs:
           npm install
           hexo d
 
-      - name: Ping Search Engines
+      - name: Ping Bing
         run: |
-          # Ping Google
-          curl -s "https://www.google.com/ping?sitemap=https://blog.wh1isper.top/sitemap.xml"
-          # Ping Bing
+          # Google ping deprecated since 2023-06, relies on sitemap lastmod instead
+          # Ping Bing (still supported)
           curl -s "https://www.bing.com/ping?sitemap=https://blog.wh1isper.top/sitemap.xml"
-          echo "Sitemap ping completed"
+          echo "Bing sitemap ping completed"
