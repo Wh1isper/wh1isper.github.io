@@ -4,7 +4,7 @@ title:      PTC是一种端到端的方案
 subtitle:   PTC是一种端到端的方案
 date:       2025-12-03
 author:     Wh1isper
-banner_img: /img/tag-bg-o.jpg
+banner_img: /img/post-bg-unix-linux.jpg
 catalog: true
 tags:
     - LLM
