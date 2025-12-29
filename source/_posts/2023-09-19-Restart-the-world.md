@@ -1,8 +1,9 @@
 ---
-layout:     post                    # 使用的布局（不需要改）
-title:      🙌欢迎来到我的博客——博客重启计划               # 标题
-subtitle:   Restart the world #副标题
-date:       2023-09-19 00:04             # 时间
+layout: post
+title: 🙌欢迎来到我的博客——博客重启计划
+subtitle: Restart the world
+description: 博客重启计划介绍，使用新技术新主题重新部署，并规划未来的写作分类，包括技术分享、读书笔记、时评、随笔。
+date: 2023-09-19 00:04
 author:     Wh1isper                      # 作者
 catalog: true                       # 是否归档
 tags:                               #标签

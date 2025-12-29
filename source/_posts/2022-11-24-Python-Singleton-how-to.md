@@ -1,8 +1,9 @@
 ---
-layout:     post                    # 使用的布局（不需要改）
-title:      🚀Python单例类Singleton样例	# 标题
-subtitle:   Python Singleton Example	 #副标题
-date:       2022-11-14              # 时间
+layout: post
+title: 🚀Python单例类Singleton样例
+subtitle: Python Singleton Example
+description: Python单例模式实现教程，介绍使用metaclass实现单例的标准方法，并讨论其他实现方式的差异。
+date: 2022-11-14
 author:     Wh1isper                      # 作者
 banner_img: /img/post-bg-unix-linux.jpg    #技术分享-编程
 catalog: true                       # 是否归档

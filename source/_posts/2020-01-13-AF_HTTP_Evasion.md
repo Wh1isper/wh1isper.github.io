@@ -1,8 +1,9 @@
 ---
-layout:     post                    # 使用的布局（不需要改）
-title:      🚀HTTP绕过原理总结			   # 标题
-subtitle:   在HTTP协议层面绕过AF		 #副标题
-date:       2020-01-13              # 时间
+layout: post
+title: 🚀HTTP绕过原理总结
+subtitle: 在HTTP协议层面绕过AF
+description: HTTP协议层面防火墙绕过技术总结，分析响应端和请求端攻击原理，探讨如何利用浏览器与防火墙解析差异实现绕过。
+date: 2020-01-13
 author:     Wh1isper                      # 作者
 banner_img: /img/post-bg-hacker.jpg    #技术分享-安全
 catalog: true                       # 是否归档

@@ -1,8 +1,9 @@
 ---
-layout:     post                    # 使用的布局（不需要改）
-title:      🖊数据抽样相关笔记	# 标题
-subtitle:   Data Sampling Note 	 #副标题
-date:       2020-09-21              # 时间
+layout: post
+title: 🖊数据抽样相关笔记
+subtitle: Data Sampling Note
+description: 数据抽样理论笔记，包括抽样定义、抽样误差、分层抽样、整群抽样等统计学基础概念。
+date: 2020-09-21
 author:     Wh1isper                      # 作者
 banner_img: /img/post-bg-desk.jpg    #读书笔记
 catalog: true                       # 是否归档

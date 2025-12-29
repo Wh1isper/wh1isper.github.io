@@ -1,8 +1,9 @@
 ---
-layout:     post                    # 使用的布局（不需要改）
-title:      🔧Hadoop3.2单机部署教程	# 标题
-subtitle:   Hadoop3.2 Standalone 	 #副标题
-date:       2021-04-11              # 时间
+layout: post
+title: 🔧Hadoop3.2单机部署教程
+subtitle: Hadoop3.2 Standalone
+description: Hadoop3.2单机模式部署完整教程，包括Java安装、用户配置、SSH免密登录、HDFS和YARN配置等步骤。
+date: 2021-04-11
 author:     Wh1isper                      # 作者
 catalog: true                       # 是否归档
 banner_img: /img/post-bg-unix-linux.jpg    #技术分享-编程

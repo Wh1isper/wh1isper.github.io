@@ -1,8 +1,9 @@
 ---
-layout:     post                    # 使用的布局（不需要改）
-title:      ❓如何沟通：掌握正确的沟通流程	# 标题
-subtitle:   如何沟通：掌握正确的沟通流程 	 #副标题
-date:       2023-09-20              # 时间
+layout: post
+title: ❓如何沟通：掌握正确的沟通流程
+subtitle: 如何沟通：掌握正确的沟通流程
+description: 通过开发者沟通失败的实际案例，分析工作和社区中的沟通问题，提供正确的沟通流程和原则指南。
+date: 2023-09-20
 author:     Wh1isper                      # 作者
 catalog: true                       # 是否归档
 tags:                               #标签

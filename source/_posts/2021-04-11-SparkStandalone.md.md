@@ -1,8 +1,9 @@
 ---
-layout:     post                    # 使用的布局（不需要改）
-title:      🔧Spark部署教程	# 标题
-subtitle:   Deploy Spark in a simple way	 #副标题
-date:       2021-04-11              # 时间
+layout: post
+title: 🔧Spark部署教程
+subtitle: Deploy Spark in a simple way
+description: Spark分布式计算框架部署教程，包括Docker镜像和最新部署脚本，支持PySpark、Spark Connect Server和Spark on K8s。
+date: 2021-04-11
 author:     Wh1isper                      # 作者
 catalog: true                       # 是否归档
 banner_img: /img/post-bg-unix-linux.jpg    #技术分享-编程
