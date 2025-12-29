@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: ⭐️AGI is the pilot, not the copilot # 标题
-subtitle: AGI is the pilot, not the copilot #副标题
-date: 2024-11-24 # 时间
+layout: post
+title: ⭐️AGI is the pilot, not the copilot
+subtitle: AGI is the pilot, not the copilot
+description: 分析生成式娱乐的反垄断意义，探讨为何AI需要从Copilot迈向Pilot，实现真正的产业化。
+date: 2024-11-24
 author: Wh1isper # 作者
 banner_img: /img/post-bg-universe.jpg
 catalog: true # 是否归档

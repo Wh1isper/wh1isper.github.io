@@ -1,12 +1,13 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Ergonomics to Agent # 标题
-subtitle: Ergonomics to Agent #副标题
-date: 2025-07-05 # 时间
-author: Wh1isper # 作者
+layout: post
+title: Ergonomics to Agent
+subtitle: Ergonomics to Agent
+description: 探讨Agent产品的人体工学设计，分析TODO工具如何增强用户对Agent的掌控和理解，让用户在使用中成长
+date: 2025-07-05
+author: Wh1isper
 banner_img: /img/post-bg-unix-linux.jpg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - 产品设计
   - Product Design
 category:

@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: The AGI era requires end-to-end product design # 标题
-subtitle: The AGI era requires end-to-end product design #副标题
-date: 2025-06-08 # 时间
+layout: post
+title: The AGI era requires end-to-end product design
+subtitle: The AGI era requires end-to-end product design
+description: 分析AGI时代传统产品开发方法论的失效，探讨端到端产品设计的必然性及面临的全新挑战。
+date: 2025-06-08
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

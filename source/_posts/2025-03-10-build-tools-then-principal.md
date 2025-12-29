@@ -1,9 +1,10 @@
 
 ---
-layout: post # 使用的布局（不需要改）
-title: LLM蒸汽机时刻：实践驱动的创新 # 标题
-subtitle: LLM蒸汽机时刻：实践驱动的创新 #副标题
-date: 2025-3-10 # 时间
+layout: post
+title: LLM蒸汽机时刻：实践驱动的创新
+subtitle: LLM蒸汽机时刻：实践驱动的创新
+description: 类比蒸汽机与热力学的发展，探讨LLM时代工具先行、理论后至的现象，以及可能引发的科学方法论进化。
+date: 2025-3-10
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

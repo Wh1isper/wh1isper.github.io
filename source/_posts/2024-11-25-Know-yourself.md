@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: 了解自己是一件容易被忽略但一定坚持做的事 # 标题
-subtitle: 了解自己是一件容易被忽略但一定坚持做的事 #副标题
-date: 2024-11-25 # 时间
+layout: post
+title: 了解自己是一件容易被忽略但一定坚持做的事
+subtitle: 了解自己是一件容易被忽略但一定坚持做的事
+description: 反思工作与热爱的关系，思考如何在工作中保持热情与自我认知的平衡。
+date: 2024-11-25
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

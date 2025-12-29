@@ -1,12 +1,13 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: 杠杆效应-人、LLM与杠杆 # 标题
-subtitle: 杠杆效应-人、LLM与杠杆 #副标题
-date: 2025-08-03 # 时间
-author: Wh1isper # 作者
+layout: post
+title: 杠杆效应-人、LLM与杠杆
+subtitle: 杠杆效应-人、LLM与杠杆
+description: 从工具杠杆和知识杠杆角度分析LLM的价值，探讨Coding作为验证的工具杠杆，以及LLM如何加速人类学习和成长
+date: 2025-08-03
+author: Wh1isper
 banner_img: /img/post-bg-coffee.jpeg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - AI
   - AGI
   - LLM

@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: PMF Trap of Programmers # 标题
-subtitle: PMF Trap of Programmers #副标题
-date: 2025-02-23 # 时间
+layout: post
+title: PMF Trap of Programmers
+subtitle: PMF Trap of Programmers
+description: 分析程序员在LLM时代面临的PMF陷阱，探讨如何通过反脆弱思维应对技术变革。
+date: 2025-02-23
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

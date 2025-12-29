@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Two import things for AGI # 标题
-subtitle: Two import things for AGI #副标题
-date: 2025-02-27 # 时间
+layout: post
+title: Two import things for AGI
+subtitle: Two import things for AGI
+description: 探讨AGI发展中两个最重要的概念：Context和Agent(Autonomous)，以及MCP协议带来的新机会。
+date: 2025-02-27
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

@@ -1,12 +1,13 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Evals is misleading? # 标题
-subtitle: Evals is misleading? #副标题
-date: 2025-09-10 # 时间
-author: Wh1isper # 作者
+layout: post
+title: Evals is misleading?
+subtitle: Evals is misleading?
+description: 探讨LLM评估方法的局限性，分析LLM-as-Judge和A/B实验等评估方式的问题，思考我们应该如何正确看待AI模型评估
+date: 2025-09-10
+author: Wh1isper
 banner_img: /img/post-bg-unix-linux.jpg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - 随笔
   - LLM
 category:

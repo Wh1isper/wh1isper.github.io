@@ -1,12 +1,13 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Thinking about debug agent # 标题
-subtitle: Thinking about debug agent #副标题
-date: 2025-10-09 # 时间
-author: Wh1isper # 作者
+layout: post
+title: Thinking about debug agent
+subtitle: Thinking about debug agent
+description: 探讨Debug Agent的设计思考，分析用户上下文、程序上下文和自动化交互方案三个核心组成部分，与Coding Agent的差异与环境感知需求
+date: 2025-10-09
+author: Wh1isper
 banner_img: /img/post-bg-unix-linux.jpg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - LLM
   - Vibe coding
   - Debug

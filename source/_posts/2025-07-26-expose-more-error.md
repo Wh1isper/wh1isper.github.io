@@ -1,13 +1,14 @@
 
 ---
-layout: post # 使用的布局（不需要改）
-title: AI Native的产品更应该暴露错误 # 标题
-subtitle: AI Native的产品更应该暴露错误 #副标题
-date: 2025-07-26 # 时间
-author: Wh1isper # 作者
+layout: post
+title: AI Native的产品更应该暴露错误
+subtitle: AI Native的产品更应该暴露错误
+description: 探讨AI时代产品设计的成长性原则，分析暴露错误如何帮助用户和产品一起成长，构建反脆弱的产品体验
+date: 2025-07-26
+author: Wh1isper
 banner_img: /img/post-bg-coffee.jpeg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - AI
   - AGI
   - LLM

@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: 网飞原则随记01 # 标题
-subtitle: 网飞原则随记01 #副标题
-date: 2024-12-04 # 时间
+layout: post
+title: 网飞原则随记01
+subtitle: 网飞原则随记01
+description: 记录阅读网飞原则的感惟，探讨优秀智力劳动者的管理方式与创新能力激发。
+date: 2024-12-04
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

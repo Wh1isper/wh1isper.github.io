@@ -1,12 +1,13 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: LLM只是计算，Context才是内存 # 标题
-subtitle: LLM只是计算，Context才是内存 #副标题
-date: 2025-09-02 # 时间
-author: Wh1isper # 作者
+layout: post
+title: LLM只是计算，Context才是内存
+subtitle: LLM只是计算，Context才是内存
+description: 深入探讨LLM的Context Engineering理念，分析检索模式与阅读模式的优劣，理解Context作为LLM内存的核心概念
+date: 2025-09-02
+author: Wh1isper
 banner_img: /img/post-bg-unix-linux.jpg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - 随笔
   - LLM
 category:

@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: AI赋能无意义的工作-仍是无意义的 # 标题
-subtitle: AI赋能无意义的工作-仍是无意义的 #副标题
-date: 2025-02-28 # 时间
+layout: post
+title: AI赋能无意义的工作-仍是无意义的
+subtitle: AI赋能无意义的工作-仍是无意义的
+description: 反思用先进技术为无意义工作雕花的现象，讨论经济体制的荒谬性以及text-to-web产品观察。
+date: 2025-02-28
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: 🔧Build API Gateway with OpenResty # 标题
-subtitle: Build API Gateway with OpenResty(in lua) #副标题
-date: 2024-11-04 # 时间
+layout: post
+title: 🔧Build API Gateway with OpenResty
+subtitle: Build API Gateway with OpenResty(in lua)
+description: 详解如何使用OpenResty和Lua构建API网关，实现微服务架构下的用户认证集中处理。
+date: 2024-11-04
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档

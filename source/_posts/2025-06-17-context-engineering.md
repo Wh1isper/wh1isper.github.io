@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Context Engineering-The Most Important Thing in Agent Development # 标题
-subtitle: Context Engineering-The Most Important Thing in Agent Development #副标题
-date: 2025-06-17 # 时间
+layout: post
+title: Context Engineering-The Most Important Thing in Agent Development
+subtitle: Context Engineering-The Most Important Thing in Agent Development
+description: 深入讲解Agent开发中最重要的上下文工程，涵盖上下文压缩、多Agent系统设计、LLM评估等核心议题。
+date: 2025-06-17
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档

@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Improve GitHub Issue's Search-the LLM way # 标题
-subtitle: Improve GitHub Issue's Search-The LLM way #副标题
-date: 2024-12-17 # 时间
+layout: post
+title: Improve GitHub Issue's Search-the LLM way
+subtitle: Improve GitHub Issue's Search-The LLM way
+description: 介绍基于RAG的GitHub Issue搜索助手设计，通过自然语言描述问题查找相关Issue和解决方案。
+date: 2024-12-17
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档

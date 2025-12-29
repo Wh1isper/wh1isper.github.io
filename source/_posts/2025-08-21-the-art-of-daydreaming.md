@@ -1,12 +1,13 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: 重拾发呆 # 标题
-subtitle: 重拾发呆 #副标题
-date: 2025-08-21 # 时间
-author: Wh1isper # 作者
+layout: post
+title: 重拾发呆
+subtitle: 重拾发呆
+description: 分享从burnout中恢复的心路历程，探讨发呆与正念的关系，以及在忙碌生活中重拾内心平静的重要性
+date: 2025-08-21
+author: Wh1isper
 banner_img: /img/post-bg-coffee.jpeg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - 随笔
 category:
   - 随笔

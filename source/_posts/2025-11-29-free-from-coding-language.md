@@ -2,6 +2,7 @@
 layout:     post
 title:      Free from the coding language
 subtitle:   Free from the coding language
+description: 探讨AI时代编程语言选择的自由度，分享使用Claude Opus进行Rust项目开发的经验，以及模型能力提升对技术栈学习的影响
 date:       2025-11-29
 author:     Wh1isper
 banner_img: /img/tag-bg-o.jpg

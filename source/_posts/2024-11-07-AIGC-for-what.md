@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: AIGC for what? The future of AIGC # 标题
-subtitle: The future of AIGC #副标题
-date: 2024-11-07 # 时间
+layout: post
+title: AIGC for what? The future of AIGC
+subtitle: The future of AIGC
+description: 思考AIGC创业公司的两类路线，探讨人在AI时代的角色以及真正生产力的方向。
+date: 2024-11-07
 author: Wh1isper # 作者
 banner_img: /img/post-bg-universe.jpg
 catalog: true # 是否归档

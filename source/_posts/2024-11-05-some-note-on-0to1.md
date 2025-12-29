@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: 🤔Some Note about Building a System from Scratch in startup # 标题
-subtitle: Some Note about Building a System from Scratch in startup #副标题
-date: 2024-11-05 # 时间
+layout: post
+title: 🤔Some Note about Building a System from Scratch in startup
+subtitle: Some Note about Building a System from Scratch in startup
+description: 分享在Morph Studio从零构建后端和推理系统的经验教训，包含CI/CD、业务建模、团队扩展等。
+date: 2024-11-05
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

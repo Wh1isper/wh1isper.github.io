@@ -1,12 +1,13 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: 时间是人类的幻觉 # 标题
-subtitle: 时间是人类的幻觉 #副标题
-date: 2025-09-01 # 时间
-author: Wh1isper # 作者
+layout: post
+title: 时间是人类的幻觉
+subtitle: 时间是人类的幻觉
+description: 探讨LLM没有时间概念的本质，反思时间对于人类的意义，以及时间之于思想发展的重要性
+date: 2025-09-01
+author: Wh1isper
 banner_img: /img/post-bg-coffee.jpeg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - 随笔
   - LLM
 category:

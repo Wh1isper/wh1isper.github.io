@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: pymupdf4llm-mcp - Best pdf2llm mcp for your agent # 标题
-subtitle: pymupdf4llm-mcp - Best pdf2llm mcp for your agent #副标题
-date: 2025-04-30 # 时间
+layout: post
+title: pymupdf4llm-mcp - Best pdf2llm mcp for your agent
+subtitle: pymupdf4llm-mcp - Best pdf2llm mcp for your agent
+description: 介绍pymupdf4llm-mcp工具，一个为LLM Agent提供高质量PDF解析能力的MCP服务器，支持完整文本提取和图片定位。
+date: 2025-04-30
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档

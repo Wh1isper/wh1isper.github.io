@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Human in loop-prompt management and CMS # 标题
-subtitle: Human in loop-prompt management and CMS #副标题
-date: 2024-12-15 # 时间
+layout: post
+title: Human in loop-prompt management and CMS
+subtitle: Human in loop-prompt management and CMS
+description: 探讨基于Headless CMS构建Prompt管理平台的思路，分析Strapi、Directus等选型。
+date: 2024-12-15
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档

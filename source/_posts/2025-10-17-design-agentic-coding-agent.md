@@ -1,12 +1,13 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Design Agentic Coding Agent # 标题
-subtitle: Design Agentic Coding Agent #副标题
-date: 2025-10-17 # 时间
-author: Wh1isper # 作者
+layout: post
+title: Design Agentic Coding Agent
+subtitle: Design Agentic Coding Agent
+description: 探讨如何构建可扩展的云原生Coding Agent系统，分析Agentic Workflow设计理念，介绍基于MCP协议的Agent架构设计考量
+date: 2025-10-17
+author: Wh1isper
 banner_img: /img/post-bg-unix-linux.jpg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - LLM
   - Agent
   - Code Agent

@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Agent Design Note # 标题
-subtitle: Agent Design Note #副标题
-date: 2025-04-08 # 时间
+layout: post
+title: Agent Design Note
+subtitle: Agent Design Note
+description: 分享构建Coding Agent的实践经验，包括Tool设计、上下文保护、Thinking Tool应用以及Meta Agent研究方向。
+date: 2025-04-08
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档

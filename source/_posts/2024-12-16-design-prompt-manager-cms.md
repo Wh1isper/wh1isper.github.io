@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Design prompt management CMS # 标题
-subtitle: Design prompt management CMS #副标题
-date: 2024-12-16 # 时间
+layout: post
+title: Design prompt management CMS
+subtitle: Design prompt management CMS
+description: 详细设计Prompt管理CMS的架构，包含动态分发、版本控制、A/B测试等核心功能。
+date: 2024-12-16
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档

@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: AGI Period Production Guide # 标题
-subtitle: AGI Period Production Guide #副标题
-date: 2025-02-24 # 时间
+layout: post
+title: AGI Period Production Guide
+subtitle: AGI Period Production Guide
+description: 探讨AGI时代产品设计的新范式，从衡量DAU转向衡量对智能的使用能力，关注超级个体的崛起。
+date: 2025-02-24
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: AGI is possible and impossible # 标题
-subtitle: AGI is possible and impossible #副标题
-date: 2025-06-21 # 时间
+layout: post
+title: AGI is possible and impossible
+subtitle: AGI is possible and impossible
+description: 探讨AGI技术发展与制度框架的深层矛盾，分析治理滞后、资源扭曲、法律不适应等问题，以及AGI可能带来的社会分化。
+date: 2025-06-21
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

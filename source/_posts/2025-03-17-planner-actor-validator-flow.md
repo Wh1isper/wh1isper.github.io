@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Modern Agents-PAV Flow # 标题
-subtitle: Planner-Actor-Validator Flow #副标题
-date: 2025-03-17 # 时间
+layout: post
+title: Modern Agents-PAV Flow
+subtitle: Planner-Actor-Validator Flow
+description: 介绍Planner-Actor-Validator架构设计，分析如何通过职责分离构建自动化Agent工作流。
+date: 2025-03-17
 author: Wh1isper # 作者
 banner_img: /img/post-bg-unix-linux.jpg
 catalog: true # 是否归档

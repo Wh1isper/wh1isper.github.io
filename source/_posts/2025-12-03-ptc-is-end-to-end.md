@@ -2,6 +2,7 @@
 layout:     post
 title:      PTC是一种端到端的方案
 subtitle:   PTC是一种端到端的方案
+description: 深入分析Anthropic的Programmatic Tool Calling(PTC)技术，探讨有状态API的环境状态设计理念，以及端到端数据积累对AI Agent发展的价值
 date:       2025-12-03
 author:     Wh1isper
 banner_img: /img/post-bg-unix-linux.jpg

@@ -5,8 +5,16 @@
 # Site
 title: Wh1isper's Blog
 subtitle: "Wh1ipser's Blog"
-description: ""
+description: "Wh1isper的技术博客，专注于LLM、AI Agent、Coding Agent、软件架构、数据可观测性等技术领域的深度分享与思考"
 keywords:
+  - LLM
+  - AI Agent
+  - Coding Agent
+  - 大模型
+  - 软件架构
+  - 技术博客
+  - AGI
+  - 数据可观测性
 author: Wh1isper
 language: zh-CN
 timezone: "Asia/Shanghai"

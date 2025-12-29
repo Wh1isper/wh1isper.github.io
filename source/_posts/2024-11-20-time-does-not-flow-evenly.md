@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: 🖋Time does not flow evenly # 标题
-subtitle: Time does not flow evenly #副标题
-date: 2024-11-20 # 时间
+layout: post
+title: 🖋Time does not flow evenly
+subtitle: Time does not flow evenly
+description: 思考脑力劳动的时间感知偏差，探讨理想的工作状态与OKR管理的局限性。
+date: 2024-11-20
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

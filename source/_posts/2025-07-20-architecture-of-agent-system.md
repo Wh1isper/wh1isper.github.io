@@ -1,12 +1,13 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: Architecture of Agent System # 标题
-subtitle: Architecture of Agent System #副标题
-date: 2025-07-20 # 时间
-author: Wh1isper # 作者
+layout: post
+title: Architecture of Agent System
+subtitle: Architecture of Agent System
+description: 记录Agent系统架构调研，包括Long-term Memory系统设计、Browser-use工具设计和代码执行沙箱架构
+date: 2025-07-20
+author: Wh1isper
 banner_img: /img/post-bg-coffee.jpeg
-catalog: true # 是否归档
-tags: #标签
+catalog: true
+tags:
   - Architecture
   - Agent
   - LLM

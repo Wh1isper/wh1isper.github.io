@@ -1,8 +1,9 @@
 ---
-layout: post # 使用的布局（不需要改）
-title: 重新思考数据 # 标题
-subtitle: 重新思考数据-构建LLM的数据管道和数据质量 #副标题
-date: 2025-06-01 # 时间
+layout: post
+title: 重新思考数据
+subtitle: 重新思考数据-构建LLM的数据管道和数据质量
+description: 探讨大模型时代数据飞轮的失效原因，分析什么样的数据才能代表人类复杂规划能力，以及如何构建有效的反馈回路。
+date: 2025-06-01
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档

@@ -1,9 +1,10 @@
 
 ---
-layout: post # 使用的布局（不需要改）
-title: Video Coding Thinking # 标题
-subtitle: Video Coding Thinking #副标题
-date: 2025-3-10 # 时间
+layout: post
+title: Video Coding Thinking
+subtitle: Video Coding Thinking
+description: 分析Vibe Coding的本质，探讨其与专业软件开发的区别，以及AI工具降低编程门槛带来的机会与隐患。
+date: 2025-3-10
 author: Wh1isper # 作者
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true # 是否归档
