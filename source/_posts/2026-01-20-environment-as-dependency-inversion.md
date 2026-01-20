@@ -17,7 +17,7 @@ category:
 
 When building AI agents, developers almost instinctively reach for file system operations and shell commands as their first tools. This isn't accidental - it reflects a deeply ingrained assumption: **the operating system is the natural environment for agents to act in**.
 
-In this post, we explore how the `Environment` abstraction in pai-agent-sdk implements dependency inversion, why this design embeds OS-centric assumptions, and how it shapes everything from tool implementation to context engineering.
+In this post, we explore how the `Environment` abstraction in [pai-agent-sdk](https://github.com/youware-labs/pai-agent-sdk) implements dependency inversion, why this design embeds OS-centric assumptions, and how it shapes everything from tool implementation to context engineering.
 
 ## The Instinctive Path
 
@@ -31,7 +31,7 @@ This mental model is so pervasive that it feels like the only way. But it's actu
 
 ## Dependency Inversion: The Code Level
 
-From a pure code perspective, pai-agent-sdk implements classic dependency inversion:
+From a pure code perspective, [pai-agent-sdk](https://github.com/youware-labs/pai-agent-sdk) implements classic dependency inversion:
 
 ```mermaid
 graph TB
