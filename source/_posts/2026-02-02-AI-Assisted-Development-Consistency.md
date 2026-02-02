@@ -25,7 +25,7 @@ AI 正在改变软件开发的方式。Cursor、Claude Code、Copilot 这些工�
 
 ```mermaid
 flowchart LR
-    A[设计] --> B[编码 ⏱️ 慢]
+    A[设计] --> B[编码]
     B --> C[Review]
     C --> D[修改]
     D --> B
@@ -35,11 +35,11 @@ AI 辅助开发打破了这个瓶颈。编码变得很快，但新的问题出�
 
 ```mermaid
 flowchart LR
-    A[设计] --> B[AI 编码 ⚡ 快]
+    A[设计] --> B[AI编码]
     B --> C[代码量暴增]
     C --> D[理解跟不上]
     D --> E[架构腐化]
-    E --> F[AI 生成更多 patch]
+    E --> F[更多patch]
     F --> E
 ```
 
@@ -51,26 +51,30 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-    subgraph 控制层
-        A[Spec 文档<br/>架构/流程图]
-        B[Owner 审阅]
+    subgraph Control[控制层]
+        A[Spec文档]
+        B[Owner审阅]
     end
 
-    subgraph 约束层
+    subgraph Constraint[约束层]
         C[agents.md]
-        D[类型系统/pyright]
+        D[类型系统]
         E[项目规则]
     end
 
-    subgraph 执行层
-        F[AI 生成代码]
+    subgraph Execution[执行层]
+        F[AI生成代码]
         G[Prototype]
         H[生产代码]
     end
 
     A --> B
-    B --> C & D & E
-    C & D & E --> F
+    B --> C
+    B --> D
+    B --> E
+    C --> F
+    D --> F
+    E --> F
     F --> G
     G -->|验证通过| H
     G -->|需要调整| A
@@ -88,9 +92,9 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-    A[脑海中的架构] --> B[Spec 文档]
-    B --> C[与 AI 讨论]
-    C --> D[AI 生成代码]
+    A[脑海中的架构] --> B[Spec文档]
+    B --> C[与AI讨论]
+    C --> D[AI生成代码]
     D --> E[代码符合架构]
 ```
 
@@ -113,15 +117,15 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph 约束
-        A[agents.md<br/>项目规范]
-        B[pyright<br/>类型检查]
-        C[ESLint/Ruff<br/>代码风格]
-        D[项目规则<br/>命名/结构]
+    subgraph Constraints[约束]
+        A[agents.md]
+        B[pyright]
+        C[ESLint]
+        D[项目规则]
     end
 
-    E[AI] --> 约束
-    约束 --> F[符合规范的代码]
+    E[AI] --> Constraints
+    Constraints --> F[符合规范的代码]
 ```
 
 - **agents.md / AGENTS.md**：写清楚项目的架构、约定、禁忌
@@ -144,9 +148,9 @@ AI 读了这些约束，生成的代码一致性会好很多。
 
 ```mermaid
 flowchart LR
-    A[想法] --> B[Prototype ⚡]
+    A[想法] --> B[Prototype]
     B --> C{验证}
-    C -->|通过| D[生产化 🐢]
+    C -->|通过| D[生产化]
     C -->|失败| E[调整想法]
     E --> A
     D --> F[留重构空间]
@@ -162,9 +166,9 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A[好架构] --> B[AI 更容易<br/>生成正确代码]
+    A[好架构] --> B[AI生成正确代码]
     B --> C[省时间]
-    C --> D[更多精力<br/>优化架构]
+    C --> D[优化架构]
     D --> A
 ```
 
@@ -172,7 +176,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A[烂架构] --> B[AI 生成的代码<br/>到处 patch]
+    A[烂架构] --> B[代码到处patch]
     B --> C[越来越乱]
     C --> D[没时间重构]
     D --> A
@@ -189,11 +193,11 @@ flowchart LR
 ```mermaid
 flowchart TB
     A[Owner] -->|审阅| B[Spec]
-    B -->|指导| C[开发者 1]
-    B -->|指导| D[开发者 2]
+    B -->|指导| C[开发者1]
+    B -->|指导| D[开发者2]
     C --> E[代码]
     D --> E
-    E -->|AI Review| F{符合 Spec?}
+    E -->|AI Review| F{符合Spec}
     F -->|是| G[合并]
     F -->|否| H[修改]
     H --> E
