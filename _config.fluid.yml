@@ -346,6 +346,7 @@ navbar:
     - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
     - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
     - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
+    - { key: "rss", name: "RSS", link: "/atom.xml", icon: "iconfont icon-rss" }
     #- { key: "links", link: "/links/", icon: "iconfont icon-link-fill" }
 
 # 搜索功能，基于 hexo-generator-search 插件，若已安装其他搜索插件请关闭此功能，以避免生成多余的索引文件
@@ -457,7 +458,7 @@ footer:
 index:
   # 首页 Banner 头图，可以是相对路径或绝对路径，以下相同
   # Path of Banner image, can be a relative path or an absolute path, the same on other pages
-  banner_img: /img/banner.jpg
+  banner_img: /img/banner.png
 
   # 头图高度，屏幕百分比
   # Height ratio of banner image
@@ -903,7 +904,7 @@ archive:
 #---------------------------
 category:
   enable: true
-  banner_img: /img/banner.jpg
+  banner_img: /img/banner.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
@@ -932,7 +933,7 @@ category:
 #---------------------------
 tag:
   enable: true
-  banner_img: /img/banner.jpg
+  banner_img: /img/banner.png
   banner_img_height: 80
   banner_mask_alpha: 0.3
   tagcloud:

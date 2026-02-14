@@ -128,6 +128,17 @@ sitemap:
   tags: true
   categories: true
 
+# RSS / Atom feed
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content: true
+  content_limit: 140
+  content_limit_delim: " "
+  order_by: -date
+
 post:
   meta:
     author: # 作者，优先根据 front-matter 里 author 字段，其次是 hexo 配置中 author 值
