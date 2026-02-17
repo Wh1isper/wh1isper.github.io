@@ -338,20 +338,227 @@ flowchart TB
 
 这对于模型厂商获取数据和用户锁定都有积极意义，也为第一方应用提供了非常强大的能力，但对于开发者来说，几乎不可能选择这类方案，其供应商锁定和不透明问题带来的风险太高了。
 
-<!-- # Next: Agent Mounts Environment
+# Next: Agent Mounts Environment
 
-我们继续Agent in VM的发展，上文提到的Agent in VM形态虽然提供了强交互能力，但成本和安全问题突出。下一阶段的演进方向是**Agent Mounts Environment**：Agent不再直接运行在用户VM中，而是通过远程工具调用的方式“挂载”一个隔离的执行环境。
+Agent in VM 形态虽然提供了强交互能力，但存在两个核心问题：一是每用户独占 VM 的成本模式导致空闲成本高；二是 Agent 与用户共域，API Keys 与内部逻辑暴露在 VM 环境，难以安全整合私有服务。
 
-我们可以很明显地看出，LLM的API请求其实不需要有文件系统或者进程状态，只需要加载上一次的Context，
+**Agent Mounts Environment** 将 Agent 与执行环境解耦：Agent 仍运行在平台侧（可访问私有服务、密钥隔离），但将执行环境降级为一个"挂载点"。VM 内仅运行轻量级 Executor，负责接收 Agent 的指令（Shell 命令、文件操作、浏览器控制）并反馈结果。
+
+```mermaid
+flowchart LR
+    subgraph Platform["Platform (Secure Zone)"]
+        Agent["Agent Service"]
+        PrivateAPI["Private Services"]
+    end
+
+    subgraph VM["User VM (Mounted Environment)"]
+        Executor["Executor"]
+        Shell["Shell"]
+        FS["Filesystem"]
+    end
+
+    Agent <-->|"SSH/CDP"| Executor
+    Agent <-->|"API"| PrivateAPI
+    Executor --> Shell
+    Executor --> FS
+```
+
+## 好处
+
+**1. 安全隔离**：Agent 与用户环境物理分离，密钥与内部逻辑不暴露在 VM 中。Agent 可安全访问私有数据库、内部 API，而无需在 VM 中存储凭证。
+
+**2. 成本优化**：Agent 进程不与用户 VM 绑定，可跨多用户复用（或采用共享计算资源池）。VM 仅作为执行容器，不需要持续为每用户保留计算资源。
+
+**3. 权限边界清晰**：Executor 可施加细粒度权限控制：允许的工具集、可访问的文件路径、外部 API 调用权限均由平台策略决定，用户无法绕过。
+
+**4. 与 Agentic LLM API 兼容**：该架构天然支持多模型厂商，Agent 逻辑独立于执行环境实现，迁移或切换 LLM 供应商时，运行时语义保持一致。
+
+## 挑战
+
+**1. 通信协议复杂性**：Agent 需要通过 SSH、SFTP、CDP Over SSH Tunnel 等多种协议与 VM 通信。每种协议的超时、重试、错误恢复策略都需要精心设计。协议层的不稳定会导致任务中断或重复执行。
+
+**2. 状态一致性困难**：Agent 侧的任务状态与 VM 侧的执行状态可能不一致（如网络分区、超时导致的半成功操作）。需要设计操作幂等性、事务语义与恢复协议来保证最终一致性。
+
+**3. VM 快照与 Git 同步**：若采用 VM 快照持久化完整运行时状态，需要在恢复后重新同步 Git 状态，否则磁盘内容与 Remote 不一致。这引入了额外的状态管理层。
+
+## 结论
+
+Agent Mounts Environment 是 Agent in VM 与 Agentic LLM API 之间的中间态：保留了本地执行环境的完整可观察性和持久状态能力，同时恢复了平台侧的安全边界与成本效率。代价是需要投入工程力量处理分布式系统的一致性问题。
 
 
-TODO: 论述一下挂载的好处、挑战
--->
 
 
-<!-- # Bonus: Durable Execution
+# Bonus: Durable Execution
 
-这里我们聊一聊Durable Execution的概念。因为在Agentic Loop里还是容易失败的，那么我们重试的这个工作流构建、checkpoiont构建还是有一些挑战的。
+Agentic Loop 中的执行容易失败：网络中断、超时、工具错误、模型幻觉都可能中断任务。要支持重试与恢复，需要把任务状态分层管理，而不是盲目地快照整个 VM 或重新执行任务。
 
-分开讨论一下上下文、消息、文件系统状态、外部资源状态
- -->
+关键是认识到不同类型的状态有不同的恢复语义：
+
+## 1) 上下文（Context）
+
+**定义**：LLM 模型推理所需的信息，包括prompt、当前目标、已执行步骤。
+
+**恢复策略**：上下文应完全可重建，无需从快照恢复。重试时重新加载上一步的结果，让模型基于完整的执行历史做出新的决策。
+
+**为什么**：即使模型上一次的决策有误，完整的history 能让它在第二次重试中做出不同的选择。
+
+```mermaid
+sequenceDiagram
+    participant A as Agent
+    participant M as Message Store
+    participant L as LLM
+
+    A->>M: Load history + last result
+    M-->>A: [step1, step2, step3: failed]
+    A->>L: Continue with full context
+    L-->>A: New action based on failure
+```
+
+## 2) 消息状态（Message State）
+
+**定义**：对话历史、用户请求、AI 响应。
+
+**恢复策略**：消息状态应仅追加（append-only），支持版本化重试。一次重试对应一条新分支，记录"第一次尝试失败"与"第二次重试成功"的完整轨迹。
+
+**存储方案**：
+
+```mermaid
+flowchart LR
+    Root["Message 1: user request"]
+    Exec1["Message 2a: Agent planning (attempt 1)"]
+    Exec2["Message 2b: Agent planning (attempt 2)"]
+    Result1["Message 3a: Tool result FAILED"]
+    Result2["Message 3b: Tool result OK"]
+
+    Root --> Exec1
+    Root --> Exec2
+    Exec1 --> Result1
+    Exec2 --> Result2
+```
+
+通过消息树（而非单线性链表）记录重试分支，支持审计与故障分析。
+
+## 3) 文件系统状态（Filesystem State）
+
+**定义**：VM 或容器内的文件、目录、权限。
+
+**恢复策略**：文件系统状态通过 git commit 或 VM 快照持久化。重试时的关键决策是：**是否需要恢复到操作前的状态还是基于当前状态重新操作**。
+
+**两种模式**：
+
+**模式 A：Ephemeral + Rollback（容器/Sandbox 方案）**
+- 每次工具调用在隔离容器内执行
+- 失败时容器销毁，文件系统回滚
+- 下一次重试从 Git Checkout 状态开始
+
+```mermaid
+sequenceDiagram
+    participant A as Agent
+    participant C1 as Container (attempt 1)
+    participant C2 as Container (attempt 2)
+    participant FS as Shared FS (Git managed)
+
+    FS-->>C1: mount current HEAD
+    A->>C1: npm install
+    C1->>FS: write XXX (not committed)
+    Note over C1: Fails, container destroyed
+
+    FS-->>C2: mount current HEAD (clean state)
+    A->>C2: npm install (retry)
+    C2->>FS: write YYY
+```
+
+优点：简单、可预测。缺点：无法利用前一次的中间成果（如部分安装的依赖）。
+
+**模式 B：Persistent VM + Checkpoint（VM 快照方案）**
+- 使用 Firecracker Snapshot 保存完整运行时状态
+- 失败时从快照恢复，保留内存中的进程、缓存
+- 需要额外的 checkpoint 机制记录"哪些文件修改可以撤销"
+
+```mermaid
+sequenceDiagram
+    participant A as Agent
+    participant VM as VM
+    participant S as Snapshot
+
+    A->>VM: Save checkpoint (git state + memory snapshot)
+    S-->>VM: checkpoint_id_v1
+    A->>VM: npm install
+    VM->>VM: partial install (process in memory)
+    Note over VM: Fails
+
+    A->>S: Restore checkpoint_id_v1
+    S-->>VM: Memory + disk restored
+    A->>VM: npm install (retry, hot cache)
+```
+
+优点：快速恢复、热启动。缺点：快照本身占用存储空间，恢复涉及内存一致性问题。
+
+## 4) 外部资源状态（External Resource State）
+
+**定义**：API 调用、数据库事务、第三方服务的执行结果。
+
+**恢复策略**：外部资源操作的可恢复性取决于操作是否幂等。
+
+**分类**：
+
+| 操作类型 | 幂等性 | 恢复策略 |
+|---------|------|--------|
+| Read DB | ✓ | 直接重试 |
+| GET API | ✓ | 直接重试 |
+| Create resource | ✗ | 需要 idempotency key，防止重复创建 |
+| Update resource | ✓/✗ | 需要检验当前状态是否已更新 |
+| Delete resource | ~ | 重试返回 404，需要 idempotent delete semantic |
+| Payment / Charge | ✗ | 必须通过事务 ID 检查是否已执行 |
+
+**实现模式**：Idempotency Key
+
+```mermaid
+sequenceDiagram
+    participant A as Agent
+    participant API as External API
+    participant Cache as Idempotency Cache
+
+    A->>Cache: Lookup idempotency_key = "task_step_3"
+    Cache-->>A: Not found
+    A->>API: POST /charge (idempotency_key: "task_step_3", amount: 100)
+    API->>Cache: Save result (charged: true)
+    Cache-->>API: OK
+    API-->>A: success
+
+    Note over A: Network timeout, retry
+    A->>Cache: Lookup idempotency_key = "task_step_3"
+    Cache-->>A: Found (charged: true)
+    A->>A: Return cached result without re-charging
+```
+
+系统需要为每个工具调用分配全局唯一的 idempotency_key，存储每次调用的结果。重试时先查询缓存，避免重复操作。
+
+## 综合设计
+
+完整的 Durable Execution 系统需要四层状态管理：
+
+```mermaid
+flowchart TB
+    Context["Context Layer<br/>(Stateless, computed from Message State)"]
+    Message["Message State<br/>(Append-only, versioned history)"]
+    FileSystem["Filesystem State<br/>(Git checkpoint or VM snapshot)"]
+    External["External State<br/>(Idempotency cache + verification)"]
+
+    Message --> Context
+    Message --> FileSystem
+    Message --> External
+
+    Context -.-> Recovery["Recovery via Context + Message Replay"]
+```
+
+在故障发生时，恢复顺序为：
+
+1. 检查外部资源状态（是否已执行）→ 如有缓存结果则直接返回
+2. 检查文件系统状态（Snapshot 或 Git HEAD）→ 重建执行环境
+3. 加载消息历史 → 重建 LLM 上下文
+4. 重新执行失败的步骤
+
+## 结论
+
+Durable Execution 的核心是认识到：**系统的可恢复性不源于单一快照，而源于分层的状态管理与操作的幂等性设计**。不同类型的状态有不同的持久化需求与恢复成本，混为一谈会导致过度的快照成本或无法恢复的局面。
