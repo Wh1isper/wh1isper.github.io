@@ -5,7 +5,7 @@ subtitle: 云上Agent的架构设计——计算负载、状态管理和安全�
 description: 本文将深入探讨云上Agent的架构设计，分析其核心组件和功能，以及如何实现高效的Agent系统。
 date: 2026-02-17 21:54
 author: Wh1isper
-banner_img: /img/post-bg-hacker.jpg
+banner_img: /img/post-bg-unix-linux.jpg
 catalog: true
 tags:
     - CloudAgent
