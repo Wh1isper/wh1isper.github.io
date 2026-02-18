@@ -1,0 +1,807 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="只有一种人才有资格抱怨：在彻底绝望地告别之前，按一贯的标准，尽最大的努力做好每一件事的人。———— 我·自己·说的  大约一年前我是S项目的主程，同时也是架构设计的主要负责人，由于负责O项目的前期调研工作和后续设计、开发任务，半年前我移交了所有的S项目的工程给一名资深的程序员C（6-7年的编程经验，但没有计算机相关的教育经历），仅作为架构和实现的咨询人员参与S项目。 在我移交项目之时，相关工程的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="❗我究竟在抱怨什么">
+<meta property="og:url" content="https://blog.wh1isper.top/2023/10/27/2023-10-28-%E6%88%91%E7%A9%B6%E7%AB%9F%E5%9C%A8%E6%8A%B1%E6%80%A8%E4%BB%80%E4%B9%88/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="只有一种人才有资格抱怨：在彻底绝望地告别之前，按一贯的标准，尽最大的努力做好每一件事的人。———— 我·自己·说的  大约一年前我是S项目的主程，同时也是架构设计的主要负责人，由于负责O项目的前期调研工作和后续设计、开发任务，半年前我移交了所有的S项目的工程给一名资深的程序员C（6-7年的编程经验，但没有计算机相关的教育经历），仅作为架构和实现的咨询人员参与S项目。 在我移交项目之时，相关工程的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.818Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="随笔">
+<meta property="article:tag" content="精神分析">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>❗我究竟在抱怨什么 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-2015.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="论如何在短短几天成为高血压与抑郁症"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-28 00:00" pubdate>
+          2023年10月28日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">论如何在短短几天成为高血压与抑郁症</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>只有一种人才有资格抱怨：在彻底绝望地告别之前，按一贯的标准，尽最大的努力做好每一件事的人。———— 我·自己·说的</p>
+</blockquote>
+<p>大约一年前我是S项目的主程，同时也是架构设计的主要负责人，由于负责O项目的前期调研工作和后续设计、开发任务，半年前我移交了所有的S项目的工程给一名资深的程序员C（6-7年的编程经验，但没有计算机相关的教育经历），仅作为架构和实现的咨询人员参与S项目。</p>
+<p>在我移交项目之时，<strong>相关工程的测试覆盖率在80%左右，所有工程都有着相对应的CI设施，能够在每次代码推送后自动构建好可供部署的二方库</strong>。在我移交项目之后，我仍会在设计、关键评审、代码review等方面提供帮助，但并不参与各方的联调，也不对后续修改负责。</p>
+<p>大概三周前，程序员C离职，其离职原因是组长对他的指责，<strong>将相关工作交接给了我的组长</strong>，此后S项目由组长负责。</p>
+<p>事情发生在组长出差到客户现场支持时，这是本季度最重要的项目，我们所有人<strong>不得不放弃其他工作</strong>对此项目进行支持，我也从O项目被调到S项目，为客户现场需求提供支持。期间我发现，<strong>原有的单元测试已经无法运行，旧的工程CI大部分失效，新的工程既没有单元测试和CI，代码质量也不尽如人意，我不得不在大量的代码片段中找到我需要的配置，我还发现了多个C在离职时声称已经完成、并测试过的功能实际上未经测试、无法运行，甚至有些功能根本没有实现</strong>。</p>
+<p>于是，在前两天组长对我定位问题的指手画脚中，我爆发了。我不想讨论其中细节，因为这只是一个导火索，而下面我将讨论<strong>根本原因</strong>。</p>
+<h2 id="从个人发展的角度：一致性缺失"><a href="#从个人发展的角度：一致性缺失" class="headerlink" title="从个人发展的角度：一致性缺失"></a>从个人发展的角度：一致性缺失</h2><p><strong>组长很忙，我将成为顶缸的老实人</strong>。组长不止负责S项目，还有其他A、B、C、D等等等等项目、沟通、汇报等任务，因此从程序员C离职以来，我就知道再也不可能像之前那样从S项目中抽身出来，全身心地投入团队和我的未来——O项目。于是，就像这次一样，在组长出差的时候，<strong>我将承受巨大的上下文转换的压力和代价</strong>，在非常短的时间内响应项目里的需求、咨询、问题，同时又要保证O项目的进度。这是因为O项目所采取的理念和技术都是很前沿的，有太多需要确认、调研、测试的内容，而我是唯一一个能够做到这些的人。而S项目，留给我的是一个我无法掌控的泥潭，<strong>我没有办法在如此有限的时间和精力投入下将S项目带回原来的正轨</strong>，同时我认为组长也不能（因为他太忙了），那么我的精力就又会被S项目所分散，<strong>越陷越深</strong>，直到最后<strong>技术债务破产</strong>。但在这之前，我感受到的是深深的无力感和失望：我既不能将S项目做好（下面我将解释除了精力以外，还有别的原因），也缺乏在O项目投入的一致性。</p>
+<h2 id="从团队的角度：这不是一个具有”工程师文化”的团队"><a href="#从团队的角度：这不是一个具有”工程师文化”的团队" class="headerlink" title="从团队的角度：这不是一个具有”工程师文化”的团队"></a>从团队的角度：这不是一个具有”工程师文化”的团队</h2><p><strong>缺乏质量意识</strong>：忙是一个客观因素，而“能跑就行”则是最让我感到失望的主观因素。<strong>由于S项目的研发经理们和程序员们对于代码的态度都是“能跑就行”</strong>，这意味着在我组的工作无论多么优秀，都将受到上下游代码质量和调试时间的影响。这一态度从我入职以来就从未改变，我所能做的只有尽量早地提供我能提供的一切支持，并督促他们尽早尽快地进行联调，这也是我将本组的自动化工作和代码质量作为重要工作内容的原因。但由于目前上下游所在组的资深程序员也有缺口，低级的校招生并不能按时、保质地完成编码任务，常常匆忙中进入联调阶段，由此联调阶段的时间被拉长，bug率显著上升，导致我组负责此项目的人需要投入更多的低价值工作，来完成项目。<strong>我个人称之为：被拖累的部分。这一情况的发生，我认为组长们需要负主责，而下面的程序员也难辞其咎。</strong></p>
+<blockquote>
+<p>有一次我在一个月之前就提供了开发并测试完成的服务镜像，但到最后一天才被告知其无法启动容器，我只能紧急加班为其解决。事后证明是其没有阅读相关文档，但此文档我已经在提供容器时交付。</p>
+</blockquote>
+<p><strong>团队成员之间缺乏信任</strong>：团队对于程序员（技术人员）也缺乏尊重，自以为是，常常有产品、组长、研发经理等人在不了解技术细节的情况下，对程序员的工作进行<strong>指手画脚，甚至是指责</strong>。这一情况将严重打击程序员的积极性，加强了“能跑就行”的思想，又因为这种思想导致了质量问题，从而引发信任危机，最终导致了团队的<strong>恶性循环</strong>。我将此归咎于“工资更高”的人的傲慢、不尊重，以及“工资更低”的人的自卑、不自信。我并不是在说某个或某群人的性格有缺陷，<strong>这是一个团队文化&#x2F;士气问题</strong>，一个乐观开朗的人在一群悲伤的人中也会被影响，人群的力量是隐秘但巨大的。</p>
+<blockquote>
+<p>有一次产品负责人Z要求运维保存所有模型服务的日志，并告知“这就是用户的需求”。运维为此任务拟引入Clickhouse以及一整套查询系统，在我的强烈要求下，产品才解释用户的需求是保留模型服务的请求日志，而这一功能是已经通过边车代理实现的。产品负责人Z并不清楚另一个产品经理已经设计了这一功能，并且在下个版本就能上线。</p>
+</blockquote>
+<p><strong>自己为是的领导风格</strong>：我对“外行指导内行”、“领导一句话，累死跑腿的”、“将帅无能，累死三军”的现状感到失望、无助和愤怒。似乎领导讲两句，下属照做即可，一切尽在掌握中。但实际上，领导不相信你能做好，于是又把<strong>上下文（context）藏着掖着</strong>，仿佛告诉了你天就塌了，或者花这些时间在给你解释前因后果纯属浪费，但事实是领导自己也没想好怎么做，也是脚踩西瓜皮滑到哪算哪。于是大家东忙西忙，由于缺少上下文成为无头苍蝇，与之对应的，是对<strong>真正高价值目标的持续性的投入的缺失</strong>。与其上的一致性缺失所对应。</p>
+<blockquote>
+<p>包括这次爆发也是一次令人愤怒的指手画脚</p>
+</blockquote>
+<h2 id="从集团的角度：缺少数据基因，无法给团队带来成长"><a href="#从集团的角度：缺少数据基因，无法给团队带来成长" class="headerlink" title="从集团的角度：缺少数据基因，无法给团队带来成长"></a>从集团的角度：缺少数据基因，无法给团队带来成长</h2><p>集团的传统业务是安全乙方，其思考的是如何在不影响用户业务的情况下，分析用户业务，为用户提供安全加固的服务并收取费用。而我们想做的是接管用户的某个数据使用流程，通过此方式保护用户的数据，使其满足某些合规要求，或在合规要求下开展之前无法开展的业务。二者从销售的角度上讲，最大的不同就在于从以前的卖盒子、卖小软件，变成了卖整个服务集群、卖一整个处理系统，其规模、成本与销售难度的对比就像是蚂蚁与大象。而集团内部的人仍然会使用传统的安全乙方思维来看待我们的项目、产品，等于用篮球运动员的标准评价桌球运动员，那丁俊晖肯定不能在姚明头上暴扣。<strong>而其积重难返，我们人微言轻，无法改变这一现状。</strong></p>
+<p>而同时，由于集团效益，也没有HC重新招聘人员维护S项目，<strong>这将加剧S项目技术债务的积累</strong>，与我上文提到的越陷越深、拖垮团队形成有机结合，是典型的项目恶性循环。</p>
+<p>由此，我觉得S项目在集团的前途是暗淡的，被S项目拖累的团队的前途亦是暗淡的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>综上，我抱怨的实际上是<strong>不负责任、推诿、不作为、得过且过的思想</strong>，<strong>对工程问题异想天开、自以为是的幼稚病，以及缺少相关基因</strong>，<strong>无法提供土壤的集团环境</strong>。</p>
+<p>就我个人而言，<strong>为了实现自我价值与身心健康，为了大团队能够进一步往下走</strong>，我<strong>不愿</strong>，<strong>不想</strong>，<strong>不支持</strong>再将自己的精力投入在S项目上。</p>
+<p><strong>但基于我的职业操守，在我彻底绝望告别之前。我将尽我最大的努力做好我应该做的，按照我一贯要求自己的标准。</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E9%9A%8F%E7%AC%94/" class="print-no-link">#随笔</a>
+      
+        <a href="/tags/%E7%B2%BE%E7%A5%9E%E5%88%86%E6%9E%90/" class="print-no-link">#精神分析</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>❗我究竟在抱怨什么</div>
+      <div>https://blog.wh1isper.top/2023/10/27/2023-10-28-我究竟在抱怨什么/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/28/2023-10-29-%E8%BF%87%E5%89%A9%E4%B8%8E%E7%AB%9E%E5%8A%A3/" title="🤔过剩与竞劣在软件行业">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">🤔过剩与竞劣在软件行业</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/10/26/2023-10-27-%E9%81%A8%E6%B8%B8%E4%BA%92%E8%81%94%E7%BD%91%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/" title="🚀遨游互联网远程开发指北">
+                        <span class="hidden-mobile">🚀遨游互联网远程开发指北</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

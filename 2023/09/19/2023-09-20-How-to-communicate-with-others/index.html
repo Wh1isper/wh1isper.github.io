@@ -1,0 +1,951 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="通过开发者沟通失败的实际案例，分析工作和社区中的沟通问题，提供正确的沟通流程和原则指南。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="❓如何沟通：掌握正确的沟通流程">
+<meta property="og:url" content="https://blog.wh1isper.top/2023/09/19/2023-09-20-How-to-communicate-with-others/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="通过开发者沟通失败的实际案例，分析工作和社区中的沟通问题，提供正确的沟通流程和原则指南。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.817Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="开源">
+<meta property="article:tag" content="沟通">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>❓如何沟通：掌握正确的沟通流程 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-2015.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="如何沟通：掌握正确的沟通流程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-20 00:00" pubdate>
+          2023年9月20日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">如何沟通：掌握正确的沟通流程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="如何沟通：掌握正确的沟通流程"><a href="#如何沟通：掌握正确的沟通流程" class="headerlink" title="如何沟通：掌握正确的沟通流程"></a>如何沟通：掌握正确的沟通流程</h1><p>写这篇文章的直接动机是我在社区和工作中听到、看到的一些问题，在B站视频<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vu4y1X7ZZ/">《我是学生我很闲 求带我贡献Github装逼》</a>中，一个自称哈工大的研究生发了一个看似态度很好，但实际上非常不尊重别人的comment，我只能说太tm真实了，我甚至能脑补出伸手党的语气：怎么啦，我好意参加项目，好声好气求人都不行？</p>
+<p>对，不行。</p>
+<h2 id="与提问的智慧"><a href="#与提问的智慧" class="headerlink" title="与提问的智慧"></a>与提问的智慧</h2><p>通常，人们会推荐他们去读一读<a target="_blank" rel="noopener" href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md">《提问的智慧》</a>这篇文章。如果你访问GitHub有困难，也可以读读<a target="_blank" rel="noopener" href="https://wiki.osa.moe/guide-for-beginner/how-to-ask-questions-the-smart-way/">HITSZ-OSA的标注版本</a>。这篇文章从提问前、提问时、解答答案这三个方面给所有人以建议，是一篇非常好的入门文章。<br>我不想重复这篇文章的内容，但是我想从我自己的经验来谈谈我在社区和工作中遇到的问题。首先我会给出一个两个分属不同小组的开发人员沟通失败的案例，分别从他们的角度看看他们的想法和行为出现了什么偏差，最后给出一个我自己的经验总结。</p>
+<h2 id="从一次争吵说起"><a href="#从一次争吵说起" class="headerlink" title="从一次争吵说起"></a>从一次争吵说起</h2><blockquote>
+<p>故事、人物纯属虚构，这里不假定小红或小明的族裔、性别等等，这个名字只是为了写作之便</p>
+</blockquote>
+<p>同学A和同学B分属于同一产品的两个不同的小组，同学小红的服务A为同学小明的服务B提供后台支持。在功能测试中，测试人员发现某个功能在A服务发生未捕捉的错误时，似乎会出现显示不正确的情况（事后证明是测试人员未刷新页面，实际上这个功能没有问题），于是提出了一个Bug并指派给了小红，小红为了解决这个Bug，在未对代码进行确认的情况下，设想了一套解决方案：在A服务向B服务报错时，B服务将这条请求的所有操作回滚。为了让小明实现这个方案，发生了以下对话：</p>
+<ul>
+<li>小红：小明，我想请教你一个问题，你看看这个你能不能做</li>
+<li>小红：测试提了一个BUG，在前端向服务B请求的时候，我这边服务A报了个错，然后这个请求记录就出现不正常的情况了，我想问问你能不能在服务B这边做一下，如果服务A报错，就把这个请求的所有操作回滚</li>
+<li>小明：为什么是这样？你看过原来的设计吗？这个是需求要求的吗？在原来的设计中，这里是单向的异步任务，这里应该是服务A生成有一条错误记录，而不是回滚服务B。我记得需求也是生成错误消息而不是无事发生吧？</li>
+<li>小红：但是错误记录是后面生成的，这里服务A是在最前面就抛错了，我没有捕获这个错误</li>
+</ul>
+<blockquote>
+<p>其实这个时候已经很明确了，小红没有听懂小明的意思，也没有查看过之前的设计</p>
+</blockquote>
+<ul>
+<li>小明：服务B这里依赖了其他组件，无法做回滚</li>
+<li>小红：那好吧，你不做的话我也没办法，因为这里是服务A在最开始就报错了，没有进入后面的流程</li>
+<li>小明：你是不是没有理解我之前的方案然后又重复了你说的话？</li>
+<li>小红：是啊</li>
+<li>小明：那就没什么好说的了，你先想明白再说吧（态度很差，摔门而去）</li>
+</ul>
+<blockquote>
+<p>这个时候小明已经很生气了，因为小红没有听懂他的意思，只知道自说自话，小明觉得小红在浪费他的时间</p>
+</blockquote>
+<p>最后，小红反馈小明太过敏感，太过严格，情绪化严重，不配合别人工作。</p>
+<p>小明反馈小红擅自修改设计，不听别人解释，不了解背景就提出方案，不尊重别人的工作。</p>
+<h2 id="让我们看看他们都在想什么"><a href="#让我们看看他们都在想什么" class="headerlink" title="让我们看看他们都在想什么"></a>让我们看看他们都在想什么</h2><table>
+<thead>
+<tr>
+<th>小红想的</th>
+<th>小红说的</th>
+<th>小明说的</th>
+<th>小明想的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>我的方案需要小明修改，我需要向他确定能不能做</td>
+<td>小明，我想请教你一个问题，你看看这个你能不能做</td>
+<td>&#x2F;</td>
+<td>我的模块出问题了？<br />还是这是在给我派活？</td>
+</tr>
+<tr>
+<td>我向小明描述想让他做的事就好了</td>
+<td>测试提了一个BUG，<br />在前端向服务B请求的时候，<br />我这边服务A报了个错。<br />然后这个请求记录就出现不正常的情况了，<br />我想问问你能不能在服务B这边做一下，<br />如果服务A报错，就把这个请求的所有操作回滚</td>
+<td>&#x2F;</td>
+<td>Bug链接在哪？<br />我完全不了解背景<br />但听起来是A服务的问题<br />为什么是我来做？</td>
+</tr>
+<tr>
+<td>你就告诉我能不能做就好了<br />为什么还要问这么多问题？<br />不能做就我这边做呗。<br />难道是没听懂我说的？</td>
+<td>&#x2F;</td>
+<td>为什么是这样？<br />你看过原来的设计吗？<br />这个是需求要求的吗？<br />在原来的设计中，这里是单向的异步任务<br />这里应该是服务A生成有一条错误记录，<br />而不是回滚服务B。<br />我记得需求也是生成错误消息而不是无事发生吧？</td>
+<td>我想先了解背景，比如你的方案是不是从原有设计稿出发的</td>
+</tr>
+<tr>
+<td>我觉得你没听懂我说的<br />我再重复一遍</td>
+<td>但是错误记录是后面生成的，<br />这里服务A是在最前面就抛错了，<br />我没有捕获这个错误</td>
+<td>&#x2F;</td>
+<td>这个决定和设计稿不符<br />有什么情况能推翻我刚才说的设计吗？</td>
+</tr>
+<tr>
+<td></td>
+<td>&#x2F;</td>
+<td>服务B这里依赖了其他组件，无法做回滚</td>
+<td>这里依赖太多，<br />回滚成本大</td>
+</tr>
+<tr>
+<td>不行就算了，我再看看</td>
+<td>那好吧，你不做的话我也没办法，<br />因为这里是服务A在最开始就报错了，<br />没有进入后面的流程</td>
+<td>&#x2F;</td>
+<td>什么意思？<br />是因为我不做所以才不行？<br />是你的方案有问题吧</td>
+</tr>
+<tr>
+<td></td>
+<td>&#x2F;</td>
+<td>你是不是没有理解我之前的方案然后又重复了你说的话？</td>
+<td>你是来征求我的意见还是来甩锅的？</td>
+</tr>
+<tr>
+<td>我重复我的话是想让你理解我的话</td>
+<td>是</td>
+<td>&#x2F;</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>那就没什么好说的了，你先想明白再说吧（态度很差，摔门而去）</td>
+<td>找我开涮是吧？？</td>
+</tr>
+</tbody></table>
+<h2 id="事后复盘"><a href="#事后复盘" class="headerlink" title="事后复盘"></a>事后复盘</h2><p>经过进一步排查发现，这个BUG实际上是无效BUG，测试人员因为没有刷新页面，误以为没有生成错误记录。实际上是A服务的子流程抛错，错误记录已经正确生成。</p>
+<p>在这个案例中，我们可以看出小红有几点做的不好：</p>
+<ul>
+<li>没有确认Bug就臆想解决方案，没有遵循正确的工作流程</li>
+<li>提出解决方案时没有了解之前的设计（RTFM），没有遵循正确的设计流程</li>
+<li>不理解小明在方案上的解释，反复重复自己的观点希望小明理解，没有遵循正确的沟通流程</li>
+</ul>
+<p>小明也有不足之处，在最后摔门而去，是非常不礼貌的行为，不利于之后的继续合作。</p>
+<h2 id="经验之谈：如何沟通一个解决方案"><a href="#经验之谈：如何沟通一个解决方案" class="headerlink" title="经验之谈：如何沟通一个解决方案"></a>经验之谈：如何沟通一个解决方案</h2><p>这里对于工作流程和设计流程不做太多介绍，在《提问的智慧》一书和其他开源共享指南中，你可以找到很多出色的指南。这里我主要谈谈沟通流程。</p>
+<h3 id="沟通流程"><a href="#沟通流程" class="headerlink" title="沟通流程"></a>沟通流程</h3><p>原则：表达自己的观点，理解对方的观点，确认双方的共识和分歧。</p>
+<p>目的：双方对问题形成一定划定，确定下一步行动项。下一步的行动项可能是更大规模或者其他形式的沟通，最终形成决策。</p>
+<p>要点：</p>
+<ul>
+<li>对自己要说的事情<ul>
+<li>准备好背景材料，一并提供</li>
+<li>用自己的话尽量准确地描述问题所在</li>
+<li>询问是否漏掉了什么关键信息</li>
+</ul>
+</li>
+<li>对对方的回应<ul>
+<li>倾听，确认你所同意的部分</li>
+<li>询问是否理解正确</li>
+<li>向自己不明确、不理解的部分提问</li>
+</ul>
+</li>
+<li>重复上述流程，最后形成对问题的界定<ul>
+<li>结论<ul>
+<li>讨论后，我们认为的实际问题是什么</li>
+<li>我们在问题上形成了什么样的共识</li>
+</ul>
+</li>
+<li>行动项<ul>
+<li>在共识中，有一些我们不了解的情况需要进一步沟通或推进</li>
+<li>我们的共识可能有错误，需要召集更有经验&#x2F;权限的人进行决策</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="如果一切顺利：小红与小明的沟通"><a href="#如果一切顺利：小红与小明的沟通" class="headerlink" title="如果一切顺利：小红与小明的沟通"></a>如果一切顺利：小红与小明的沟通</h3><p>这里我们发挥一下想象，如果小红和小明都遵循了沟通流程，他们的对话可能是这样的：</p>
+<ul>
+<li>小红：小明，我这里遇到了一个Bug，但我不确定是不是我这里的问题，我想请教你一下（附上Bug链接）</li>
+<li>小红：服务A似乎在没有生成记录之前就抛出了错误，导致后续的记录出现了问题，我想问问这个地方能不能由服务B进行回滚</li>
+<li>小明：你可能需要先看一看设计稿（设计稿链接），我印象里这里的设计是单向的异步任务。</li>
+<li>小明：服务B会依赖其他组件，做回滚的复杂度很高。</li>
+<li>小红：好，我先看看设计稿再和你沟通，谢谢你的帮助</li>
+</ul>
+<blockquote>
+<p>在小红看过设计稿后，小红认为这里可能确实缺少了回滚的流程</p>
+</blockquote>
+<ul>
+<li>小红：我看过设计稿了，这个流程似乎是初始化的流程，我还是认为由回滚的必要</li>
+<li>小明：稍等，我看一下服务B的设计和代码</li>
+</ul>
+<blockquote>
+<p>小明确认服务B是有设计和编写初始化失败的回滚的</p>
+</blockquote>
+<ul>
+<li>小明：我们对初始化失败有做处理，这个Bug似乎不是这里的问题，你有尝试复现吗？</li>
+<li>小红：还没，你是说可能这个Bug是无效的？我尝试复现一下</li>
+</ul>
+<p>小红无法复现问题，排查后发现是这个Bug实际是测试人员失误，确为无效Bug。</p>
+<p>从以上的沟通中，小红展示了独立解决问题的思路和正确的沟通方式，即使工作流程（未先确定Bug是否属实）有问题，也能在小明的提醒下即时发现，而不是埋头研究其他解决方案。这就是正确沟通的威力。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>让我们用《提问的智慧》中的两段话来结束这篇文章。</p>
+<p>对小红：</p>
+<blockquote>
+<p>低声下气不能代替你的功课<br>有些人明白他们不该粗鲁或傲慢的提问并要求得到答复，但他们选择另一个极端 —— 低声下气：我知道我只是个可悲的新手，一个loser，但…。这既使人困扰，也没有用，尤其是伴随着与实际问题含糊不清的描述时更令人反感。<br>别用原始灵长类动物的把戏来浪费你我的时间。取而代之的是，尽可能清楚地描述背景条件和你的问题情况。这比低声下气更好地定位了你的位置。<br>有时网页论坛会设有专为新手提问的版面，如果你真的认为遇到了初学者的问题，到那去就是了，但一样别那么低声下气。</p>
+</blockquote>
+<p>对小明：</p>
+<blockquote>
+<p>如何更好地回答问题<br>态度和善一点。 问题带来的压力常使人显得无礼或愚蠢，其实并不是这样。<br>试探性的反问以引出更多的细节。 如果你做得好，提问者可以学到点东西 —— 你也可以。试试将蠢问题转变成好问题，别忘了我们都曾是新手。<br>尽管对那些懒虫抱怨一声 RTFM 是正当的，但能指出文件的位置（即使只是建议个 Google 搜索关键词）会更好。<br>如果你决定回答，就请给出好的答案。 当别人正在用错误的工具或方法时别建议笨拙的权宜之计（workaround），应推荐更好的工具，重新界定问题。</p>
+</blockquote>
+<h2 id="补充材料"><a href="#补充材料" class="headerlink" title="补充材料"></a>补充材料</h2><p>看看别人是怎么被喷的（下一个comment就是一个非常好的正例）：<a target="_blank" rel="noopener" href="https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/issues/1508#issuecomment-1662365628">https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/issues/1508#issuecomment-1662365628</a></p>
+<p>看看别人是如何与我沟通的：<a target="_blank" rel="noopener" href="https://github.com/Wh1isper/jupyter_kernel_executor/issues/8">https://github.com/Wh1isper/jupyter_kernel_executor/issues/8</a></p>
+<p>看看我是如何提出我的想法的：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/jupyter-server/jupyter_server/issues/1274#issuecomment-1657944667">https://github.com/jupyter-server/jupyter_server/issues/1274#issuecomment-1657944667</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jupyterlab/jupyterlab/issues/12455">https://github.com/jupyterlab/jupyterlab/issues/12455</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%80%E6%BA%90/" class="print-no-link">#开源</a>
+      
+        <a href="/tags/%E6%B2%9F%E9%80%9A/" class="print-no-link">#沟通</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>❓如何沟通：掌握正确的沟通流程</div>
+      <div>https://blog.wh1isper.top/2023/09/19/2023-09-20-How-to-communicate-with-others/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/09/2023-10-09-%E6%95%B0%E6%8D%AE%E4%BD%BF%E7%94%A8%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/" title="🤔数据使用可观测性">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">🤔数据使用可观测性</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/18/2023-09-19-Restart-the-world/" title="🙌欢迎来到我的博客——博客重启计划">
+                        <span class="hidden-mobile">🙌欢迎来到我的博客——博客重启计划</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

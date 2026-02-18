@@ -1,0 +1,944 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="探讨AGI技术发展与制度框架的深层矛盾，分析治理滞后、资源扭曲、法律不适应等问题，以及AGI可能带来的社会分化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AGI is possible and impossible">
+<meta property="og:url" content="https://blog.wh1isper.top/2025/06/20/2025-06-21-AGI-is-possible-and-impossible/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="探讨AGI技术发展与制度框架的深层矛盾，分析治理滞后、资源扭曲、法律不适应等问题，以及AGI可能带来的社会分化。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.820Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="AGI">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>AGI is possible and impossible - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-coffee.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AGI is possible and impossible"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-21 00:00" pubdate>
+          2025年6月21日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AGI is possible and impossible</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>我与claude共同创作，大部分是我在写随笔，claude再帮我整理成文</p>
+</blockquote>
+<p>AGI作为一种革命性的生产力，正在与现有的制度框架、治理结构和权力配置发生深刻的冲突。已经有无数人告诉我们AGI可能在不远的将来就将达到，而人们也意识到模型的训练优化来到下半场，我们已经有了足够智力的模型来进行生产活动等等……所以AGI is possible，这点毋庸置疑，But…</p>
+<p>但当我们将视角转向制度层面时，AGI的发展却面临着巨大的阻力。这种阻力主要来自于现有上层建筑对新兴生产力的不适应性。如果AGI的到来必然导致政府制度的重构，那么现有的制度安排必然会对AGI的发展形成阻碍。</p>
+<h3 id="治理结构的滞后性"><a href="#治理结构的滞后性" class="headerlink" title="治理结构的滞后性"></a>治理结构的滞后性</h3><p>现有的政府治理结构是为工业时代和早期信息时代设计的，面对AGI这种颠覆性技术时显得力不从心。政府部门的科层制结构、决策流程的冗长性、以及对新技术理解的不足，都导致了政策制定的滞后。</p>
+<p>与互联网发展初期的ARPANET项目不同，当时的技术发展相对线性可控，政府能够通过明确的目标和路径进行引导。而AGI的发展具有高度的不确定性和复杂性，传统的项目管理模式难以适应。政府往往只能在技术已经成熟后进行被动的监管，而非主动的引导和孵化。</p>
+<h3 id="资源配置的扭曲"><a href="#资源配置的扭曲" class="headerlink" title="资源配置的扭曲"></a>资源配置的扭曲</h3><p>由于缺乏有效的政府引导机制，AI从业者只能通过”政绩工程”的方式获取资金支持。这种资源配置方式存在严重的扭曲：</p>
+<ol>
+<li><strong>短期导向</strong>：政绩工程通常追求短期可见的成果，而AGI的研发需要长期持续的投入</li>
+<li><strong>形式主义</strong>：资金往往流向容易展示的应用项目，而非基础研究</li>
+<li><strong>重复建设</strong>：各地政府为了政绩竞相上马AI项目，导致资源的严重浪费</li>
+</ol>
+<h3 id="法律法规的不适应性"><a href="#法律法规的不适应性" class="headerlink" title="法律法规的不适应性"></a>法律法规的不适应性</h3><p>现有的法律法规体系是基于传统生产方式建立的，面对AGI带来的新问题时显得捉襟见肘：</p>
+<ol>
+<li><strong>数据权属问题</strong>：大规模训练数据的获取和使用涉及复杂的知识产权和隐私权问题</li>
+<li><strong>责任归属问题</strong>：AI系统的决策结果出现问题时，责任如何界定</li>
+<li><strong>就业冲击问题</strong>：AGI可能导致大规模失业，现有的社会保障体系难以应对</li>
+</ol>
+<h2 id="权力关系的深层矛盾"><a href="#权力关系的深层矛盾" class="headerlink" title="权力关系的深层矛盾"></a>权力关系的深层矛盾</h2><p>AGI发展受阻的根本原因在于它对现有权力结构构成了威胁。政府作为权力的执掌者，对可能削弱其控制力的技术天然保持警惕。</p>
+<h3 id="信息控制的失效"><a href="#信息控制的失效" class="headerlink" title="信息控制的失效"></a>信息控制的失效</h3><p>传统上，政府通过控制信息流动来维护权威。但AGI具备强大的信息处理和生成能力，可能绕过传统的信息控制机制。这使得政府对AGI技术既依赖又恐惧——既希望利用其能力提升治理效率，又担心失去对信息的垄断控制。</p>
+<h3 id="决策权威的挑战"><a href="#决策权威的挑战" class="headerlink" title="决策权威的挑战"></a>决策权威的挑战</h3><p>AGI在某些领域的决策能力可能超越人类专家，这对传统的决策权威构成挑战。如果AI系统能够做出更优的政策建议，那么传统的官僚决策体系的合法性将受到质疑。</p>
+<h3 id="监管悖论"><a href="#监管悖论" class="headerlink" title="监管悖论"></a>监管悖论</h3><p>政府面临着一个根本性的监管悖论：过度监管会扼杀创新，监管不足又可能失控。在这种两难境地下，政府往往选择相对保守的策略，这客观上限制了AGI的发展。</p>
+<hr>
+<p>从另一个更加深刻的角度来看，AGI的发展可能加剧一种新型的社会分化——不是传统意义上的阶级分化，而是基于对技术态度和使用方式的分化。我曾讨论过AI的两个重要方向：生成式娱乐和生产力替代，目前看来，二者是这一分化的核心。</p>
+<h3 id="奶头乐效应的放大"><a href="#奶头乐效应的放大" class="headerlink" title="奶头乐效应的放大"></a>奶头乐效应的放大</h3><p>布兹曼和乔姆斯基早就警告过信息娱乐化的危险，而AGI可能将这种”奶头乐”效应推向极致。当AI能够提供无限定制化的娱乐内容、虚拟陪伴和即时满足时，大部分人可能会陷入一种舒适的被动消费状态中。</p>
+<p>这种现象已经在短视频、游戏、社交媒体中初见端倪。AI的介入会让这种”算法投喂”变得更加精准和令人上瘾。个性化推荐系统会越来越了解用户的喜好，提供恰到好处的刺激，让人们在信息茧房中获得持续的多巴胺释放。</p>
+<h3 id="人群的进一步分化"><a href="#人群的进一步分化" class="headerlink" title="人群的进一步分化"></a>人群的进一步分化</h3><p>在这种背景下，社会可能分化为两个截然不同的群体：</p>
+<p><strong>创造者阶层</strong>：这是少数拥抱AI工具、与之协作的人群。他们不是被AI替代，而是将AI作为放大器，发挥人类独有的创造力、批判思维、价值判断和情感表达。他们掌握了人机协作的艺术，成为真正的生产力创造者。</p>
+<p><strong>消费者阶层</strong>：这是大多数通过AI享受便利和娱乐的人群。他们习惯于被算法服务，逐渐丧失主动思考和创造的能力。虽然生活变得更加舒适，但本质上成为了高级的消费终端。</p>
+<h3 id="生产力提升的虚假性"><a href="#生产力提升的虚假性" class="headerlink" title="生产力提升的虚假性"></a>生产力提升的虚假性</h3><p>这种分化带来一个深刻的悖论：虽然技术在快速进步，但整体的生产力提升可能并不显著。原因在于：</p>
+<ol>
+<li><strong>创造力的集中化</strong>：真正的创新和生产力提升集中在少数创造者手中，而他们的边际效应递减</li>
+<li><strong>消费的无效性</strong>：大部分人的AI使用主要用于娱乐和消费，而非生产性活动</li>
+<li><strong>人力资源的浪费</strong>：大量人力被困在低价值的信息消费中，无法转化为有效的生产力</li>
+</ol>
+<h3 id="信息囚笼的新形态"><a href="#信息囚笼的新形态" class="headerlink" title="信息囚笼的新形态"></a>信息囚笼的新形态</h3><p>马歇尔·麦克卢汉曾说”媒介即信息”，在AGI时代，这句话可能变成”算法即现实”。当AI能够无缝地生成符合个人偏好的内容时，人们可能永远被困在一个由算法构建的信息囚笼中，失去与真实世界的有效连接。</p>
+<p>这种囚笼比传统的物理监禁更加隐蔽和有效，因为它提供的是舒适和快乐，而非痛苦和限制。正如赫胥黎在《美丽新世界》中描绘的那样，最可怕的控制不是通过恐惧，而是通过快乐。</p>
+<hr>
+<p>又或者，我们真的需要那么多生产力进步吗？在一个已经能够生产足够食物养活全球人口、足够住房容纳所有人、足够商品满足基本需求的世界里，我们面临的核心问题究竟是生产力不足，还是分配不公？</p>
+<p>从这个角度重新审视AI的发展，我们会发现一个令人不安的事实：AI可能正在加剧而非解决根本性的不平等问题。</p>
+<h2 id="生产力过剩的现实"><a href="#生产力过剩的现实" class="headerlink" title="生产力过剩的现实"></a>生产力过剩的现实</h2><h3 id="物质丰富与贫困并存的悖论"><a href="#物质丰富与贫困并存的悖论" class="headerlink" title="物质丰富与贫困并存的悖论"></a>物质丰富与贫困并存的悖论</h3><p>当代社会已经达到了历史上前所未有的物质丰富程度。全球粮食产量足以养活100亿人口，而地球人口还未达到80亿。发达国家的住房空置率居高不下，同时却有大量无家可归者。奢侈品市场蓬勃发展，基本生活用品却因为”没有利润”而供应不足给最需要的人群。</p>
+<p>这种悖论表明，我们面临的不是生产能力的问题，而是分配机制的问题。继续追求生产力的无限增长，实际上可能是在回避真正的核心矛盾。</p>
+<h3 id="技术发展的方向性偏差"><a href="#技术发展的方向性偏差" class="headerlink" title="技术发展的方向性偏差"></a>技术发展的方向性偏差</h3><p>当前的AI发展主要服务于两个目标：提高效率和创造利润。但效率的提高往往意味着人力的替代，利润的创造往往意味着资源向资本方的进一步集中。这种发展方向本质上是为了让有钱人更有钱，让有权人更有权，而不是为了解决分配不公的问题。</p>
+<p>我们看到AI在金融交易、广告投放、消费者行为分析等领域的快速应用，这些都是为了更好地”榨取”价值，而不是创造真正有益于全人类的价值。</p>
+<h2 id="AI发展对平权的双重影响"><a href="#AI发展对平权的双重影响" class="headerlink" title="AI发展对平权的双重影响"></a>AI发展对平权的双重影响</h2><h3 id="加剧不平等的机制"><a href="#加剧不平等的机制" class="headerlink" title="加剧不平等的机制"></a>加剧不平等的机制</h3><p>从平权的角度看，当前的AI发展呈现出明显的不平等放大效应：</p>
+<p><strong>1. 技术门槛的提高</strong><br>AI技术的复杂性创造了新的知识壁垒。能够理解、使用和控制AI的人群获得了巨大的竞争优势，而无法跟上技术步伐的人群则被进一步边缘化。这种数字鸿沟比传统的教育差距更加难以跨越。</p>
+<p><strong>2. 资本集中的加速</strong><br>AI的发展需要大量的计算资源、数据资源和人才资源，这些都向少数大型科技公司集中。这些公司因此获得了前所未有的市场垄断地位和社会影响力，进一步加剧了财富和权力的集中。</p>
+<p><strong>3. 就业机会的两极化</strong><br>AI导致的就业替代主要影响中等技能的工作岗位，造成就业市场的”哑铃型”分布：高技能的AI开发者和低技能的服务业工作者，中间层被大量挤压。这种两极化加剧了社会的阶层固化。</p>
+<p><strong>4. 决策权力的集中</strong><br>当AI系统越来越多地参与社会决策时，控制这些系统的少数人实际上获得了对大众生活的巨大影响力。算法的”黑箱”特性使得这种权力更加隐蔽和难以制衡。</p>
+<h3 id="潜在的平权机会"><a href="#潜在的平权机会" class="headerlink" title="潜在的平权机会"></a>潜在的平权机会</h3><p>然而，AI发展也蕴含着一些平权的可能性：</p>
+<p><strong>1. 知识获取的民主化</strong><br>AI可以让高质量的教育资源变得更加普及和个性化，理论上可以缩小知识差距。</p>
+<p><strong>2. 创作门槛的降低</strong><br>AI工具可以让更多人参与到创作、设计、编程等原本需要专业技能的活动中，可能会催生新的创造者经济。</p>
+<p><strong>3. 服务供给的均等化</strong><br>AI可以在一定程度上缓解优质服务（如医疗、法律咨询）供给不足的问题，让更多人享受到基本的服务。</p>
+<h2 id="关键问题：技术为谁服务？"><a href="#关键问题：技术为谁服务？" class="headerlink" title="关键问题：技术为谁服务？"></a>关键问题：技术为谁服务？</h2><h3 id="市场逻辑的局限性"><a href="#市场逻辑的局限性" class="headerlink" title="市场逻辑的局限性"></a>市场逻辑的局限性</h3><p>当前AI发展主要由市场逻辑驱动，这意味着技术发展的方向主要服务于有支付能力的用户群体。富人的个性化需求得到精心满足，而穷人的基本需求却可能因为”没有商业价值”而被忽视。</p>
+<p>这种市场导向的发展模式本质上是一种”技术势利主义”——技术进步主要服务于已经拥有优势的群体，而不是最需要帮助的群体。</p>
+<h3 id="重新定义技术进步"><a href="#重新定义技术进步" class="headerlink" title="重新定义技术进步"></a>重新定义技术进步</h3><p>我们需要重新思考什么是真正的技术进步。如果技术发展不能让更多人过上更好的生活，不能缩小而是扩大社会差距，那么这种”进步”的意义何在？</p>
+<p>真正的技术进步应该是：</p>
+<ul>
+<li>让基本需求得到更好满足的技术</li>
+<li>让权力分布更加均衡的技术</li>
+<li>让人类潜能得到更充分发挥的技术</li>
+<li>让社会关系更加和谐的技术</li>
+</ul>
+<p>但就如最开始我们讨论的一样，AGI的技术平权挑战了资本主义的制度根本，那么政府在其中将会扮演什么样的角色？在现行体制下，是否真的impossible？</p>
+<hr>
+<p>抖音&#x2F;TikTok可能是当代最具争议性的技术产品之一。它既被赞誉为”内容创作的民主化革命”，也被批评为”注意力经济的终极陷阱”。在平权与不平等的天平上，抖音究竟扮演了什么角色？</p>
+<p>这个问题的复杂性在于，抖音同时展现了技术进步的两种截然不同的可能性：它既是普通人表达自我、获得机会的平台，也是算法控制、注意力剥削的工具。理解这种悖论，对于我们思考整个数字时代的平权问题具有重要意义。</p>
+<h2 id="民主化的一面：机会平等的技术实现"><a href="#民主化的一面：机会平等的技术实现" class="headerlink" title="民主化的一面：机会平等的技术实现"></a>民主化的一面：机会平等的技术实现</h2><h3 id="创作门槛的革命性降低"><a href="#创作门槛的革命性降低" class="headerlink" title="创作门槛的革命性降低"></a>创作门槛的革命性降低</h3><p>在抖音之前，内容创作是一个高门槛的活动。制作视频需要专业设备、剪辑技能、发行渠道，这些都将大多数普通人排除在外。电视台、影视公司、传统媒体控制着内容生产的全过程。</p>
+<p>抖音的革命性在于它将视频制作简化到了极致：</p>
+<ul>
+<li><strong>技术门槛</strong>：一部智能手机就能完成拍摄、剪辑、发布的全流程</li>
+<li><strong>学习成本</strong>：直观的界面设计让任何人都能快速上手</li>
+<li><strong>分发渠道</strong>：智能推荐算法让优质内容有机会被更多人看到，不再依赖传统的关系网络</li>
+</ul>
+<h3 id="草根文化的崛起"><a href="#草根文化的崛起" class="headerlink" title="草根文化的崛起"></a>草根文化的崛起</h3><p>抖音确实催生了大量草根创作者的成功案例：</p>
+<ul>
+<li><strong>农村网红</strong>：像”华农兄弟”这样的农村创作者通过展示乡村生活获得了数百万粉丝</li>
+<li><strong>手艺人获得新生</strong>：传统手工艺者通过短视频找到了新的传承和变现途径</li>
+<li><strong>知识普及</strong>：专业人士通过短视频形式传播知识，如”快手菜”、科普内容等</li>
+</ul>
+<p>这些现象表明，抖音确实为原本被边缘化的群体提供了发声和发展的机会。</p>
+<h3 id="知识传播的去中心化"><a href="#知识传播的去中心化" class="headerlink" title="知识传播的去中心化"></a>知识传播的去中心化</h3><p>抖音上的知识传播呈现出明显的去中心化特征：</p>
+<ul>
+<li><strong>专业知识的平民化</strong>：复杂的专业知识被包装成易懂的短视频</li>
+<li><strong>实用技能的普及</strong>：烹饪、维修、种植等生活技能得到广泛传播</li>
+<li><strong>文化交流的增进</strong>：不同地区、不同文化背景的人们能够更直接地交流</li>
+</ul>
+<p>从这个角度看，抖音确实起到了知识民主化的作用，让知识的获取不再受地域、阶层、教育背景的限制。</p>
+<h2 id="剥削的一面：算法资本主义的新形态"><a href="#剥削的一面：算法资本主义的新形态" class="headerlink" title="剥削的一面：算法资本主义的新形态"></a>剥削的一面：算法资本主义的新形态</h2><h3 id="注意力的商品化"><a href="#注意力的商品化" class="headerlink" title="注意力的商品化"></a>注意力的商品化</h3><p>然而，抖音模式的核心逻辑是将用户的注意力转化为商业价值。这种模式存在根本性的不平等：</p>
+<ul>
+<li><strong>价值创造与收益分配的不对称</strong>：用户创造内容和提供注意力，但大部分商业价值被平台攫取</li>
+<li><strong>数据主权的缺失</strong>：用户的行为数据被平台收集和利用，但用户无法从中获得相应回报</li>
+<li><strong>创作者的依附性</strong>：看似”自由”的创作者实际上高度依赖平台的推荐机制</li>
+</ul>
+<h3 id="算法控制的隐蔽性"><a href="#算法控制的隐蔽性" class="headerlink" title="算法控制的隐蔽性"></a>算法控制的隐蔽性</h3><p>抖音的推荐算法看似公平，实际上隐含着深层的控制机制：</p>
+<p><strong>1. 内容同质化的压力</strong><br>算法会奖励符合用户喜好的内容，这导致创作者不得不迎合算法的偏好，创作趋向同质化。真正的创新和批判性内容往往难以获得流量。</p>
+<p><strong>2. 成瘾机制的设计</strong><br>无限滑动、精准推荐、间歇性奖励等设计都是为了最大化用户在平台上的停留时间，这种”时间收割”本质上是一种剥削。</p>
+<p><strong>3. 价值观的隐性塑造</strong><br>算法会放大能够引起强烈情绪反应的内容，这往往意味着煽动性、娱乐性的内容获得更多曝光，而理性、深度的内容被淹没。</p>
+<h3 id="新形式的数字鸿沟"><a href="#新形式的数字鸿沟" class="headerlink" title="新形式的数字鸿沟"></a>新形式的数字鸿沟</h3><p>抖音虽然降低了创作门槛，但也创造了新的不平等：</p>
+<p><strong>1. 算法素养的差距</strong><br>理解并适应算法规则的创作者获得更多机会，而不懂算法逻辑的用户处于劣势。</p>
+<p><strong>2. 资源投入的分化</strong><br>虽然基础创作门槛降低了，但要在激烈竞争中脱颖而出，仍需要专业团队、设备投入、营销策略等，这又将很多人排除在外。</p>
+<p><strong>3. 平台依赖的风险</strong><br>创作者的成功高度依赖单一平台，一旦平台政策变化或账号被封，之前的积累可能瞬间归零。</p>
+<h2 id="深层分析：技术民主化的幻象"><a href="#深层分析：技术民主化的幻象" class="headerlink" title="深层分析：技术民主化的幻象"></a>深层分析：技术民主化的幻象</h2><h3 id="参与不等于赋权"><a href="#参与不等于赋权" class="headerlink" title="参与不等于赋权"></a>参与不等于赋权</h3><p>抖音确实让更多人参与到了内容创作中，但参与本身并不等于真正的赋权。大多数用户仍然是算法和资本逻辑的被动接受者：</p>
+<ul>
+<li><strong>创作自由的有限性</strong>：创作者必须在平台规则框架内活动，真正的表达自由是有限的</li>
+<li><strong>经济收益的马太效应</strong>：少数头部创作者获得大部分收益，绝大多数创作者收入微薄</li>
+<li><strong>话语权的集中</strong>：虽然人人都能发声，但真正能影响社会议题的声音仍然集中在少数人手中</li>
+</ul>
+<h3 id="消费主义的强化"><a href="#消费主义的强化" class="headerlink" title="消费主义的强化"></a>消费主义的强化</h3><p>抖音虽然提供了创作机会，但其核心逻辑仍然是刺激消费：</p>
+<ul>
+<li><strong>种草经济</strong>：大量内容以推广商品为目的</li>
+<li><strong>冲动消费</strong>：短视频格式特别适合激发用户的冲动购买欲望</li>
+<li><strong>虚假需求的制造</strong>：算法会不断推送可能让用户产生购买欲望的内容</li>
+</ul>
+<p>这种逻辑实际上是在培养消费者，而不是创造者。</p>
+<h2 id="地域和文化维度的复杂性"><a href="#地域和文化维度的复杂性" class="headerlink" title="地域和文化维度的复杂性"></a>地域和文化维度的复杂性</h2><h3 id="城乡差距的微妙变化"><a href="#城乡差距的微妙变化" class="headerlink" title="城乡差距的微妙变化"></a>城乡差距的微妙变化</h3><p>抖音对城乡差距的影响呈现出复杂的图景：</p>
+<p><strong>缩小差距的方面</strong>：</p>
+<ul>
+<li>农村内容获得城市用户关注，一定程度上促进了城乡文化交流</li>
+<li>农产品直播带货为农民提供了新的销售渠道</li>
+<li>乡村旅游通过短视频获得推广机会</li>
+</ul>
+<p><strong>扩大差距的方面</strong>：</p>
+<ul>
+<li>城市创作者在技术、资源、营销能力方面仍有明显优势</li>
+<li>乡村网红往往被要求表演”乡土性”，可能强化了城市对农村的刻板印象</li>
+<li>注意力经济的逻辑可能会让农村地区更加依赖外部关注，而非内生发展</li>
+</ul>
+<h3 id="文化多样性的双重效应"><a href="#文化多样性的双重效应" class="headerlink" title="文化多样性的双重效应"></a>文化多样性的双重效应</h3><p><strong>积极效应</strong>：</p>
+<ul>
+<li>方言、地方文化通过短视频得到保护和传播</li>
+<li>少数民族文化获得更多展示机会</li>
+<li>传统手工艺、民俗文化找到新的传承方式</li>
+</ul>
+<p><strong>消极效应</strong>：</p>
+<ul>
+<li>文化展示可能趋于表面化、商业化</li>
+<li>为了迎合主流审美，地方文化可能被”标准化”</li>
+<li>文化的商品化可能损害其本真性</li>
+</ul>
+<h2 id="全球视角：TikTok的地缘政治意义"><a href="#全球视角：TikTok的地缘政治意义" class="headerlink" title="全球视角：TikTok的地缘政治意义"></a>全球视角：TikTok的地缘政治意义</h2><h3 id="信息主权的争夺"><a href="#信息主权的争夺" class="headerlink" title="信息主权的争夺"></a>信息主权的争夺</h3><p>TikTok在全球的发展也反映了平权问题的国际维度：</p>
+<ul>
+<li><strong>打破西方社交媒体垄断</strong>：为非西方国家提供了不同的社交媒体选择</li>
+<li><strong>文化输出的新渠道</strong>：中国文化通过TikTok在全球范围内传播</li>
+<li><strong>数据主权的争议</strong>：各国对TikTok的数据安全担忧反映了数字主权的重要性</li>
+</ul>
+<h3 id="发展中国家的机遇与挑战"><a href="#发展中国家的机遇与挑战" class="headerlink" title="发展中国家的机遇与挑战"></a>发展中国家的机遇与挑战</h3><p>对于发展中国家来说，TikTok既是机遇也是挑战：</p>
+<ul>
+<li><strong>绕过传统媒体门槛</strong>：直接向全球观众展示本国文化和产品</li>
+<li><strong>数字鸿沟的风险</strong>：可能加剧与发达国家在数字技术方面的差距</li>
+<li><strong>文化殖民的新形式</strong>：算法推荐可能强化某些文化的主导地位</li>
+</ul>
+<h2 id="结论：技术工具的中性神话"><a href="#结论：技术工具的中性神话" class="headerlink" title="结论：技术工具的中性神话"></a>结论：技术工具的中性神话</h2><p>抖音&#x2F;TikTok的案例清楚地表明，技术工具从来不是中性的。它的平权效应和不平等效应是同时存在的，关键在于我们如何设计、使用和监管这些技术。</p>
+<h3 id="平权的真实性"><a href="#平权的真实性" class="headerlink" title="平权的真实性"></a>平权的真实性</h3><p>抖音确实在某些方面促进了平权：</p>
+<ul>
+<li>创作门槛的降低是真实的</li>
+<li>知识传播的民主化是真实的</li>
+<li>草根文化的崛起是真实的</li>
+</ul>
+<h3 id="剥削的隐蔽性"><a href="#剥削的隐蔽性" class="headerlink" title="剥削的隐蔽性"></a>剥削的隐蔽性</h3><p>但其剥削机制也是真实存在的：</p>
+<ul>
+<li>算法控制是真实的</li>
+<li>注意力剥削是真实的</li>
+<li>新形式的数字鸿沟是真实的</li>
+</ul>
+<p>我不知道这对人类是好还是坏，是更文明还是更野蛮，或许我们每一个人也不得不在这一滚滚向前的浪潮中找到自己的位置。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AGI/" class="print-no-link">#AGI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AGI is possible and impossible</div>
+      <div>https://blog.wh1isper.top/2025/06/20/2025-06-21-AGI-is-possible-and-impossible/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/04/2025-07-05-ergonomics-to-agent/" title="Ergonomics to Agent">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Ergonomics to Agent</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/16/2025-06-17-context-engineering/" title="Context Engineering-The Most Important Thing in Agent Development">
+                        <span class="hidden-mobile">Context Engineering-The Most Important Thing in Agent Development</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

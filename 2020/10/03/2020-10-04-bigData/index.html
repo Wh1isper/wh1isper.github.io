@@ -1,0 +1,927 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="大数据理论基础笔记，包括5V特征、结构化&#x2F;非结构化&#x2F;半结构化数据分类，以及Spark等大数据技术概述。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="🖊大数据相关笔记">
+<meta property="og:url" content="https://blog.wh1isper.top/2020/10/03/2020-10-04-bigData/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="大数据理论基础笔记，包括5V特征、结构化&#x2F;非结构化&#x2F;半结构化数据分类，以及Spark等大数据技术概述。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.817Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="数据抽样">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="spark">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>🖊大数据相关笔记 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-desk.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Big Data Note"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-10-04 00:00" pubdate>
+          2020年10月4日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Big Data Note</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="大数据相关笔记"><a href="#大数据相关笔记" class="headerlink" title="大数据相关笔记"></a>大数据相关笔记</h1><h2 id="理论基础"><a href="#理论基础" class="headerlink" title="理论基础"></a>理论基础</h2><h3 id="大数据特征"><a href="#大数据特征" class="headerlink" title="大数据特征"></a>大数据特征</h3><p>5V：容量（Volume）大量化、速率（Velocity）快速化、多样性（Variety）多样化、真实性（Veracity）、价值（Value）价值密度低</p>
+<p>有时不谈真实性 只有4V</p>
+<h3 id="不同数据类型"><a href="#不同数据类型" class="headerlink" title="不同数据类型"></a>不同数据类型</h3><h4 id="结构化数据"><a href="#结构化数据" class="headerlink" title="结构化数据"></a>结构化数据</h4><p>结构化数据遵循一个标准的模型，或者模式，并且常常以表格的形式存储。该类型数据通常用来捕捉不同对象之间的关系，并且存储在关系型数据库中。</p>
+<h4 id="非结构化数据"><a href="#非结构化数据" class="headerlink" title="非结构化数据"></a>非结构化数据</h4><p>非结构化数据是指不遵循统一的数据模式或者模型的数据。存储和处理非结构化数据通常需要专用的逻辑，如存储一部视频，需要正确的编码和解码。非结构化数据不能被直接处理或者用SQL语句查询。如果他们需要存储在关系型数据库中，它们会以二进制大型对象（BLOB）的形式存储在表中。当然，NoSQL数据库作为一个非关系型数据库，能够用来同时存储结构化和非结构化数据。</p>
+<h4 id="半结构化数据"><a href="#半结构化数据" class="headerlink" title="半结构化数据"></a>半结构化数据</h4><p>半结构化数据有一定的结构或一致性约束，但本质上不具有关系型。半结构化数据是层次性的或基于图像的。这类数据常常储存在文本文件中，如XML文件和JSON文件是两类常见的半结构化数据。</p>
+<h4 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h4><p>元数据提供了一个数据集的特征和结构信息。这种数据主要由机器生成，并且能够添加到数据集中。搜索元数据对于大数据存储、处理和分析是至关重要的，因为元数据提供了数据系谱信息，以及数据处理的起源。例如XML文件中提供作者和创建日期信息的标签、数码照片中提供文件大小和分辨率的属性文件。</p>
+<h2 id="大数据存储概念"><a href="#大数据存储概念" class="headerlink" title="大数据存储概念"></a>大数据存储概念</h2><h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><p>一个集群是紧密耦合的一些服务器或节点。这些服务器通常有相同的硬件规格并且通过网络连接在一起作为一个工作单元。一个集群通常是多台机器组合提供一个服务。</p>
+<h3 id="分布式文件系统"><a href="#分布式文件系统" class="headerlink" title="分布式文件系统"></a>分布式文件系统</h3><p>一个分布式文件系统作为一个文件系统，可以存储分布在集群节点上的文件。对于客户端来说，文件似乎在本地，但物理形式上文件分布于整个集群。</p>
+<h3 id="NoSQL"><a href="#NoSQL" class="headerlink" title="NoSQL"></a>NoSQL</h3><p>Not-only SQL是一个非关系型数据库，具有高度的可扩展性、容错性，并专门设计用来存储半结构化和非结构化数据。NoSQL数据库通常会提供一个能被应用程序调用的基于API的查询接口。NoSQL数据库也支持SQL以外的查询语言。</p>
+<h3 id="分片"><a href="#分片" class="headerlink" title="分片"></a>分片</h3><p>分片是<strong>水平</strong>地将一个大的数据集划分成较小的、更易于管理的数据集的过程，这些数据集叫碎片。碎片分布在多个节点，而节点是一个服务器或者一台机器。每个碎片存储在一个单独的节点上，每个节点只负责存储在该节点上的数据。所有碎片都是同样的模式，所有碎片集合起来代表完整的数据集。</p>
+<p>PS：就是把表的行存在不同的节点上</p>
+<p>分片对于客户端来说通常是透明的。分片允许处理负荷分布在多个节点上以实现水平可伸缩性。这样做，每个节点只负责整个数据集的一部分，整行读写可化为多个节点的并行操作。</p>
+<p>PS：若纵向切割，则每个节点保有某个属性的一部分，单行操作可以化为多个节点的并行操作。</p>
+<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><p>复制在多个节点上存储数据集的多个拷贝，被叫做副本。复制因为相同的数据在不同的节点上复制的原因提供了可伸缩性和可用性。数据容错也可以通过数据冗余来实现。数据冗余确保单个节点失败时数据不会丢失。</p>
+<p>有两种不同的方法用于实现复制：</p>
+<ul>
+<li>主从式复制</li>
+<li>对等式复制</li>
+</ul>
+<h4 id="主从式复制"><a href="#主从式复制" class="headerlink" title="主从式复制"></a>主从式复制</h4><p>主从式复制中，节点被安排在一个主从配置中，所有数据都被写入主节点，一旦保存，数据就被复制到多个从节点。</p>
+<p>一个从节点可以作为备份节点配置主节点。如果主节点失败，直到主节点被恢复为止将不能进行写操作。主节点要么时从主节点的一个备份中回复，要么在从节点中选择一个作为新的主节点。</p>
+<h5 id="读写不一致问题："><a href="#读写不一致问题：" class="headerlink" title="读写不一致问题："></a>读写不一致问题：</h5><p>如果一个从节点在被更新到主节点的新状态之前，被用户读取，便会产生这样的问题。为了确保读一致性，可以实现一个投票系统，若大多数从节点都包含相同版本的记录，则可以声明一个读操作是一致性的。实现这样的投票系统需要从节点之间有相应的快速可靠通讯机制。</p>
+<p>场景：</p>
+<ol>
+<li>用户A更新数据</li>
+<li>数据从主节点复制到节点a</li>
+<li>在数据复制到节点b之前，用户B试图从节点b读取数据，导致不一致的读操作</li>
+<li>当数据从主节点复制到从节点b之后，数据一致</li>
+</ol>
+<h4 id="对等式复制"><a href="#对等式复制" class="headerlink" title="对等式复制"></a>对等式复制</h4><p>对等式复制，所有节点在同一水平上运作。各个节点之间没有主从节点的关系。每个称为对等的节点也同样能够处理读请求和写请求。每个写操作复制到所有对等节点中去。</p>
+<p>对等式复制容易造成写不一致，写不一致发生在同时更新同一个数据的多个对等节点的时候。这可以通过实现一个悲观或乐观并发策略来解决这个问题。</p>
+<ul>
+<li>悲观并发是一种防止不一致的有前瞻性的策略。它使用锁来确保一个记录上同一个时间只有一个更新操作可能发生。<strong>然而这种方法的可用性较差，因为正在被更新的数据库记录一直是不可用的，直到所有锁被释放。</strong></li>
+<li>乐观并发是一个被动的策略，它不使用锁。相反，它允许不一致性在所有更新都被实现后，最终可以获得一致性的前提下发生。实现上可以使用一个时间戳，接受时间戳最新的更新。</li>
+</ul>
+<p>场景：</p>
+<ol>
+<li><p>用户A更新数据</p>
+</li>
+<li><p>数据被复制到对等节点A</p>
+<p>数据被复制到对等节点B</p>
+</li>
+<li><p>在数据被复制到对等节点C之前，用户B试图从对等节点C读取数据，导致读不一致</p>
+</li>
+<li><p>最终数据将被更新到对等节点C中，数据库一致</p>
+</li>
+</ol>
+<h3 id="分片-复制"><a href="#分片-复制" class="headerlink" title="分片+复制"></a>分片+复制</h3><p>为了改善分片机制所提供的有限的容错能力（部分行可用），而另外受益于增加的复制的可用性和伸缩性，可以将分片和复制组合使用。</p>
+<ul>
+<li>分片和主从式复制</li>
+<li>分片和对等式复制</li>
+</ul>
+<h4 id="分片和主从式复制"><a href="#分片和主从式复制" class="headerlink" title="分片和主从式复制"></a>分片和主从式复制</h4><p>多个主分片分布在各个节点中。从分片提供读服务，并通过主分片进行更新，为读操作提供可扩展性和容错性。</p>
+<p>如果主分片变为不可操作或网络出现故障，写操作的容错能力将受到影响。</p>
+<h4 id="分片和对等式复制"><a href="#分片和对等式复制" class="headerlink" title="分片和对等式复制"></a>分片和对等式复制</h4><p>每个碎片被复制到多个对等节点，每个对等节点仅仅负责整个数据集的一个子集。总的来说，这有助于实现更好的可扩展性和容错性。由于不涉及主节点，所以不存在单点故障，并且支持读操作和写操作的容错性。</p>
+<p>同样的，也继承了对等复制的写不一致问题，大数据下多分片同步过程可能导致网络拥塞等</p>
+<h3 id="CAP定理"><a href="#CAP定理" class="headerlink" title="CAP定理"></a>CAP定理</h3><ul>
+<li><p>一致性（Consistency）：从任何节点的读操作都是一致的</p>
+</li>
+<li><p>可用性（Availability）：任何一个读&#x2F;写请求总是会以成功或失败的形式得到相应</p>
+</li>
+<li><p>分区容忍（Partition tolerance）：数据库系统可以容忍通信中断，通过将集群分成多个竖井，仍然可以队读&#x2F;写请求提供服务（挂了几个节点还是部分可用）</p>
+</li>
+</ul>
+<p>CAP三角：CAP不能同时获得</p>
+<ul>
+<li>如果CA是必需的，则需要保持通信，P不成立</li>
+<li>如果CP是必需的，则不能保持可用性A</li>
+<li>如果AP是必需的，则由于通讯时间等，不能保证一致性C</li>
+</ul>
+<p>分布式数据库系统中，不能保证100%的通达可用，因此P是必需的，CAP通常是C+P OR A+P的组合</p>
+<h3 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h3><p>数据库设计原则与数据管理</p>
+<ul>
+<li>原子性（Atomicity）</li>
+<li>一致性（Consistency）</li>
+<li>隔离（Isolation）</li>
+<li>持久性（Durability）</li>
+</ul>
+<h3 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h3><p>BASE是一个根据CAP定理而来的数据库设计原则，它采用了使用分布式技术的数据库系统。</p>
+<ul>
+<li>基本可用（Basically Available）：始终相应用户请求，但可能由于网络原因，节点间通讯中断</li>
+<li>软状态（Soft State）：同步的中间状态，意味着读不一致可能出现</li>
+<li>最终一致性（Eventual Consistency）</li>
+</ul>
+<h2 id="大数据处理概念"><a href="#大数据处理概念" class="headerlink" title="大数据处理概念"></a>大数据处理概念</h2><h3 id="并行数据处理"><a href="#并行数据处理" class="headerlink" title="并行数据处理"></a>并行数据处理</h3><p>将一个大规模的任务分成多个子任务同时进行，目的是减少处理时间。较为典型的方法是在一台机器上使用多个处理器或内核完成。</p>
+<h3 id="分布式数据处理"><a href="#分布式数据处理" class="headerlink" title="分布式数据处理"></a>分布式数据处理</h3><p>与并行数据处理非常相似，将一个大规模任务分成多个子任务。但不同的是，分布式数据处理通常在几个物理上分离的机器上进行，这些机器通过网络连接构成了一个集群。</p>
+<h3 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h3><p>Hadoop实现了MapReduce处理框架，被公认为当代大数据解决方案的工业平台。Hadoop可以作为ETL引擎与分析引擎来处理大量结构化、半结构化、非结构化数据。</p>
+<p>这一部分的内容我将单独出blog</p>
+<h3 id="处理工作量"><a href="#处理工作量" class="headerlink" title="处理工作量"></a>处理工作量</h3><p>大数据的处理工作量被定义为一定时间内处理数据的性质与数量。处理工作量主要被分为以下两个类型</p>
+<ul>
+<li>批处理型</li>
+<li>事务型</li>
+</ul>
+<h4 id="批处理型"><a href="#批处理型" class="headerlink" title="批处理型"></a>批处理型</h4><p>批处理也称脱机处理，这种方法通常成批地处理数据，因此会导致较大的延迟。</p>
+<p>通常我们采用批处理完成大数据有序的读&#x2F;写操作，这些读&#x2F;写查询通常是成批的。</p>
+<h4 id="事务型"><a href="#事务型" class="headerlink" title="事务型"></a>事务型</h4><p>事务型处理也称为在线处理，这种处理方式通过无延迟的交互式处理使得整个回应延迟很小。事务型处理一般适用于少量数据的随机读&#x2F;写操作</p>
+<h3 id="集群-1"><a href="#集群-1" class="headerlink" title="集群"></a>集群</h3><p>集群能为水平可扩展的存储方案提供必要的支持，也能为分布式数据处理提供一种线性的扩展机制（即存储和计算的集群）。集群有极高的可扩展性，因而它可以把大的数据集分成多个更小的数据集，以分布式的方法并行处理，这种特性为大数据处理提供了理想的环境。</p>
+<p>由于集群由物理连接上相互独立的设备组成，它具有固定的冗余与一定的容错性，因而当网络中某个节点发生错误时，它之前处理与分析的结果都是可恢复的。考虑到大数据处理过程偶尔有些不稳定，我们通常采用云主机基础设施服务或线程的分析环境作为集群的主干。</p>
+<p>目前由很多分布式解决方案采用docker引擎，能够进一步提高冗余性，降低机器数量对集群稳定性的影响。</p>
+<h3 id="批处理模式"><a href="#批处理模式" class="headerlink" title="批处理模式"></a>批处理模式</h3><p>批处理模式中，数据总是成批地脱机处理，响应时长从几分钟到几小时不等。该模式本质上解决了大数据数据量大、数据特性不同的问题。</p>
+<p>批处理是大数据处理的主要方式，相较于实时模式，它更简单、易于建立、开销也较小。</p>
+<p>商务智能（BI）、预测性分析与规范性分析、ETL操作一般都使用批处理模式</p>
+<h4 id="MapReduce批处理"><a href="#MapReduce批处理" class="headerlink" title="MapReduce批处理"></a>MapReduce批处理</h4><p>MapReduce是一种广泛用于实现批处理的架构，它采用“分治”的原则，把一个大的问题分成可以被分别解决的小问题的集合，拥有内部容错性与冗余，因而具有很高的可扩展性与可靠性。</p>
+<p>MapReduce把数据处理算法分发到各个存储节点，数据在这些节点上被并行地处理，这种方法可以消除发送数据的时间开小。由于并行处理小规模数据速度更快，MapReduce不但可以节约网络带宽开销，更能大量节约处理大规模数据的时间开销。</p>
+<p>Hadoop实现的MapReduce将中间结果存储在hdfs（文件系统）中，因此对磁盘大量的读写是性能瓶颈所在。</p>
+<p>Spark针对Hadoop的问题，将中间结果保存在内存中，增加了性能的同时也提高了机器配置的需要。</p>
+<h4 id="Map和Reduce任务"><a href="#Map和Reduce任务" class="headerlink" title="Map和Reduce任务"></a>Map和Reduce任务</h4><p>一次MapReduce处理引擎的运行被称为MapReduce作业，它由Map和Reduce两部分任务组成，即映射-归约。</p>
+<p>映射任务被分为映射（Map）、合并（combine）、分区（partition）三个阶段，其中合并时可选的</p>
+<p>归约任务被分为洗牌和排序（shuffle and sort）、归约（reduce）两个阶段</p>
+<h5 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h5><p>映射首先把大的数据文件分割成多个小数据文件，每个较小的数据文件的每条记录都被解析为一组键值对。</p>
+<p>（K1, V1）-&gt; list（K2, V2）</p>
+<h5 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h5><p>对键值对进行合并，减少数据由映射任务节点传输到归约任务节点的带宽消耗</p>
+<p>（K2, list（V2））-&gt; list（K2, V2）</p>
+<h5 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h5><p>当使用多个规约模块时，MapReduce模型就需要把映射模块或合并模块的输出分配给各个归约模块。在此，我们把分配到每个归约模块的数据叫做一个分区，也就是说，分区数与归约模块数时相等的。</p>
+<p>（K2, V2）-&gt;（index）</p>
+<p>一个分区包含很多记录，同一键的记录必须被分配在同一个分区。在此基础上，MapReduce模型会尽量保证随机公平地把数据分配到各个归约模块中。</p>
+<p>由于上述分区模块特性，会导致分配到各个归约模块地数据量由差异，甚至分配给某个规约模块地数据量会远远超过其他。不均等地工作量将导致各个归约模块地工作结束时间不同，导致空等地情况发生，耗时增加。</p>
+<h5 id="洗牌和排序"><a href="#洗牌和排序" class="headerlink" title="洗牌和排序"></a>洗牌和排序</h5><p>洗牌包括由分区模块将数据传输到归约模块的整个过程，是规约任务的第一个阶段。由分区模块传输来的数据可能存在多条记录对应同一个键，这个模块将把这些相同的键进行组合，形成唯一的键值对列表。</p>
+<p>（K2, V2）-&gt;K2, list（V2）</p>
+<h5 id="归约"><a href="#归约" class="headerlink" title="归约"></a>归约</h5><p>最后一个阶段，对输入的记录进行进一步分析归纳，也可能对输入不做任何改变。在任何情况下，这个模块都在处理当条记录的同时将其他处理过的记录输出。</p>
+<p>分配到每个归约模块的分区都将被合并成一个文件。</p>
+<p>（K2, list（V2））-&gt; list（K3, V3）</p>
+<h4 id="理解MapReduce算法"><a href="#理解MapReduce算法" class="headerlink" title="理解MapReduce算法"></a>理解MapReduce算法</h4><p>MapReduce编程遵循一套特定的逻辑，采用了分治的原则。</p>
+<ul>
+<li>任务并行：将一个任务分为多个子任务，在不同的节点上并行。通常并行的子任务采用不同的算法，每个子任务的输入数据可以相同也可以不同，最后多个子任务的结果组成最终结果。</li>
+<li>数据并行：将一个数据集分为多个子数据集在多个节点上并行地处理，数据并行的多个节点采用同一算法，最后多个子数据集的处理结果组成最终结果。</li>
+</ul>
+<p>设计MapReduce算法时考虑的几点：</p>
+<ul>
+<li>尽可能使用简单的算法逻辑，这样才能采用统一函数处理逻辑处理某个数据集的不同部分</li>
+<li>数据集可以被分布式地划分在集群中</li>
+<li>理解数据集的数据结构以保证选取有用的记录</li>
+<li>将算法逻辑分为映射部分与归约部分</li>
+<li>保证映射函数的输出时正确有效的</li>
+<li>保证归约函数的输出时正确的</li>
+</ul>
+<h3 id="实时处理模式"><a href="#实时处理模式" class="headerlink" title="实时处理模式"></a>实时处理模式</h3><p>实时模式中，数据通常在写入磁盘之前在内存中进行处理，侧重于提高大数据处理的速度。</p>
+<h4 id="SCV原则"><a href="#SCV原则" class="headerlink" title="SCV原则"></a>SCV原则</h4><h5 id="速度（Speed）"><a href="#速度（Speed）" class="headerlink" title="速度（Speed）"></a>速度（Speed）</h5><p>数据生成后处理的速度，此处忽略获取数据的时间消耗，专注于实际数据处理的时间消耗</p>
+<h5 id="一致性（Consistency）"><a href="#一致性（Consistency）" class="headerlink" title="一致性（Consistency）"></a>一致性（Consistency）</h5><p>一致性指处理结果的准确性与精度，高一致性系统通常会利用全部数据来保证其准确度与精度，低一致性系统则采用采样技术</p>
+<h5 id="容量（Volume）"><a href="#容量（Volume）" class="headerlink" title="容量（Volume）"></a>容量（Volume）</h5><p>容量指系统能够处理的数据量</p>
+<h5 id="SCV不可能三角"><a href="#SCV不可能三角" class="headerlink" title="SCV不可能三角"></a>SCV不可能三角</h5><p>如果保证数据处理系统的速度和一致性，就不能保证大容量</p>
+<p>如果保证高一致性处理大容量数据，则处理速度必然减慢</p>
+<p>如果保证高速的大容量数据处理，则系统的高一致性将受到影响</p>
+<p>实时处理中，保证数据不丢失，对数据处理容量V的需求较大，因此需要在S和C中做权衡，实现S+V或C+V</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="category-chain-item">读书笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8A%BD%E6%A0%B7/" class="print-no-link">#数据抽样</a>
+      
+        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="print-no-link">#大数据</a>
+      
+        <a href="/tags/spark/" class="print-no-link">#spark</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>🖊大数据相关笔记</div>
+      <div>https://blog.wh1isper.top/2020/10/03/2020-10-04-bigData/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年10月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/04/10/2021-04-11-SparkStandalone.md/" title="🔧Spark部署教程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">🔧Spark部署教程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/20/2020-09-21-data-sampling/" title="🖊数据抽样相关笔记">
+                        <span class="hidden-mobile">🖊数据抽样相关笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

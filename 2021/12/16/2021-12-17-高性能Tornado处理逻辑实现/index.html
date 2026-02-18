@@ -1,0 +1,901 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="Tornado协程异步编程完整教程，从基础异步到生产者消费者模型，教你如何改造线程模型为全异步高性能服务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="🚀高性能Tornado处理逻辑实现">
+<meta property="og:url" content="https://blog.wh1isper.top/2021/12/16/2021-12-17-%E9%AB%98%E6%80%A7%E8%83%BDTornado%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="Tornado协程异步编程完整教程，从基础异步到生产者消费者模型，教你如何改造线程模型为全异步高性能服务。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.817Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="Tornado">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="异步">
+<meta property="article:tag" content="高性能">
+<meta property="article:tag" content="协程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>🚀高性能Tornado处理逻辑实现 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-unix-linux.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Use Tornado like a pro"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-17 00:00" pubdate>
+          2021年12月17日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          19k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          63 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Use Tornado like a pro</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>大多数人都知道Tornado是一个协程异步框架，但是大多数人都没有很好的理解协程编程的相关原理，网上也缺乏相关的教程，往往浅尝辄止。</p>
+<p>这篇文章将试着从盘古开天说起，将一个hello world服务器变成一个海量吞吐服务器，适合协程编程入门的新手，对协程有兴趣，但是对协程原理一知半解的同学阅读；也适合使用Django等线程模型服务器的开发同学了解Tornado是如何同时获得协程和多进程优势的。</p>
+<p><strong>TL;DR;你可以直接跳到最后面的生产者消费者模型阅读代码，省去前面的简单内容。</strong></p>
+<p>当然，Tornado多进程模式需要依赖fork函数，在windows上是行不通的，但这并不意味着本篇文章的代码都无法运行，相反，你只需要注释掉 <code>http_server.start(0)</code>，就可以运行本篇文章的所有代码。在最终版本中，本文实现了一个全异步的服务，即使你无法启动多进程的Tornado，相信我，这也不会成为你的性能瓶颈！</p>
+<p>完成这篇文章主要靠笔者的阅读经验和实际项目经验，《流畅的Python》一书对如何改造线程模型为协程模型有详细的介绍，如果想要深入学习Python，建议阅读此书。本文借用其原则：从某个函数进行改造时，首先将其定义为 <code>async</code>的，其次将其中的耗时操作利用 <code>run_in_executor</code>封装，最后层层改进其调用函数，使用 <code>await</code>调用，在这里听不懂没关系，后面会有实际讲解</p>
+<h1 id="从Hello-World-开始"><a href="#从Hello-World-开始" class="headerlink" title="从Hello World!开始"></a>从Hello World!开始</h1><p>首先我们从Hello world开始，稍稍修改了官方给出的例子，得到了一个接受不是很规范的get实现，解析请求的 <code>json</code> body对象，从中读取 <code>job_id</code>并输出的服务</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> logging<br><br><span class="hljs-keyword">import</span> tornado.httpserver<br><span class="hljs-keyword">import</span> tornado.ioloop<br><span class="hljs-keyword">import</span> tornado.options<br><span class="hljs-keyword">import</span> tornado.web<br><span class="hljs-keyword">import</span> json<br><br><span class="hljs-keyword">from</span> tornado.options <span class="hljs-keyword">import</span> define, options<br><br>define(<span class="hljs-string">&quot;port&quot;</span>, default=<span class="hljs-number">8888</span>, <span class="hljs-built_in">help</span>=<span class="hljs-string">&quot;run on the given port&quot;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-built_in">int</span>)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_logger</span>():<br>    <span class="hljs-keyword">return</span> logging.getLogger(<span class="hljs-string">&quot;tornado.general&quot;</span>)<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainHandler</span>(tornado.web.RequestHandler):<br>    logger = get_logger()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self</span>):<br>        job_id = json.loads(self.request.body.decode()).get(<span class="hljs-string">&#x27;job_id&#x27;</span>)<br>        self.do_something(job_id)<br>        self.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;job_id&#125;</span> done&quot;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">do_something</span>(<span class="hljs-params">self, job_id</span>):<br>        self.logger.info(<span class="hljs-string">f&#x27;do job:<span class="hljs-subst">&#123;job_id&#125;</span>&#x27;</span>)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    tornado.options.parse_command_line()<br>    application = tornado.web.Application([(<span class="hljs-string">r&quot;/&quot;</span>, MainHandler)])<br>    http_server = tornado.httpserver.HTTPServer(application)<br>    http_server.listen(options.port)<br>    <span class="hljs-comment"># 多进程</span><br>    <span class="hljs-comment"># http_server.start(0)</span><br>    tornado.ioloop.IOLoop.current().start()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    main()<br><br></code></pre></td></tr></table></figure>
+
+<p>启动后，他会监听你的8888端口</p>
+<h2 id="写个简单的请求脚本吧"><a href="#写个简单的请求脚本吧" class="headerlink" title="写个简单的请求脚本吧"></a>写个简单的请求脚本吧</h2><p>下面我们简单的写个请求脚本验证一下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">import</span> json<br><br><span class="hljs-keyword">from</span> requests <span class="hljs-keyword">import</span> Timeout<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">api_request</span>(<span class="hljs-params">job_id</span>):<br>    <span class="hljs-keyword">try</span>:<br>        response = requests.get(<span class="hljs-string">&#x27;http://localhost:8888&#x27;</span>, data=json.dumps(&#123;<span class="hljs-string">&#x27;job_id&#x27;</span>: job_id&#125;), timeout=<span class="hljs-number">3</span>) <span class="hljs-comment"># 特意设置了3秒超时</span><br>    <span class="hljs-keyword">except</span> Timeout:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">return</span> response.status_code == <span class="hljs-number">200</span><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    api_request(<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<p>运行这个脚本，你就向你的服务器发送了一个get请求啦</p>
+<p>之后我们会针对这个脚本进行扩展，以达到并发测试的目的~</p>
+<h1 id="如果任务时间比较长怎么办？"><a href="#如果任务时间比较长怎么办？" class="headerlink" title="如果任务时间比较长怎么办？"></a>如果任务时间比较长怎么办？</h1><p>实际的开发中，不可能简单的打个日志就结束，万一是一个需要一些时间（比如1s？0.5s？）才能完成的任务，那会发生什么呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python">...<br><span class="hljs-comment">#省略了一些你已经知道的依赖引入</span><br><span class="hljs-keyword">import</span> time<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainHandler</span>(tornado.web.RequestHandler):<br>    logger = get_logger()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self</span>):<br>        job_id = json.loads(self.request.body.decode()).get(<span class="hljs-string">&#x27;job_id&#x27;</span>)<br>        self.do_something(job_id)<br>        self.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;job_id&#125;</span> done&quot;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">do_something</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-comment"># 模拟一个任务需要1秒的时间完成</span><br>        time.sleep(<span class="hljs-number">1</span>)<br>        self.logger.info(<span class="hljs-string">f&#x27;job done:<span class="hljs-subst">&#123;job_id&#125;</span>&#x27;</span>)<br>...<br><span class="hljs-comment">#省略了服务器启动的代码</span><br></code></pre></td></tr></table></figure>
+
+<p>在以上的代码中，<code>time.sleep(1)</code>将阻塞服务器，这并不意味着无法建立连接，但是会导致已经建立的连接无法收到消息，形成 <code>ReadTimeout</code></p>
+<h2 id="模拟并发测试"><a href="#模拟并发测试" class="headerlink" title="模拟并发测试"></a>模拟并发测试</h2><p>让我们把之前的请求脚本改一改，变为一个并发测试的脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">import</span> json<br><span class="hljs-keyword">from</span> multiprocessing <span class="hljs-keyword">import</span> Pool<br><br><span class="hljs-keyword">from</span> requests <span class="hljs-keyword">import</span> Timeout<br><br><span class="hljs-comment"># 总请求数</span><br>REQUEST_NUM = <span class="hljs-number">10</span><br><span class="hljs-comment"># 进程数</span><br>PROCESSOR_NUM = <span class="hljs-number">10</span><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">api_request</span>(<span class="hljs-params">job_id</span>):<br>    <span class="hljs-keyword">try</span>:<br>        response = requests.get(<span class="hljs-string">&#x27;http://localhost:8888&#x27;</span>, data=json.dumps(&#123;<span class="hljs-string">&#x27;job_id&#x27;</span>: job_id&#125;), timeout=<span class="hljs-number">3</span>)<br>    <span class="hljs-keyword">except</span> Timeout:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">return</span> response.status_code == <span class="hljs-number">200</span><br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-keyword">with</span> Pool(PROCESSOR_NUM) <span class="hljs-keyword">as</span> p:<br>        result = p.<span class="hljs-built_in">map</span>(api_request, <span class="hljs-built_in">range</span>(REQUEST_NUM))<br>    succeed = result.count(<span class="hljs-literal">True</span>)<br>    failed = result.count(<span class="hljs-literal">False</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;succeed / (failed + succeed) * <span class="hljs-number">100</span>&#125;</span>% request success!&quot;</span>)<br><br></code></pre></td></tr></table></figure>
+
+<p>运行脚本，你会得到以下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">20.0% request success!<br></code></pre></td></tr></table></figure>
+
+<p>而在服务器端的日志，你会看到实际上是有10个请求的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash">[I 211217 23:45:52 hello_world:29] job <span class="hljs-keyword">done</span>:0<br>[I 211217 23:45:52 web:2239] 200 GET / (::1) 1012.00ms<br>[I 211217 23:45:53 hello_world:29] job <span class="hljs-keyword">done</span>:1<br>[I 211217 23:45:53 web:2239] 200 GET / (::1) 2025.00ms<br>[I 211217 23:45:54 hello_world:29] job <span class="hljs-keyword">done</span>:2<br>[I 211217 23:45:54 web:2239] 200 GET / (::1) 3032.00ms<br>[I 211217 23:45:55 hello_world:29] job <span class="hljs-keyword">done</span>:3<br>[I 211217 23:45:55 web:2239] 200 GET / (::1) 1009.00ms<br>[I 211217 23:45:56 hello_world:29] job <span class="hljs-keyword">done</span>:4<br>[I 211217 23:45:56 web:2239] 200 GET / (::1) 2020.00ms<br>[I 211217 23:45:57 hello_world:29] job <span class="hljs-keyword">done</span>:5<br>[I 211217 23:45:57 web:2239] 200 GET / (::1) 3029.00ms<br>[I 211217 23:45:58 hello_world:29] job <span class="hljs-keyword">done</span>:6<br>[I 211217 23:45:58 web:2239] 200 GET / (::1) 4044.00ms<br>[I 211217 23:45:59 hello_world:29] job <span class="hljs-keyword">done</span>:8<br>[I 211217 23:45:59 web:2239] 200 GET / (::1) 5056.00ms<br>[I 211217 23:46:00 hello_world:29] job <span class="hljs-keyword">done</span>:7<br>[I 211217 23:46:00 web:2239] 200 GET / (::1) 6068.00ms<br>[I 211217 23:46:01 hello_world:29] job <span class="hljs-keyword">done</span>:9<br>[I 211217 23:46:01 web:2239] 200 GET / (::1) 7076.00ms<br><br></code></pre></td></tr></table></figure>
+
+<p>这说明，这十个连接被Tornado”接住“了，建立了连接，但是client端设置了超时时间，超时后client端断开了连接，而从根据3秒超时，1秒处理时间来看，只有前两个请求有可能完成，第三个请求大概率超时，第三个之后的请求根本不用想，必定超时</p>
+<h1 id="使用多进程接收请求"><a href="#使用多进程接收请求" class="headerlink" title="使用多进程接收请求"></a>使用多进程接收请求</h1><p>接触过django、flask这类线程模型的web框架的你可能会想到使用多线程或者多进程来处理，Tornado作为协程框架，提供有多进程的接口，只需要打开 <code>http_server.start(0)</code>注释，你就会得到多进程的Tornado服务</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    tornado.options.parse_command_line()<br>    application = tornado.web.Application([(<span class="hljs-string">r&quot;/&quot;</span>, MainHandler)])<br>    http_server = tornado.httpserver.HTTPServer(application)<br>    http_server.listen(options.port)<br>    <span class="hljs-comment"># 多进程，根据你的CPU核数决定</span><br>    http_server.start(<span class="hljs-number">0</span>)<br>    tornado.ioloop.IOLoop.current().start()<br></code></pre></td></tr></table></figure>
+
+<p>然后我们再进行一次请求，得到的服务器日志如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash">[I 211218 00:03:09 process:123] Starting 8 processes<br>[I 211218 00:03:12 hello:29] job <span class="hljs-keyword">done</span>:0<br>[I 211218 00:03:12 web:2239] 200 GET / (127.0.0.1) 1002.04ms<br>[I 211218 00:03:12 hello:29] job <span class="hljs-keyword">done</span>:5<br>[I 211218 00:03:12 web:2239] 200 GET / (127.0.0.1) 1002.93ms<br>[I 211218 00:03:12 hello:29] job <span class="hljs-keyword">done</span>:8<br>[I 211218 00:03:12 hello:29] job <span class="hljs-keyword">done</span>:4<br>[I 211218 00:03:12 web:2239] 200 GET / (127.0.0.1) 1002.39ms<br>[I 211218 00:03:12 web:2239] 200 GET / (127.0.0.1) 1002.52ms<br>[I 211218 00:03:12 hello:29] job <span class="hljs-keyword">done</span>:9<br>[I 211218 00:03:12 hello:29] job <span class="hljs-keyword">done</span>:7<br>[I 211218 00:03:12 web:2239] 200 GET / (127.0.0.1) 1002.65ms<br>[I 211218 00:03:12 web:2239] 200 GET / (127.0.0.1) 1002.69ms<br>[I 211218 00:03:12 hello:29] job <span class="hljs-keyword">done</span>:6<br>[I 211218 00:03:12 web:2239] 200 GET / (127.0.0.1) 1002.06ms<br>[I 211218 00:03:13 hello:29] job <span class="hljs-keyword">done</span>:2<br>[I 211218 00:03:13 web:2239] 200 GET / (127.0.0.1) 2002.96ms<br>[I 211218 00:03:14 hello:29] job <span class="hljs-keyword">done</span>:1<br>[I 211218 00:03:14 web:2239] 200 GET / (127.0.0.1) 3005.87ms<br>[I 211218 00:03:15 hello:29] job <span class="hljs-keyword">done</span>:3<br>[I 211218 00:03:15 web:2239] 200 GET / (127.0.0.1) 4007.62ms<br><br></code></pre></td></tr></table></figure>
+
+<p>这次所有请求都成功了！（如果有失败的，你当然可以多试几次）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">100.0% request success!<br></code></pre></td></tr></table></figure>
+
+<p>当然，这种简单粗暴的方式有其缺点：</p>
+<ol>
+<li>资源消耗大，每个连接都需要一个进程保持</li>
+<li>stupid，就像知乎上的入门教程一样，没听说过什么是协程</li>
+<li>多进程需要考虑竞争，加锁，可能1核有难7核围观</li>
+</ol>
+<h1 id="像个聪明人：使用协程"><a href="#像个聪明人：使用协程" class="headerlink" title="像个聪明人：使用协程"></a>像个聪明人：使用协程</h1><p>实际上，我们只要使用Tornado的异步特性，不需要多进程，就可以搞定这个问题</p>
+<p>我把解决问题的步骤都标注在注释里，希望你能理解自底向上异步改造的流程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 0.异步实现的库</span><br><span class="hljs-keyword">import</span> asyncio<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainHandler</span>(tornado.web.RequestHandler):<br>    logger = get_logger()<br><br>    <span class="hljs-comment"># 4.把这个函数也变成异步的，然后继续向上变更，上级Tornado Handler支持异步的get请求，修改到此为止</span><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self</span>):<br>        job_id = json.loads(self.request.body.decode()).get(<span class="hljs-string">&#x27;job_id&#x27;</span>)<br>        <span class="hljs-comment"># 3.把do_something的调用变成异步调用</span><br>        <span class="hljs-keyword">await</span>  self.do_something(job_id)<br>        self.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;job_id&#125;</span> done&quot;</span>)<br><br>    <span class="hljs-comment"># 2.把这个函数编程异步的</span><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">do_something</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-comment"># 1.使用异步实现的库替换耗时操作</span><br>        <span class="hljs-keyword">await</span> asyncio.sleep(<span class="hljs-number">1</span>)<br>        self.logger.info(<span class="hljs-string">f&#x27;job done:<span class="hljs-subst">&#123;job_id&#125;</span>&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>现在让我们注释掉多进程模式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 关掉多进程，像个男子汉</span><br><span class="hljs-comment"># http_server.start(0)</span><br></code></pre></td></tr></table></figure>
+
+<p>然后测试一下刚才的脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs bash">[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:2<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1003.32ms<br>[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:0<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1002.62ms<br>[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:3<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1002.47ms<br>[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:1<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1002.51ms<br>[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:4<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1002.49ms<br>[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:7<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1002.37ms<br>[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:8<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1002.94ms<br>[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:6<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1002.41ms<br>[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:9<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1003.31ms<br>[I 211218 00:08:17 hello:29] job <span class="hljs-keyword">done</span>:5<br>[I 211218 00:08:17 web:2239] 200 GET / (127.0.0.1) 1003.20ms<br></code></pre></td></tr></table></figure>
+
+<p>芜湖，所有连接都在1秒左右搞定了！</p>
+<h2 id="协程的原理"><a href="#协程的原理" class="headerlink" title="协程的原理"></a>协程的原理</h2><p>对于初学者而言，你首先需要了解用户级线程和内核级线程的区别。协程实际上是一个单进程单线程模型，对于内核而言，它是1而非N，协程程序自己控制各个协程之间的运行顺序，这就是用户级线程。不谈内核是如何调度线程的，对于协程而言，每个 <code>await</code>都代表着让出程序控制（让出CPU），并将结果加入到等待队列，协程调度器将从等待队列中找到一个已经完成的任务，恢复其上下文环境，让这个任务能够继续执行下去。在本例中，1秒之后，<code>asyncio.sleep(1)</code>的任务完成了，这时如果有好心人能够让出CPU（调用 <code>await</code>），那么原来暂停的程序就有可能被选中，得以继续完成。</p>
+<p>协程就是这样，在单线程中循环搜索那些已经完成的任务并加以推进，同时等待、管理那些未完成的任务</p>
+<p>这样一说，希望你能理解 <code>IOLoop</code>中 <code>Loop</code>这四个字母的含义</p>
+<h2 id="协程的问题"><a href="#协程的问题" class="headerlink" title="协程的问题"></a>协程的问题</h2><p>你也看到了，协程最重要的是等待任务完成，但没有告诉我们任务如何完成</p>
+<p>如果任务是一个网络请求，那么等待他完成是一件挺不错的事，但如果任务是打印一行日志，那么等待他完成就显得有点蠢</p>
+<p>其实对于程序员来说，最重要的事有库可以<strong>异步</strong>地做事</p>
+<p>否则，你就得参考下一章，使用executor封装了</p>
+<h2 id="使用executor封装协程"><a href="#使用executor封装协程" class="headerlink" title="使用executor封装协程"></a>使用executor封装协程</h2><p>如何在不耗费CPU的情况下做一件耗费CPU的事？这本身就是一个悖论。</p>
+<p>因此，对于一些需要计算，或者没有异步实现的任务来说，想要像 <code>asyncio.sleep()</code>一样轻松异步执行是做不到的，这就需要我们借助线程或进程的力量（<strong>当然，线程安全就是避不开的话题</strong>）。</p>
+<p>首先，让我们假装忘记 <code>sleep</code>的异步实现，换回 <code>time.sleep()</code>然后你就会发现，<code>async</code>并不能让你获得异步的能力，而是像普通函数一样卡死在这里</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainHandler</span>(tornado.web.RequestHandler):<br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">do_something</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-comment"># 哦，我们在异步函数里写了一个长阻塞，这太糟了</span><br>        time.sleep(<span class="hljs-number">1</span>)<br>        self.logger.info(<span class="hljs-string">f&#x27;job done:<span class="hljs-subst">&#123;job_id&#125;</span>&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>有两种方案可以搞定，一种是Tornado提供的装饰器，有点偷懒但是好用，<code>run_on_executor</code>装饰器将自动地把同步函数（<code>do_something</code>）放进 <code>self.executor</code>执行，并把它封装成一个 <code>async</code>函数（其实称为 <code>awaitable</code>对象比较好）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> tornado.concurrent <span class="hljs-keyword">import</span> run_on_executor<br><span class="hljs-keyword">from</span> concurrent.futures <span class="hljs-keyword">import</span> ThreadPoolExecutor<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainHandler</span>(tornado.web.RequestHandler):<br>    logger = get_logger()<br>    executor = ThreadPoolExecutor(<span class="hljs-number">20</span>)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self</span>):<br>        job_id = json.loads(self.request.body.decode()).get(<span class="hljs-string">&#x27;job_id&#x27;</span>)<br>        <span class="hljs-keyword">await</span> self.do_something(job_id)<br>        self.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;job_id&#125;</span> done&quot;</span>)<br><br>    <span class="hljs-comment"># 没关系，我们把它放在executor里执行就好了</span><br>    <span class="hljs-comment"># 注意：这里改成了同步函数</span><br><span class="hljs-meta">    @run_on_executor</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">do_something</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-comment"># 哦，这会阻塞服务器！</span><br>        time.sleep(<span class="hljs-number">1</span>)<br>        self.logger.info(<span class="hljs-string">f&#x27;job done:<span class="hljs-subst">&#123;job_id&#125;</span>&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>另一种是常见的异步写法，是标准 <code>IOLoop</code>支持的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> tornado <span class="hljs-keyword">import</span> ioloop<br><span class="hljs-keyword">from</span> concurrent.futures <span class="hljs-keyword">import</span> ThreadPoolExecutor<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainHandler</span>(tornado.web.RequestHandler):<br>    logger = get_logger()<br>    executor = ThreadPoolExecutor(<span class="hljs-number">20</span>)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self</span>):<br>        job_id = json.loads(self.request.body.decode()).get(<span class="hljs-string">&#x27;job_id&#x27;</span>)<br>        <span class="hljs-comment"># 没关系，我们把它放在executor里执行就好了</span><br>        <span class="hljs-keyword">await</span> ioloop.IOLoop.current().run_in_executor(self.executor, self.do_something, job_id)<br>        self.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;job_id&#125;</span> done&quot;</span>)<br><br>     <span class="hljs-comment"># 注意：这里改成了同步函数</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">do_something</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-comment"># 哦，这会阻塞服务器！</span><br>        time.sleep(<span class="hljs-number">1</span>)<br>        self.logger.info(<span class="hljs-string">f&#x27;job done:<span class="hljs-subst">&#123;job_id&#125;</span>&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>实践中，由于GIL锁限制，线程并不能发挥机器地全部实力，在CPU密集时推荐将 <code>ThreadPoolExecutor</code>改为 <code>ProcessPoolExecutor</code>，但是由于 <code>pickle</code>不能封装自定义类发送给子进程执行，所以需要把CPU密集型操作单独写成一个函数，这里用第二种方式做示范，因为第二种方式更通用，也更好写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> concurrent.futures <span class="hljs-keyword">import</span> ProcessPoolExecutor<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">real_work</span>():<br>    time.sleep(<span class="hljs-number">1</span>)<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainHandler</span>(tornado.web.RequestHandler):<br>    logger = get_logger()<br>    executor = ProcessPoolExecutor(<span class="hljs-number">20</span>)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self</span>):<br>        job_id = json.loads(self.request.body.decode()).get(<span class="hljs-string">&#x27;job_id&#x27;</span>)<br>        <span class="hljs-keyword">await</span> self.do_something(job_id)<br>        self.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;job_id&#125;</span> done&quot;</span>)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">do_something</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-comment">#根据最小原则封装</span><br>        <span class="hljs-keyword">await</span> ioloop.IOLoop.current().run_in_executor(self.executor, real_work)<br>        self.logger.info(<span class="hljs-string">f&#x27;job done:<span class="hljs-subst">&#123;job_id&#125;</span>&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>好了，经过以上操作，我们已经明白了如何封装同步为异步，化腐朽为神奇，有一点千万记住，<strong>在协程中，任何阻塞都有可能是致命的！任何executor封装的操作都需要是线程安全的！</strong></p>
+<p>以及，仔细分析压力点，是流量顶不住还是计算太慢，如果是前者，就采用Tornado多进程模式，如果是后者，就使用 <code>executor</code>承压</p>
+<p>最后，<code>executor</code>的承载数量是有限的，你可以尝试调大测试脚本并发数量，看是否还能保持之前的成功率</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 总请求数</span><br>REQUEST_NUM=<span class="hljs-number">3000</span><br><span class="hljs-comment"># 100并发</span><br>PROCESSOR_NUM=<span class="hljs-number">100</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="空间换时间：生产者消费者模型"><a href="#空间换时间：生产者消费者模型" class="headerlink" title="空间换时间：生产者消费者模型"></a>空间换时间：生产者消费者模型</h1><p>在上一章中，如果你确实调大了并发量和请求数，你就会发现，在服务器可用线程被耗尽的情况下（当然你可以设置几百上千个），你的连接仍然会失败。其实在任何web框架中都是一样的，资源耗尽就只有死路一条。对于这类任务，程序员应该提前预判到，并将其转换为异步任务，利用生产者消费者模型对请求进行处理。</p>
+<p>接下来我将展示一个异步模式下的消费者模型，利用 <code>IOLoop.add_callback()</code>函数，将消费者的消费函数注册为任务，同时依靠 <code>ThreadPoolExecutor</code>执行阻塞操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">async_period_job</span>(<span class="hljs-params">func, period</span>):<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-keyword">try</span>:<br>            <span class="hljs-keyword">await</span> func()<br>        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>            get_logger().exception(e)<br>        <span class="hljs-keyword">await</span> asyncio.sleep(period)<br><br><br><span class="hljs-comment"># 定时任务的常用写法</span><br>start_period_job = functools.partial(ioloop.IOLoop.current().add_callback, async_period_job)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">sleep</span>(<span class="hljs-params">t, job_id</span>):<br>    <span class="hljs-comment"># 耗时操作 兼容ProcessPoolExecutor</span><br>    <span class="hljs-comment"># 如果使用自定义的ORM类，使用ThreadPoolExecutor就足够了，不需要大费周章将其写成外部函数</span><br>    time.sleep(t)<br>    <span class="hljs-keyword">return</span> job_id<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SimpleConsumer</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        self.buffer = Queue()<br>        self.futures = Queue()<br>        self.started = <span class="hljs-literal">False</span><br>        self.log = get_logger()<br>        <span class="hljs-comment"># 2秒收集一次结果</span><br>        self.collect_period = <span class="hljs-number">2</span><br>        <span class="hljs-comment"># 这里控制消费者数量</span><br>        self.executor = PoolExecutor(<span class="hljs-number">20</span>)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">put</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-keyword">await</span> self.buffer.put(job_id)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">real_work</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 由于pickle的原因，不能放在executor里</span><br>        data = <span class="hljs-keyword">await</span> self.buffer.get()<br>        self.log.info(<span class="hljs-string">f&#x27;scheduling <span class="hljs-subst">&#123;data&#125;</span>&#x27;</span>)<br>        future = self.executor.submit(sleep, <span class="hljs-number">1</span>, data)<br>        <span class="hljs-keyword">return</span> future, data<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">start</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">if</span> self.started:<br>            <span class="hljs-keyword">return</span><br>        self.started = <span class="hljs-literal">True</span><br>        self.log.info(<span class="hljs-string">&#x27;Consumer Started!&#x27;</span>)<br>        ioloop.IOLoop.current().add_callback(self._start_real_work)<br>        start_period_job(self._collect, self.collect_period)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_collect</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 定时收集结果</span><br>        not_done = Queue()<br>        <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> self.futures.empty():<br>            future, data = <span class="hljs-keyword">await</span> self.futures.get()<br>            <span class="hljs-keyword">if</span> future.done():<br>                <span class="hljs-keyword">try</span>:<br>                    result = future.result()<br>                    <span class="hljs-keyword">await</span> self.collect_result(result)<br>                <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>                    self.log.exception(e)<br>                    <span class="hljs-keyword">await</span> self.buffer.put(data)  <span class="hljs-comment"># retry</span><br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-keyword">await</span> not_done.put((future, data))<br>        <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> not_done.empty():<br>            <span class="hljs-keyword">await</span> self.futures.put(<span class="hljs-keyword">await</span> not_done.get())<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_start_real_work</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            future, data = <span class="hljs-keyword">await</span> self.real_work()<br>            <span class="hljs-keyword">await</span> self.futures.put((future, data))<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">collect_result</span>(<span class="hljs-params">self, result</span>):<br>        self.log.info(<span class="hljs-string">f&#x27;Collected job: <span class="hljs-subst">&#123;result&#125;</span>&#x27;</span>)<br><br><br><span class="hljs-comment"># 最简单的单例</span><br>consumer = SimpleConsumer()<br>consumer.start()<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainHandler</span>(tornado.web.RequestHandler):<br>    logger = get_logger()<br>    consumer = consumer<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self</span>):<br>        job_id = json.loads(self.request.body.decode()).get(<span class="hljs-string">&#x27;job_id&#x27;</span>)<br>        <span class="hljs-keyword">await</span> self.do_something(job_id)<br>        self.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;job_id&#125;</span> add&quot;</span>)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">do_something</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-keyword">await</span> self.consumer.put(job_id)<br>        self.logger.info(<span class="hljs-string">f&#x27;job add:<span class="hljs-subst">&#123;job_id&#125;</span>&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>使用并发脚本测试，将得到类似以下日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs bash">[I 211218 02:14:10 hello:112] job add:2<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 1.54ms<br>[I 211218 02:14:10 hello:112] job add:1<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 1.53ms<br>[I 211218 02:14:10 hello:112] job add:3<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 1.58ms<br>[I 211218 02:14:10 hello:112] job add:5<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 1.67ms<br>[I 211218 02:14:10 hello:112] job add:4<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 1.73ms<br>[I 211218 02:14:10 hello:112] job add:0<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 1.76ms<br>[I 211218 02:14:10 hello:59] scheduling 2<br>[I 211218 02:14:10 hello:59] scheduling 1<br>[I 211218 02:14:10 hello:59] scheduling 3<br>[I 211218 02:14:10 hello:59] scheduling 5<br>[I 211218 02:14:10 hello:59] scheduling 4<br>[I 211218 02:14:10 hello:59] scheduling 0<br>[I 211218 02:14:10 hello:112] job add:8<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 0.70ms<br>[I 211218 02:14:10 hello:112] job add:7<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 0.69ms<br>[I 211218 02:14:10 hello:112] job add:9<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 0.74ms<br>[I 211218 02:14:10 hello:59] scheduling 8<br>[I 211218 02:14:10 hello:59] scheduling 7<br>[I 211218 02:14:10 hello:59] scheduling 9<br>[I 211218 02:14:10 hello:112] job add:6<br>[I 211218 02:14:10 web:2239] 200 GET / (127.0.0.1) 1.15ms<br>[I 211218 02:14:10 hello:59] scheduling 6<br>[I 211218 02:14:13 hello:94] Collected job: 2<br>[I 211218 02:14:13 hello:94] Collected job: 1<br>[I 211218 02:14:13 hello:94] Collected job: 3<br>[I 211218 02:14:13 hello:94] Collected job: 5<br>[I 211218 02:14:13 hello:94] Collected job: 4<br>[I 211218 02:14:13 hello:94] Collected job: 0<br>[I 211218 02:14:13 hello:94] Collected job: 8<br>[I 211218 02:14:13 hello:94] Collected job: 7<br>[I 211218 02:14:13 hello:94] Collected job: 9<br>[I 211218 02:14:13 hello:94] Collected job: 6<br><br></code></pre></td></tr></table></figure>
+
+<p>我们会看到，任务在一边被加入队列，一边进行，就如我前面所说，协程会在 <code>await</code>的时候释放CPU并切换到准备好的协程继续执行，这里体现为忙时一直在接收请求，闲时对buffer里的内容进行处理。</p>
+<p>通过这种方式，我们可以通过Tornado的多进程模式轻松拓展生产者，通过空间换时间，保证请求不会失败，将任务轻松转换为后台任务，通过控制 <code>PoolExecutor</code>的 <code>worker</code>数量，控制消费者数量，达到性能平衡</p>
+<p>和刚才用 <code>ProcessPoolExecutor</code>一样，在CPU密集的情况下，多进程消费者显然更具优势</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> concurrent.futures <span class="hljs-keyword">import</span> ProcessPoolExecutor <span class="hljs-keyword">as</span> PoolExecutor<br></code></pre></td></tr></table></figure>
+
+<p>现在请你试着加大总请求数，看看效果，你会发现在加入了队列之后，即使是单线程也可以瞬间搞定所有请求，这是生产者消费者模型给我们带来的便利。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">REQUEST_NUM = 1000<br></code></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文介绍了如何利用Tornado的异步特性，打造高性能Tornado服务器，有几点需要课后复习</p>
+<ol>
+<li>自底向上的异步改造</li>
+<li>使用 <code>executor</code>封装异步操作</li>
+<li>生产者消费者模型的异步实现</li>
+</ol>
+<p>还有几点需要额外注意：</p>
+<ol>
+<li>使用 <code>executor</code>时的线程安全问题</li>
+<li><code>ProcessPoolExecutor</code>的 <code>pickle</code>问题</li>
+<li><code>executor</code>是有并行数量限制的</li>
+</ol>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><p>生产者消费者完整代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> asyncio<br><span class="hljs-keyword">import</span> functools<br><span class="hljs-keyword">import</span> logging<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">from</span> asyncio <span class="hljs-keyword">import</span> Queue<br><span class="hljs-keyword">from</span> concurrent.futures <span class="hljs-keyword">import</span> ThreadPoolExecutor <span class="hljs-keyword">as</span> PoolExecutor<br><br><span class="hljs-keyword">import</span> tornado.httpserver<br><span class="hljs-keyword">import</span> tornado.ioloop<br><span class="hljs-keyword">import</span> tornado.options<br><span class="hljs-keyword">import</span> tornado.web<br><span class="hljs-keyword">import</span> json<br><br><span class="hljs-keyword">from</span> tornado <span class="hljs-keyword">import</span> ioloop<br><span class="hljs-keyword">from</span> tornado.concurrent <span class="hljs-keyword">import</span> run_on_executor<br><span class="hljs-keyword">from</span> tornado.options <span class="hljs-keyword">import</span> define, options<br><br>define(<span class="hljs-string">&quot;port&quot;</span>, default=<span class="hljs-number">8888</span>, <span class="hljs-built_in">help</span>=<span class="hljs-string">&quot;run on the given port&quot;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-built_in">int</span>)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_logger</span>():<br>    <span class="hljs-keyword">return</span> logging.getLogger(<span class="hljs-string">&#x27;tornado.general&#x27;</span>)<br><br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">async_period_job</span>(<span class="hljs-params">func, period</span>):<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-keyword">try</span>:<br>            <span class="hljs-keyword">await</span> func()<br>        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>            get_logger().exception(e)<br>        <span class="hljs-keyword">await</span> asyncio.sleep(period)<br><br><br><span class="hljs-comment"># 定时任务的常用写法</span><br>start_period_job = functools.partial(ioloop.IOLoop.current().add_callback, async_period_job)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">sleep</span>(<span class="hljs-params">t, job_id</span>):<br>    <span class="hljs-comment"># 耗时操作 兼容ProcessPoolExecutor</span><br>    <span class="hljs-comment"># 如果使用自定义的ORM类，使用ThreadPoolExecutor就足够了，不需要大费周章将其写成外部函数</span><br>    time.sleep(t)<br>    <span class="hljs-keyword">return</span> job_id<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SimpleConsumer</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        self.buffer = Queue()<br>        self.futures = Queue()<br>        self.started = <span class="hljs-literal">False</span><br>        self.log = get_logger()<br>        self.collect_period = <span class="hljs-number">2</span><br>        self.executor = PoolExecutor(<span class="hljs-number">20</span>)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">put</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-keyword">await</span> self.buffer.put(job_id)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">real_work</span>(<span class="hljs-params">self</span>):<br>        data = <span class="hljs-keyword">await</span> self.buffer.get()<br>        self.log.info(<span class="hljs-string">f&#x27;scheduling <span class="hljs-subst">&#123;data&#125;</span>&#x27;</span>)<br>        future = self.executor.submit(sleep, <span class="hljs-number">1</span>, data)<br>        <span class="hljs-keyword">return</span> future, data<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">start</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">if</span> self.started:<br>            <span class="hljs-keyword">return</span><br>        self.started = <span class="hljs-literal">True</span><br>        self.log.info(<span class="hljs-string">&#x27;Consumer Started!&#x27;</span>)<br>        ioloop.IOLoop.current().add_callback(self._start_real_work)<br>        start_period_job(self._collect, self.collect_period)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_collect</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 收集结果，应当在定时任务里面做</span><br>        not_done = Queue()<br>        <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> self.futures.empty():<br>            future, data = <span class="hljs-keyword">await</span> self.futures.get()<br>            <span class="hljs-keyword">if</span> future.done():<br>                <span class="hljs-keyword">try</span>:<br>                    result = future.result()<br>                    <span class="hljs-keyword">await</span> self.collect_result(result)<br>                <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>                    self.log.exception(e)<br>                    <span class="hljs-keyword">await</span> self.buffer.put(data)  <span class="hljs-comment"># retry</span><br>            <span class="hljs-keyword">else</span>:<br>                <span class="hljs-keyword">await</span> not_done.put((future, data))<br>        <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> not_done.empty():<br>            <span class="hljs-keyword">await</span> self.futures.put(<span class="hljs-keyword">await</span> not_done.get())<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_start_real_work</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            future, data = <span class="hljs-keyword">await</span> self.real_work()<br>            <span class="hljs-keyword">await</span> self.futures.put((future, data))<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">collect_result</span>(<span class="hljs-params">self, result</span>):<br>        self.log.info(<span class="hljs-string">f&#x27;Collected job: <span class="hljs-subst">&#123;result&#125;</span>&#x27;</span>)<br><br><br>consumer = SimpleConsumer()<br>consumer.start()<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MainHandler</span>(tornado.web.RequestHandler):<br>    logger = get_logger()<br>    consumer = consumer<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self</span>):<br>        job_id = json.loads(self.request.body.decode()).get(<span class="hljs-string">&#x27;job_id&#x27;</span>)<br>        <span class="hljs-keyword">await</span> self.do_something(job_id)<br>        self.write(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;job_id&#125;</span> add&quot;</span>)<br><br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">do_something</span>(<span class="hljs-params">self, job_id</span>):<br>        <span class="hljs-keyword">await</span> self.consumer.put(job_id)<br>        self.logger.info(<span class="hljs-string">f&#x27;job add:<span class="hljs-subst">&#123;job_id&#125;</span>&#x27;</span>)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    tornado.options.parse_command_line()<br>    application = tornado.web.Application([(<span class="hljs-string">r&quot;/&quot;</span>, MainHandler)])<br>    http_server = tornado.httpserver.HTTPServer(application)<br>    http_server.listen(options.port)<br>    <span class="hljs-comment"># http_server.start(0)</span><br>    tornado.ioloop.IOLoop.current().start()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    main()<br><br></code></pre></td></tr></table></figure>
+
+<p>测试脚本代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">import</span> json<br><span class="hljs-keyword">from</span> multiprocessing <span class="hljs-keyword">import</span> Pool<br><br><span class="hljs-keyword">from</span> requests <span class="hljs-keyword">import</span> Timeout<br><br>REQUEST_NUM = <span class="hljs-number">1000</span><br>PROCESSOR_NUM = <span class="hljs-number">10</span><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">api_request</span>(<span class="hljs-params">job_id</span>):<br>    <span class="hljs-keyword">try</span>:<br>        response = requests.get(<span class="hljs-string">&#x27;http://localhost:8888&#x27;</span>, data=json.dumps(&#123;<span class="hljs-string">&#x27;job_id&#x27;</span>: job_id&#125;), timeout=<span class="hljs-number">3</span>)<br>    <span class="hljs-keyword">except</span> Timeout:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">return</span> response.status_code == <span class="hljs-number">200</span><br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-keyword">with</span> Pool(PROCESSOR_NUM) <span class="hljs-keyword">as</span> p:<br>        result = p.<span class="hljs-built_in">map</span>(api_request, <span class="hljs-built_in">range</span>(REQUEST_NUM))<br>    succeed = result.count(<span class="hljs-literal">True</span>)<br>    failed = result.count(<span class="hljs-literal">False</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;succeed / (failed + succeed) * <span class="hljs-number">100</span>&#125;</span>% request success!&quot;</span>)<br><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" class="category-chain-item">技术分享</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Tornado/" class="print-no-link">#Tornado</a>
+      
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
+      
+        <a href="/tags/%E5%BC%82%E6%AD%A5/" class="print-no-link">#异步</a>
+      
+        <a href="/tags/%E9%AB%98%E6%80%A7%E8%83%BD/" class="print-no-link">#高性能</a>
+      
+        <a href="/tags/%E5%8D%8F%E7%A8%8B/" class="print-no-link">#协程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>🚀高性能Tornado处理逻辑实现</div>
+      <div>https://blog.wh1isper.top/2021/12/16/2021-12-17-高性能Tornado处理逻辑实现/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/13/2022-11-24-Python-Singleton-how-to/" title="🚀Python单例类Singleton样例">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">🚀Python单例类Singleton样例</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/04/10/2021-04-11-HadoopStandalone/" title="🔧Hadoop3.2单机部署教程">
+                        <span class="hidden-mobile">🔧Hadoop3.2单机部署教程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

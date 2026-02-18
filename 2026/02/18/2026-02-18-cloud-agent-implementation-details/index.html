@@ -1,0 +1,1054 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="这篇先从最小 SSE Chatbot 开始，明确显示层与业务层的基本实现，再逐步过渡到文件系统与沙箱架构。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建 Effective Cloud Agent">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/02/18/2026-02-18-cloud-agent-implementation-details/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="这篇先从最小 SSE Chatbot 开始，明确显示层与业务层的基本实现，再逐步过渡到文件系统与沙箱架构。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-18T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.821Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="CloudAgent">
+<meta property="article:tag" content="Engineering">
+<meta property="article:tag" content="实现细节">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>构建 Effective Cloud Agent - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-unix-linux.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从最小 SSE Chatbot 到执行环境架构选型"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-02-18 10:00" pubdate>
+          2026年2月18日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从最小 SSE Chatbot 到执行环境架构选型</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="从SSE服务说起"><a href="#从SSE服务说起" class="headerlink" title="从SSE服务说起"></a>从SSE服务说起</h1><p>先从一个可运行的 Chatbot 服务开始：前端通过 <code>POST /chat</code> 发起请求，通过 <code>GET /stream/:conversation_id</code> 接收 <code>SSE</code> 事件流。<br>这里把职责拆成两层：</p>
+<ul>
+<li>Display Layer：向 UI 输出事件，服务展示与回放。</li>
+<li>Business Layer：维护消息历史，服务 prompt 构造与推理。</li>
+</ul>
+<pre><code class=" mermaid">flowchart LR
+    UI[Web UI]
+    API[Chat Service]
+    LLM[LLM API]
+    DL[(Display Events)]
+    BL[(Business Messages)]
+
+    UI --&gt;|chat request| API
+    API --&gt;|sse stream| UI
+    API --&gt; BL
+    API --&gt; LLM
+    LLM --&gt; API
+    API --&gt; DL
+</code></pre>
+
+<p>对应的最小存储模型：</p>
+<ul>
+<li><code>conversation(id, created_at)</code></li>
+<li><code>message(id, conversation_id, role, content, created_at)</code></li>
+</ul>
+<p>单轮写路径：</p>
+<ol>
+<li>接收用户输入并落库 <code>role=user</code>。</li>
+<li>读取最近 <code>N</code> 条消息构造 prompt。</li>
+<li>调用 LLM，按 token 生成 <code>SSE</code> 事件并写入 Display Layer。</li>
+<li>推理结束后落库 <code>role=assistant</code>。</li>
+</ol>
+<pre><code class=" mermaid">sequenceDiagram
+    participant U as User
+    participant API as Chat Service
+    participant DB as Message Store
+    participant LLM as LLM API
+
+    U-&gt;&gt;API: POST /chat
+    API-&gt;&gt;DB: insert user message
+    API-&gt;&gt;DB: load recent messages
+    API-&gt;&gt;LLM: inference
+    LLM--&gt;&gt;API: token stream
+    API--&gt;&gt;U: SSE events
+    API-&gt;&gt;DB: insert assistant message
+</code></pre>
+
+<p>约束保持简单：单进程、单副本、不处理并发写冲突。</p>
+<p>下一段再进入“引入文件系统后”的架构分叉：<code>stateless agent service + sandbox</code> vs <code>agent in vm</code>。</p>
+<h1 id="扩展文件系统"><a href="#扩展文件系统" class="headerlink" title="扩展文件系统"></a>扩展文件系统</h1><h2 id="Agent-in-VM"><a href="#Agent-in-VM" class="headerlink" title="Agent in VM"></a>Agent in VM</h2><blockquote>
+<p>这个模式下，Agent没有多租户的概念，面对的是一台专用的虚拟机，所有多租户的概念在外部业务层实现</p>
+</blockquote>
+<p>当 Agent 需要稳定操作本地开发环境、浏览器和长生命周期进程时，<code>Agent in VM</code> 是最直接的方案。<br>它的核心思想是：平台做“VM 分配与调度”，Agent 只面对“单租户执行环境”。</p>
+<pre><code class=" mermaid">flowchart LR
+    U[User]
+    APP[Multi-tenant App]
+    SCH[VM Scheduler]
+    VM1[Tenant VM]
+    AG[Agent Process]
+    FS[(Local FS)]
+    SH[Shell/Browser]
+    LLM[LLM API]
+
+    U --&gt; APP
+    APP --&gt; SCH
+    SCH --&gt; VM1
+    VM1 --&gt; AG
+    AG --&gt; FS
+    AG --&gt; SH
+    AG --&gt; LLM
+</code></pre>
+
+<p>设计重点：</p>
+<ol>
+<li>租户隔离天然清晰：每个会话绑定一台 VM。</li>
+<li>状态恢复简单：文件、进程、缓存都在 VM 内。</li>
+<li>代价是资源成本和调度时延：空闲 VM 成本高，启动&#x2F;恢复慢于无状态服务。</li>
+</ol>
+<p>案例：Manus、利用Claude Code SDK构建多租户agent</p>
+<h2 id="Stateless-Agent-Service-Sandbox"><a href="#Stateless-Agent-Service-Sandbox" class="headerlink" title="Stateless Agent Service + Sandbox"></a>Stateless Agent Service + Sandbox</h2><p>该方案将控制逻辑与执行环境解耦：Agent Service 保持无状态，Sandbox 承载会话执行状态。</p>
+<p>分层如下：</p>
+<ul>
+<li>Agent Service：无状态，负责规划、路由、工具编排。</li>
+<li>Sandbox：有状态，负责执行命令和访问会话文件。</li>
+<li>Shared Storage：跨 Sandbox 挂载同一会话目录。</li>
+</ul>
+<pre><code class=" mermaid">flowchart LR
+    U[User]
+    GW[API Gateway]
+    AS[Stateless Agent Service]
+    LLM[LLM API]
+    SB[Session Sandbox Pod/Lambda]
+    NFS[(Shared Storage)]
+    TOOLS[External Tools]
+
+    U --&gt; GW --&gt; AS
+    AS --&gt; LLM
+    AS --&gt; SB
+    SB --&gt; NFS
+    SB --&gt; TOOLS
+    AS --&gt; TOOLS
+</code></pre>
+
+<p>可行性前提：Agentic loop 依赖“状态可引用”，不依赖“进程常驻”。只要 session 可以绑定到可恢复的文件和执行上下文，服务就可以无状态扩缩容。</p>
+<p>关键约束：</p>
+<ol>
+<li>边界必须明确：哪些工具在 Agent Service 执行，哪些必须进 Sandbox。</li>
+<li>安全默认收敛：出网控制、域名&#x2F;IP 白名单、速率限制、租户目录隔离。</li>
+<li>存储性能决定体验：高频读写场景要评估本地盘缓存或更高性能分布式存储。</li>
+</ol>
+<h1 id="Durable-Execution（Stateless-Sandbox-的可靠性拓展）"><a href="#Durable-Execution（Stateless-Sandbox-的可靠性拓展）" class="headerlink" title="Durable Execution（Stateless + Sandbox 的可靠性拓展）"></a>Durable Execution（Stateless + Sandbox 的可靠性拓展）</h1><p>在 <code>Stateless Agent Service + Sandbox</code> 中，实例漂移是常态。重试不能依赖进程内存。<br>Durable Execution 的目标是将一次 loop 分解为可恢复步骤，并在步骤边界写入 checkpoint。</p>
+<p>引入原因：</p>
+<ol>
+<li>实例漂移是常态：Pod 重建、请求重路由都会打断内存态执行。</li>
+<li>工具调用有副作用：整轮重放会产生重复写入或重复外部调用。</li>
+<li>长任务跨多分钟：必须允许中断后继续，而不是从头开始。</li>
+</ol>
+<p>最小状态拆分建议：</p>
+<ol>
+<li><code>message_state</code>：会话消息、摘要、token budget。</li>
+<li><code>filesystem_state_ref</code>：工作目录版本、挂载路径、快照 ID。</li>
+<li><code>execution_state</code>：当前 step、计划版本、上一步输出。</li>
+<li><code>effect_log</code>：已执行副作用记录（外部请求 ID、写操作哈希）。</li>
+</ol>
+<pre><code class=" mermaid">flowchart LR
+    STEP[Run Step]
+    CKPT[Write Checkpoint]
+    EFFECT[Record Side Effect]
+    FAIL[Failure]
+    RESUME[Load Last Checkpoint]
+    NEXT[Run Next Step]
+
+    STEP --&gt; CKPT
+    STEP --&gt; EFFECT
+    STEP --&gt; FAIL
+    FAIL --&gt; RESUME
+    RESUME --&gt; NEXT
+</code></pre>
+
+<p>实现规则：</p>
+<ol>
+<li>每个 step 必须可重入：相同输入重复执行，结果语义不变。</li>
+<li>每个副作用必须可去重：通过 <code>idempotency_key</code> 或外部事务键避免重复提交。</li>
+</ol>
+<h2 id="语义恢复"><a href="#语义恢复" class="headerlink" title="语义恢复"></a>语义恢复</h2><p>在工程实践中，很多工具调用不可回滚，或回滚成本远高于收益。<br>因此，失败处理可以优先采用“语义恢复”，而不是“强事务回滚”。</p>
+<p>例如三个工具并行执行时其中一个报错，不必强制撤销其余两个工具的副作用。可采用以下策略：</p>
+<ol>
+<li>将消息历史恢复到这组并行工具调用之前。</li>
+<li>保留本次工具调用返回（包含不确定状态）。</li>
+<li>对失败或不确定结果注入系统说明：<code>上次调用出错，可能已部分执行成功，请先确认状态再继续</code>。</li>
+<li>让模型基于这条说明继续规划下一步（先确认，再补偿，或跳过）。</li>
+</ol>
+<blockquote>
+<p>这里还可以向外暴露重试事件，以确保显示层不会出现未定义行为</p>
+</blockquote>
+<p>该策略的取舍很明确：放弃严格事务语义，换取更低实现复杂度和更高恢复连续性。</p>
+<h1 id="Loop-级隔离编排（优化Agent-Service的可扩缩容性）"><a href="#Loop-级隔离编排（优化Agent-Service的可扩缩容性）" class="headerlink" title="Loop 级隔离编排（优化Agent Service的可扩缩容性）"></a>Loop 级隔离编排（优化Agent Service的可扩缩容性）</h1><p>这是一种中间态方案：保持 loop 代码结构不变，只隔离 loop 实例。<br>实现方式是“每个 turn 启动一个 Worker&#x2F;Lambda”，由队列驱动执行；SSE 由事件通道异步转发到流网关。</p>
+<p>适用原因：</p>
+<ol>
+<li>保持调试模型稳定：单个 loop 代码路径不变，问题定位更直接。</li>
+<li>缩小爆炸半径：单个任务异常只影响当前 worker。</li>
+<li>提升发布速度：无状态 worker 镜像可快速滚动升级。</li>
+</ol>
+<pre><code class=" mermaid">flowchart LR
+    U[User]
+    API[Agent API]
+    Q[(Task Queue)]
+    W[Loop Worker Lambda/Pod]
+    LLM[LLM API]
+    SB[Sandbox]
+    EQ[(Event Queue)]
+    SG[SSE Gateway]
+
+    U --&gt; API
+    API --&gt; Q
+    Q --&gt; W
+    W --&gt; LLM
+    W --&gt; SB
+    W --&gt; EQ
+    EQ --&gt; SG
+    SG --&gt; U
+</code></pre>
+
+<p>实现要点：</p>
+<ol>
+<li><code>turn_id</code> 作为任务主键，保证同一轮只有一个 active worker。</li>
+<li>Worker 事件写入 <code>event queue</code>，由 <code>SSE gateway</code> 统一推送，避免函数实例直接持有长连接。</li>
+<li>失败重试由队列控制，重试前先加载 checkpoint，继续执行而非整轮重跑。</li>
+</ol>
+<p>在演进路径中的位置：</p>
+<ol>
+<li>它依赖 Durable Execution 提供可恢复状态。</li>
+<li>它不要求 Actor 拆分，适合作为高并发阶段的低改造增量方案。</li>
+<li>当单 loop 内部并发仍成瓶颈，再演进到 Actor Model。</li>
+</ol>
+<h1 id="Actor-Model（优化Agent-Service的可扩缩容性）"><a href="#Actor-Model（优化Agent-Service的可扩缩容性）" class="headerlink" title="Actor Model（优化Agent Service的可扩缩容性）"></a>Actor Model（优化Agent Service的可扩缩容性）</h1><p>当 <code>Stateless Agent Service</code> 进入高并发、多工具、长链路阶段，单体 loop 的主要瓶颈是调度耦合和故障扩散。<br>Actor Model 是下一阶段的实现方式：将 loop 拆成可独立扩缩容的执行单元。</p>
+<p>推荐的最小 Actor 拆分：</p>
+<ol>
+<li><code>Session Actor</code>：会话入口，维护 turn 生命周期。</li>
+<li><code>Planner Actor</code>：生成步骤计划与重规划。</li>
+<li><code>Model Actor</code>：封装模型调用策略（路由、重试、限流）。</li>
+<li><code>Tool Actor</code>：执行工具调用（可按工具类型分片）。</li>
+<li><code>State Actor</code>：集中处理 checkpoint、effect log、恢复逻辑。</li>
+</ol>
+<pre><code class=" mermaid">flowchart LR
+    SA[Session Actor]
+    PA[Planner Actor]
+    MA[Model Actor]
+    TA[Tool Actor]
+    STA[State Actor]
+    BUS[(Message Bus)]
+
+    SA --&gt; BUS
+    PA --&gt; BUS
+    MA --&gt; BUS
+    TA --&gt; BUS
+    STA --&gt; BUS
+    BUS --&gt; SA
+    BUS --&gt; PA
+    BUS --&gt; MA
+    BUS --&gt; TA
+    BUS --&gt; STA
+</code></pre>
+
+<p>与前一节的关系：</p>
+<ol>
+<li>Durable Execution 依赖 <code>State Actor</code> 统一写入恢复点。</li>
+<li>Sandbox 调度可以下沉到 <code>Tool Actor</code>，实现按工具类型弹性扩缩容。</li>
+<li>故障隔离更细：单个 Tool Actor 失败不会直接拖垮整个会话调度。</li>
+</ol>
+<p>代价是消息一致性、乱序处理和链路追踪复杂度上升。<br>建议顺序是：先稳定单体 Stateless loop，再按瓶颈引入 Actor 化拆分。</p>
+<h1 id="可观测性"><a href="#可观测性" class="headerlink" title="可观测性"></a>可观测性</h1><p>可观测性目标不是“记录更多日志”，而是回答三个问题：慢在哪里、错在哪里、哪类任务不稳定。</p>
+<pre><code class=" mermaid">flowchart LR
+    APP[Agent Service]
+    SB[Sandbox]
+    OBS[Telemetry Pipeline]
+    LOG[(Logs)]
+    MET[(Metrics)]
+    TR[(Traces)]
+    UI[Ops Dashboard]
+
+    APP --&gt; OBS
+    SB --&gt; OBS
+    OBS --&gt; LOG
+    OBS --&gt; MET
+    OBS --&gt; TR
+    LOG --&gt; UI
+    MET --&gt; UI
+    TR --&gt; UI
+</code></pre>
+
+<p>建议指标分两层：</p>
+<ol>
+<li>LLM 层：QPS、TTFT、P95 延迟、错误率、token 成本。</li>
+<li>Tool 层：调用次数、成功率、执行时长、超时率。</li>
+</ol>
+<p>Trace 结构建议绑定 <code>session_id + turn_id + step_id</code>，以便还原完整 trajectory。</p>
+<h2 id="Benchmark"><a href="#Benchmark" class="headerlink" title="Benchmark"></a>Benchmark</h2><p>有了 Trace 和可恢复执行能力后，可以把线上真实任务沉淀为 benchmark 回放集。</p>
+<pre><code class=" mermaid">flowchart LR
+    TR[(Trace Store)]
+    SEL[Scenario Selector]
+    REP[Replay Runner]
+    EVAL[Scoring/Eval]
+    RPT[Model Report]
+
+    TR --&gt; SEL --&gt; REP --&gt; EVAL --&gt; RPT
+</code></pre>
+
+<p>评测重点不只看“是否成功”，还要看：</p>
+<ol>
+<li>端到端时延与成本。</li>
+<li>工具调用效率和失败恢复能力。</li>
+<li>不同模型在同一任务族上的稳定性差异。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI-Engineering/" class="category-chain-item">AI Engineering</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/CloudAgent/" class="print-no-link">#CloudAgent</a>
+      
+        <a href="/tags/Engineering/" class="print-no-link">#Engineering</a>
+      
+        <a href="/tags/%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/" class="print-no-link">#实现细节</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>构建 Effective Cloud Agent</div>
+      <div>https://blog.wh1isper.top/2026/02/18/2026-02-18-cloud-agent-implementation-details/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年2月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/17/2026-02-17-architecture-of-cloud-agent/" title="聊聊云上Agent的架构设计">
+                        <span class="hidden-mobile">聊聊云上Agent的架构设计</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

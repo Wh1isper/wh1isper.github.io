@@ -1,0 +1,898 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="数据抽样理论笔记，包括抽样定义、抽样误差、分层抽样、整群抽样等统计学基础概念。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="🖊数据抽样相关笔记">
+<meta property="og:url" content="https://blog.wh1isper.top/2020/09/20/2020-09-21-data-sampling/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="数据抽样理论笔记，包括抽样定义、抽样误差、分层抽样、整群抽样等统计学基础概念。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wh1isper.top/img/2020-09-21-data-sampling/datasampling.png">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Simple_random_sampling.PNG/300px-Simple_random_sampling.PNG">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Systematic_sampling.PNG/350px-Systematic_sampling.PNG">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Stratified_sampling.PNG/300px-Stratified_sampling.PNG">
+<meta property="og:image" content="https://blog.wh1isper.top/img/2020-09-21-data-sampling/gs1.png">
+<meta property="og:image" content="https://blog.wh1isper.top/img/2020-09-21-data-sampling/restrict.png">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Long_tail.svg/800px-Long_tail.svg.png">
+<meta property="article:published_time" content="2020-09-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.817Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="数据抽样">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="spark">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.wh1isper.top/img/2020-09-21-data-sampling/datasampling.png">
+  
+  
+  
+  <title>🖊数据抽样相关笔记 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-desk.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Data Sampling Note"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-09-21 00:00" pubdate>
+          2020年9月21日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Data Sampling Note</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="数据抽样相关笔记"><a href="#数据抽样相关笔记" class="headerlink" title="数据抽样相关笔记"></a>数据抽样相关笔记</h1><p><img src="/../img/2020-09-21-data-sampling/datasampling.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="抽样"><a href="#抽样" class="headerlink" title="抽样"></a><a href="%5Bhttps://zh.wikipedia.org/wiki/%E6%8A%BD%E6%A8%A3%5D(https://zh.wikipedia.org/wiki/%E6%8A%BD%E6%A8%A3)">抽样</a></h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BB%9F%E8%AE%A1%E5%AD%A6">统计学</a>中，<strong>抽样</strong>（Sampling）是一种<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%8E%A8%E8%AB%96%E7%B5%B1%E8%A8%88%E5%AD%B8">推论统计</a>方法，它是指从目标<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%80%BB%E4%BD%93_(%E7%BB%9F%E8%AE%A1%E5%AD%A6)">总体</a>（Population，或称为母体）中抽取一部分个体作为<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%A8%A3%E6%9C%AC_(%E7%B5%B1%E8%A8%88%E5%AD%B8)">样本</a>（Sample），通过观察样本的某一或某些属性，依据所获得的数据对总体的数量特征得出具有一定可靠性的估计判断，从而达到对总体的认识。</p>
+<h4 id="抽样误差（sample-error）样本框与样本之间的非可观察差距"><a href="#抽样误差（sample-error）样本框与样本之间的非可观察差距" class="headerlink" title="抽样误差（sample error）样本框与样本之间的非可观察差距"></a>抽样误差（sample error）样本框与样本之间的非可观察差距</h4><p>由于缺失了总体中的一部分人而在统计上产生的误差</p>
+<p>基于以下四个设计原则</p>
+<ol>
+<li>抽样框整体是否已知，入选样本的概率非零，即抽样概率（probability sampling）</li>
+<li>框中的关键子总体是否有样本代表，即分层（stratification）</li>
+<li>样本是在抽样框中直接、独立抽取的还是分组抽取的，即个体样本（element sample）或整群样本（cluster sample）</li>
+<li>选择多大的样本量</li>
+</ol>
+<h4 id="抽样方差"><a href="#抽样方差" class="headerlink" title="抽样方差"></a>抽样方差</h4><p>样本均值与样本框均值之间的平方差，如果抽样方差高，则样本均值就很不稳定。在这种情况下，抽样误差就很高。这就意味着，任何使用这类设计的调查，有更大的可能使得从调查中获得的均值会远离抽样总体的均值。</p>
+<h4 id="评价方法"><a href="#评价方法" class="headerlink" title="评价方法"></a>评价方法</h4><p>网络评价和<strong>K-S检验</strong></p>
+<h3 id="抽样过程"><a href="#抽样过程" class="headerlink" title="抽样过程"></a>抽样过程</h3><p>抽样过程主要包括以下几个阶段：</p>
+<ol>
+<li>定义总体（母体）</li>
+<li>确定<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E6%8A%BD%E6%A0%B7%E6%A1%86&action=edit&redlink=1">抽样框</a></li>
+<li>确定<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E6%8A%BD%E6%A0%B7%E6%96%B9%E6%B3%95&action=edit&redlink=1">抽样方法</a></li>
+<li>决定<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E6%A0%B7%E6%9C%AC%E9%87%8F&action=edit&redlink=1">样本量</a></li>
+<li>实施抽样计划</li>
+<li>抽样与数据收集</li>
+<li>回顾抽样过程</li>
+</ol>
+<h3 id="概率抽样方法-（调查方法P83）"><a href="#概率抽样方法-（调查方法P83）" class="headerlink" title="概率抽样方法 （调查方法P83）"></a>概率抽样方法 （调查方法P83）</h3><p><strong>简单随机抽样</strong>（simple random sampling），也叫纯随机抽样。从总体N个单位中随机地抽取n个单位作为样本，使得每一个容量为样本都有相同的概率被抽中。特点是：每个样本单位被抽中的概率相等，样本的每个单位完全独立，彼此间无一定的关联性和排斥性。简单随机抽样是其它各种抽样形式的基础。通常只是在总体单位之间差异程度较小和数目较少时，才采用这种方法[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E6%A8%A3#cite_note-1">1]</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:Simple_random_sampling.PNG"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Simple_random_sampling.PNG/300px-Simple_random_sampling.PNG" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<div align = "center">选择简单随机样本的示意图</div>
+
+<p>蓄水池抽样是当样本总体数量未知时，仅通过遍历一边样本即可完成的简单抽样算法。</p>
+<p><strong>系统抽样</strong>（systematic sampling），也称等距抽样。将总体中的所有单位按一定顺序排列，在规定的范围内随机地抽取一个单位作为初始单位，然后按事先规定好的规则确定其他样本单位。先从数字1到k之间随机抽取一个数字r作为初始单位，以后依次取r+k、r+2k……等单位。这种方法操作简便，可提高估计的精度。</p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:Systematic_sampling.PNG"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Systematic_sampling.PNG/350px-Systematic_sampling.PNG" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<div align = "center">使用系统抽样技术选择随机样本的示意图</div>
+
+
+
+<p>**<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%88%86%E5%B1%82%E6%8A%BD%E6%A0%B7">分层抽样</a>**（stratified sampling）。将抽样单位按某种特征或某种规则划分为不同的层，然后从不同的层中独立、随机地抽取样本。从而保证样本的结构与总体的结构比较相近，从而提高估计的精度。难点是如何按照特征划分为不同的层。</p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/File:Stratified_sampling.PNG"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Stratified_sampling.PNG/300px-Stratified_sampling.PNG" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<div align = "center">使用分层抽样技术选择随机样本的示意图</div>
+
+<p><strong>整群抽样</strong>（cluster sampling）。将总体中若干个单位合并为组，抽样时直接抽取群，然后对中选群中的所有单位全部实施调查。抽样时只需群的抽样框，可大大简化工作量，缺点是估计的精度较差[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E6%A8%A3#cite_note-2">2]</a>。比如美国总统选举，直接抽取某个郡的选民，则可能出现明显的倾向。但如果抽取一年级、四年级、八年级的学生进行调查，则可以反应不同年龄段学生的状态，并分析其变化。如果不考虑走访的开销，则整群抽样的表现与简单随机抽样相当或更差。</p>
+<h3 id="非概率抽样方法"><a href="#非概率抽样方法" class="headerlink" title="非概率抽样方法"></a>非概率抽样方法</h3><p><strong>方便抽样</strong>（Convenience Sampling）。调查者以自己方便的方式抽取偶然得到的样本，最典型的方便抽样是“街头拦人法”。方便抽样的优点是易于实施，代价较小，缺点是样本代表性差，有很大的偶然性。</p>
+<p><strong>定额抽样</strong>（Quota Sampling）。调查者先将总体按某种特征划分成不同的组，然后在配额内以主观判断选定样本作为研究对象。定额抽样和分层抽样的相同之处是对总体进行分组，不同之处是分层抽样按概率原则在层内抽选样本，而定额抽样选取样本是主观的。定额抽样的优点是能够缩小抽样范围，减少抽样成本，缺点是确定额度困难，需多次探索。</p>
+<p><strong>判断抽样</strong>（Judgement Sampling）。研究人员根据调查目的和主观经验，从总体中选择最具代表性的样本。判断抽样的优点是可以用于总体难以确定的研究对象，缺点是受研究人员的主观倾向性影响大，一旦主观判断失误， 则易引起较大的抽样偏差。</p>
+<p><strong>滚雪球抽样</strong>（Snowball Sampling）。先选取若干符合特征的样本构成最初的调查对象，然后依靠他们提供新的调查对象，随着调查的推进，样本如同滚雪球般由小变大，滚雪球抽样方法的优点是能够很方便地找到被调查者，用于探索性研究，缺点是样本之间必须存在联系且愿意保持和提供这种联系。 [2]</p>
+<h3 id="机器学习中的抽样"><a href="#机器学习中的抽样" class="headerlink" title="机器学习中的抽样"></a>机器学习中的抽样</h3><p><strong>留出法（hold-out）</strong></p>
+<p>方法：直接将数据集D划分为两个互斥的集合，训练集合S和测试集合T，在S上训练模型，用T来评估其测试误差。注意：训练&#x2F;测试集的划分要尽可能保持数据分布的一致性，避免因为数据划分过程引入额外的偏差而对最终结果产生影响。</p>
+<p>缺点与改进：单次使用留出法得到的估计往往不够稳定可靠，在使用留出法时，一般要采用若干次随机划分、重复进行实验评估后取平均值作为留出法的评估结果</p>
+<p>实际运用：实际中一般将大约2&#x2F;3～4&#x2F;5的样本用于训练，剩余样本用于测试。 [3]</p>
+<p><strong>交叉验证法（cross validation）</strong></p>
+<p>方法：先将数据集D划分为k个大小相似的互斥子集.每个子集Di都尽可能保持数据分布的一致性，即从D中通过分层采样得到 .然后每次用k-1个子集的并集作为训练集，余下的那个子集作为测试集，这样就可以获得k组训练&#x2F;测试集，从而可以进行k次训练和测试，最终返回的是这k个测试结果的均值。</p>
+<p>实际运用：一般而言k的取值为10，常用的还有5、20等</p>
+<p><strong>自助法</strong></p>
+<p>问题引出：我们希望评估的是用D训练出来的模型，但是留出法和交叉验证法中，由于保留了一部分样本用于测试，因此实际评估的模型所使用的训练集比D小，这必然会引入一些因训练样本规模不同而导致的估计偏差，为此提出自助法。</p>
+<p>方法：它以自助采样(bootstrap sampling)为基础.给定包含m个样本的数据集D，我们对它进行采样产生数据集 D′：每次随机从D中挑选出一个样本，将其拷贝放入D′, 然后再将该样本放回初始数据集D中，使得该样本在下次采样时仍有可能被采样到；这个过程重复执行m次后，我们就得到可包含m个样本数据的数据集D′,这就是自助采样的结果.样本在m次采样中始终不被采到到概率为</p>
+<p><img src="/../img/2020-09-21-data-sampling/gs1.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>由此可知通过自助采样，初始数据集D中约有36.8%的样本未出现在采样数据集D′中。于是我们可将D′ 用作训练集，D∖D′用作测试集。</p>
+<p>优缺点：自助法在数据集较小，难以有效划分训练&#x2F;测试集时很有用，但是，自助法改变了初始数据集的分布，这会引入估计偏差，所以在数据量足够时，一般采用留出法和交叉验证法。 [4]</p>
+<h2 id="数据抽样技术"><a href="#数据抽样技术" class="headerlink" title="数据抽样技术"></a>数据抽样技术</h2><p>在当前数据搜集和存储技术不断发展、数据量激增的背景下，数据抽样技术可以在稍微降低准确性的情况下经济、快速地得到预测、估计和有代表性的结果，在众多领域都发挥着重要作用。</p>
+<h3 id="聚合查询"><a href="#聚合查询" class="headerlink" title="聚合查询"></a>聚合查询</h3><p>聚合查询操作根据聚合函数的复杂程度可以分为简单聚合查询和复杂聚合查询。</p>
+<p>简单聚合查询：求sum、max、avg</p>
+<p>复杂符合查询：TopK，KNN，KMeans</p>
+<p>传统的聚合查询采用精确查询的方式，对所有数据都进行聚合操作。比如遍历所有数据才能得到sum。然而在满足应用可靠性要求的前提下，实际应用为了能在短时间内得到查询结果，可以容忍一定误差。可以通过数据抽样的方法，在聚合查询之前得到数据总体的子集。只要抽样的样本代表性足够，则可大幅度提高聚合查询的效率。</p>
+<h3 id="数据保护"><a href="#数据保护" class="headerlink" title="数据保护"></a>数据保护</h3><p>数据抽样技术能够使分析师操作数据的子集，而不会损害到原数据。数据抽样的过程中可以添加其他操作，如数据脱敏等，让敏感信息不外泄，做到安全的数据抽样。</p>
+<h3 id="困难"><a href="#困难" class="headerlink" title="困难"></a>困难</h3><p><img src="/../img/2020-09-21-data-sampling/restrict.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="数据不平衡：利用分层抽样减少数据不平衡的情况"><a href="#数据不平衡：利用分层抽样减少数据不平衡的情况" class="headerlink" title="数据不平衡：利用分层抽样减少数据不平衡的情况"></a>数据不平衡：利用分层抽样减少数据不平衡的情况</h4><h5 id="长尾现象"><a href="#长尾现象" class="headerlink" title="长尾现象"></a>长尾现象</h5><p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%95%BF%E5%B0%BE">长尾</a>效应，英文名称Long Tail Effect。“头”（head）和“尾”（tail）是两个统计学名词。正态曲线中间的突起部分叫“头”；两边相对平缓的部分叫“尾”。从人们需求的角度来看，大多数的需求会集中在头部，而这部分我们可以称之为流行，而分布在尾部的需求是个性化的，零散的小量的需求。而这部分差异化的、少量的需求会在<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%9C%80%E6%B1%82%E6%9B%B2%E7%BA%BF/3351682">需求曲线</a>上面形成一条长长的“尾巴”，而所谓长尾效应就在于它的数量上，将所有非流行的市场累加起来就会形成一个比流行市场还大的市场。</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Long_tail.svg/800px-Long_tail.svg.png" srcset="/img/loading.gif" lazyload alt="File:Long tail.svg"></p>
+<h4 id="训练成本高："><a href="#训练成本高：" class="headerlink" title="训练成本高："></a>训练成本高：</h4><h5 id="模型大"><a href="#模型大" class="headerlink" title="模型大"></a>模型大</h5><p>etc..</p>
+<h5 id="数据多"><a href="#数据多" class="headerlink" title="数据多"></a>数据多</h5><p>etc..</p>
+<h3 id="抽象系统必须满足的需求"><a href="#抽象系统必须满足的需求" class="headerlink" title="抽象系统必须满足的需求"></a>抽象系统必须满足的需求</h3><h4 id="分布式支持"><a href="#分布式支持" class="headerlink" title="分布式支持"></a>分布式支持</h4><p>大数据背景下的数据处理大都在分布式环境下进行，数据抽样同样如此</p>
+<h4 id="高处理速度"><a href="#高处理速度" class="headerlink" title="高处理速度"></a>高处理速度</h4><p>时间不等人</p>
+<h4 id="高扩展性"><a href="#高扩展性" class="headerlink" title="高扩展性"></a>高扩展性</h4><p>算法扩展性</p>
+<h4 id="高样本代表性"><a href="#高样本代表性" class="headerlink" title="高样本代表性"></a>高样本代表性</h4><p>最终结果要好！</p>
+<h2 id="相关研究"><a href="#相关研究" class="headerlink" title="相关研究"></a>相关研究</h2><h3 id="基于大规模数据集的可扩展算法"><a href="#基于大规模数据集的可扩展算法" class="headerlink" title="基于大规模数据集的可扩展算法"></a>基于大规模数据集的可扩展算法</h3><p>交替方向乘子法（Alternating Dirention Method of Multipliers，ADMM）：用于解决海量数据环境下，分布式，凸优化问题。ADMM通过分解-协调过程（Decomposition-Corrdination），首先将一个大型的全局问题分解（Decomposition）成若干个较小且较易求解的局部子问题，再通过协调（Corrdination）这些局部子问题的解来得到全局解。ADMM的框架min(f(x)+g(z))与大部分机器学习问题的误差函数+正则项形式吻合，使得ADMM非常适合机器学习和统计学习的优化问题。</p>
+<p>Mahout项目：基于hadoop的机器学习和数据挖掘的分布式框架，实现了一些常用的可伸缩的机器学习算法以运用再大数据集上。Mahout基于MapReduce框架的并行性实现了部分数据挖掘算法，如推荐算法、聚类算法、分类算法等</p>
+<h3 id="真实应用场景下的数据抽样算法"><a href="#真实应用场景下的数据抽样算法" class="headerlink" title="真实应用场景下的数据抽样算法"></a>真实应用场景下的数据抽样算法</h3><h4 id="社交网络"><a href="#社交网络" class="headerlink" title="社交网络"></a>社交网络</h4><p>针对在线社交网络的Multigraph抽样算法：在真实的大规模社交网络分析中，样本总体列表是无法获得的。因此无法直接对Social Graph中的点进行抽样得到需要观察的样本集。研究者一般通过网络爬虫的方法，从某些网络顶点开始逐渐向外扩展，期望能收敛到一个连通图，以此作为观察样本。传统的社交网络抽样算法只考虑了个体之间的一种连接关系，仅在此关系对应的Social Graph上进行随机抽取。Multigraph抽样算法考虑了个体之间的多种连接关系，将这些连接关系对应的多张Social Graph结合成一张Multigraph，然后在此基础上进行随机抽样，可以在个体间高度聚集或者个体间连接缺失的情况下生成具有代表性的样本，解决了传统方法在这上面的痛点。</p>
+<p>Stratified Weighter Random Walk（S-WRW）算法，针对不同应用需要得到的不同的目标度量标准，依照分层抽样的思想对原始Social Graph的点和边赋予了不同的权重，使得对当前度量标准包含更多信息的点和边能够更容易被抽样算法选中，大大降低了达到相同估计精度所需要抽取的个体数量，提升了抽样算法的效率。</p>
+<h3 id="基于分布式的分层抽样算法"><a href="#基于分布式的分层抽样算法" class="headerlink" title="基于分布式的分层抽样算法"></a>基于分布式的分层抽样算法</h3><p>基于Hadoop MapReduce平台的分层抽样算法MR-SQE（Map Reduce Single Query Evaluator），基于Naive MapReduce Sampling（NMRS）进行修改</p>
+<p>Spark是一个用于大规模数据处理的分布式计算框架，Meng等人基于Spark平台提出了一个可扩展的机器学习库MLib，在其提供的基本统计功能中包含了基于分布式的分层抽样调用接口</p>
+<h3 id="基于抽样思想的机器学习算法"><a href="#基于抽样思想的机器学习算法" class="headerlink" title="基于抽样思想的机器学习算法"></a>基于抽样思想的机器学习算法</h3><h4 id="基于简单随机抽样的样本调整算法"><a href="#基于简单随机抽样的样本调整算法" class="headerlink" title="基于简单随机抽样的样本调整算法"></a>基于简单随机抽样的样本调整算法</h4><p>随机上采样和随机下采样技术</p>
+<h4 id="基于数据特征的样本生成算法"><a href="#基于数据特征的样本生成算法" class="headerlink" title="基于数据特征的样本生成算法"></a>基于数据特征的样本生成算法</h4><h5 id="上采样：从少数中发展"><a href="#上采样：从少数中发展" class="headerlink" title="上采样：从少数中发展"></a>上采样：从少数中发展</h5><p>SMOTE算法，利用小众样本在特征空间的相似性，采用插值的方式从相似的小众样本群生成新的样本</p>
+<p>Borderline-SMOTE基于SMOTE做了改进，添加了阈值</p>
+<p>ADASYN算法，SMOTE的拓展，特点是中间边界的样本生成数量更多</p>
+<h5 id="下采样：从多数中删减"><a href="#下采样：从多数中删减" class="headerlink" title="下采样：从多数中删减"></a>下采样：从多数中删减</h5><p>ENN算法：采用KNN，将离群点删除</p>
+<p>Tomek Links（TL）算法：TL关系指a样本和b样本间不存在C，使a更靠近c或b更靠近c——d(a,c)&lt;d(a,b) or d(b,c)&lt;d(a,b)，d(x,y)代表xy距离，当ab为TL关系时，同时移除ab</p>
+<p>OSS单侧选择：仅从多数样本中移除TL关系，即若a为多数样本，只移除a而不移除b</p>
+<p>Condensed Nearest Neighbor rule (CNN)  ：尽可能的减少训练数据</p>
+<h5 id="混合采样：上下采样结合"><a href="#混合采样：上下采样结合" class="headerlink" title="混合采样：上下采样结合"></a>混合采样：上下采样结合</h5><p>SMOTE+TL</p>
+<p>SMOTE+CNN</p>
+<p>SMOTE+ENN</p>
+<h4 id="基于级联组合的样本移除算法"><a href="#基于级联组合的样本移除算法" class="headerlink" title="基于级联组合的样本移除算法"></a>基于级联组合的样本移除算法</h4><p>BalanceCascade算法，基于Bootstrapping思想，通过有监督学习的方式训练出一组分类器来去除大众类中需要经过下采样而去除的样本</p>
+<h4 id="在线难样本挖掘算法"><a href="#在线难样本挖掘算法" class="headerlink" title="在线难样本挖掘算法"></a>在线难样本挖掘算法</h4><p>Online hard example mining（OHEM）算法：一种利用Bootstrapping技术，基于卷积神经网络的目标检测方法</p>
+<h2 id="History"><a href="#History" class="headerlink" title="History"></a>History</h2><p>Random sampling by using lots is an old idea, mentioned several times in the Bible. In 1786 Pierre Simon <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Laplace">Laplace</a> estimated the population of France by using a sample, along with <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Ratio_estimator">ratio estimator</a>. He also computed probabilistic estimates of the error. These were not expressed as modern <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Confidence_interval">confidence intervals</a> but as the sample size that would be needed to achieve a particular upper bound on the sampling error with probability 1000&#x2F;1001. His estimates used <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bayes'_theorem">Bayes’ theorem</a> with a uniform <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Prior_probability">prior probability</a> and assumed that his sample was random. <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Alexander_Ivanovich_Chuprov">Alexander Ivanovich Chuprov</a> introduced sample surveys to <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Imperial_Russia">Imperial Russia</a> in the 1870s.[<em><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Wikipedia:Citation_needed">citation needed</a></em>]</p>
+<p>In the US the 1936 <em><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Literary_Digest">Literary Digest</a></em> prediction of a Republican win in the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/U.S._presidential_election,_1936">presidential election</a> went badly awry, due to severe <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bias">bias</a> [<a target="_blank" rel="noopener" href="https://www.wsj.com/articles/SB115974322285279370">1]</a>. More than two million people responded to the study with their names obtained through magazine subscription lists and telephone directories. It was not appreciated that these lists were heavily biased towards Republicans and the resulting sample, though very large, was deeply flawed.[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sampling_(statistics)#cite_note-21">21]</a>[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sampling_(statistics)#cite_note-22">22]</a></p>
+<h3 id="抽样方法的早期发展（来自调查方法P5）"><a href="#抽样方法的早期发展（来自调查方法P5）" class="headerlink" title="抽样方法的早期发展（来自调查方法P5）"></a>抽样方法的早期发展（来自调查方法P5）</h3><p>早期的研究者，像Booth，都是试图去搜集研究的总体的所有成员的信息。这种方法避免了因从总体中选择部分进行调查所产生的误差，当然，对于大规模总体而言，也不适用。的确，分析普查资料的困难使得人们开始努力将样本资料推挤总体。早期的抽样也许是研究一个典型的“镇”，或者有意识地搜集个体资料，使其与总体相似，如访问一半的男性、一半的女性，并使其再地理分布上与总体相似。</p>
+<p>尽管18世纪已经有了概率论，知道20世纪概率论才被应用到抽样调查实践中。最早的应用就是从总体中系统地获得“N中的1”.这就是概率样本（probability sample），即每个个体都有被选作样本的非零机会。</p>
+<p>抽样应用的最大突破来自于农业研究。为了预测作物产量，统计学家们创造了面积概率抽样法（area probability sample），也就是抽取一定面积作为样本来预测农名春季的耕作到秋季会有怎样的收获。人们把同样的方法用在了家户调查中。在城市或乡村，抽选一定的区域，列出全部的家户，再从家户列表中抽选样本。抽样时，需要找到一种方法让每个家户甚至家户中的人都有被抽中的机会。这种技术的魅力在于，抽样时无须将总体中的所有家户都列出来。</p>
+<p>大萧条和第二次世界大战时调查研究的助推剂。现代概率抽样之一就是1939年12月开始的“月度失业调查”（Monthly Survey of Unemployment），29岁的统计学家Morris Hansen 主持了这项调查，后来他也成为了这个领域的领军人物（Hansen, Hurwitz, and Madow, 1953）。战争期间，联邦政府希望通过调查来了解人们的态度和观点，如购买战争国债的兴趣，以及其他的事实。战争期间，不少资源都用于了调查。再战争期间从事调查的人们，后来对调查方法的发展都起到了重要的作用。战争结束后，方法专家认识到，要想获得基于总体的好的统计，需要关注调查方法的三个方面：问题时如何设计的；数据是怎么搜集的，包括对访员的培训；样本是如何抽取的。</p>
+<p>评价其他样本的重要基础是概率样本。概率样本广泛应用于政府统计机构为政策制定者提供的重要证据中，概率样本也应用再司法诉讼中。对媒体受众的规模估计也运用概率样本，并由此确定广告率。简而言之，当样本负载大量价值时，通常使用概率样本。</p>
+<p>my words：</p>
+<p>进入互联网时代后，调查方法不再局限于访谈，爬虫也成了一种调查方法。同时，抽样的手段也从抽取一部分人进行访谈，获得抽样数据，转换到了利用爬虫或记录等方法获取大数据，再使用概率抽样的方式对总体数据进行抽取，加速训练。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li>SMOTE: Synthetic Minority Over-sampling Technique（2002）<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1106.1813.pdf">https://arxiv.org/pdf/1106.1813.pdf</a></li>
+<li>分布式数据分层抽样技术及其在目标检测领域的应用研究_黎敏讷（2017）<a target="_blank" rel="noopener" href="http://gb.oversea.cnki.net/KCMS/detail/detail.aspx?filename=1018997231.nh&dbcode=CMFD&dbname=CMFD2019">http://gb.oversea.cnki.net/KCMS/detail/detail.aspx?filename=1018997231.nh&amp;dbcode=CMFD&amp;dbname=CMFD2019</a></li>
+<li>胡健颖，孙山泽. 抽样调查的理论、方法和应用. 北京大学出版社:北京, 2000.6. <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Special:%E7%BD%91%E7%BB%9C%E4%B9%A6%E6%BA%90/7301045476">ISBN 7-301-04547-6</a>.</li>
+<li>金勇进，蒋妍，李序颖. 抽样技术. 中国人民大学出版社:北京, 2002.6. <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Special:%E7%BD%91%E7%BB%9C%E4%B9%A6%E6%BA%90/7300040799">ISBN 7-300-04079-9</a></li>
+<li>Chambers, R L, and Skinner, C J (editors) (2003), <em>Analysis of Survey Data</em>, Wiley, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/ISBN_(identifier)">ISBN</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Special:BookSources/0-471-89987-9">0-471-89987-9</a></li>
+<li>大数据挖掘的均匀抽样设计及数值分析_李毅（2015）<a target="_blank" rel="noopener" href="http://gb.oversea.cnki.net/KCMS/detail/detail.aspx?filename=TJLT201504001&dbcode=CJFD&dbname=CJFD2015">http://gb.oversea.cnki.net/KCMS/detail/detail.aspx?filename=TJLT201504001&amp;dbcode=CJFD&amp;dbname=CJFD2015</a></li>
+<li>Data Sampling Methods to Deal With the Big Data Multi-Class Imbalance Problem <a target="_blank" rel="noopener" href="https://www.mdpi.com/2076-3417/10/4/1276/pdf">https://www.mdpi.com/2076-3417/10/4/1276/pdf</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="category-chain-item">读书笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8A%BD%E6%A0%B7/" class="print-no-link">#数据抽样</a>
+      
+        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="print-no-link">#大数据</a>
+      
+        <a href="/tags/spark/" class="print-no-link">#spark</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>🖊数据抽样相关笔记</div>
+      <div>https://blog.wh1isper.top/2020/09/20/2020-09-21-data-sampling/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年9月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/03/2020-10-04-bigData/" title="🖊大数据相关笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">🖊大数据相关笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/01/12/2020-01-13-AF_HTTP_Evasion/" title="🚀HTTP绕过原理总结">
+                        <span class="hidden-mobile">🚀HTTP绕过原理总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

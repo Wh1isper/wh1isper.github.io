@@ -1,0 +1,855 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="TLDR用一个域名实现公网ipv6直连、公网ipv4穿透、内网直连访问  此教程并非通用教程，可参考修改   案例与效果展示内网用户访问yourdomain，可以直接访问到内网机器 123$ curl -v https:&#x2F;&#x2F;wh1isper.top:8080*   Trying [::ffff:192.168.31.254]:8080...* Connected to wh1isper.top (">
+<meta property="og:type" content="article">
+<meta property="og:title" content="🚀遨游互联网远程开发指北">
+<meta property="og:url" content="https://blog.wh1isper.top/2023/10/26/2023-10-27-%E9%81%A8%E6%B8%B8%E4%BA%92%E8%81%94%E7%BD%91%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="TLDR用一个域名实现公网ipv6直连、公网ipv4穿透、内网直连访问  此教程并非通用教程，可参考修改   案例与效果展示内网用户访问yourdomain，可以直接访问到内网机器 123$ curl -v https:&#x2F;&#x2F;wh1isper.top:8080*   Trying [::ffff:192.168.31.254]:8080...* Connected to wh1isper.top (">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wh1isper.top/img/2023-10-27-%E9%81%A8%E6%B8%B8%E4%BA%92%E8%81%94%E7%BD%91%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/remote-develop.png">
+<meta property="og:image" content="https://blog.wh1isper.top/img/2023-10-27-%E9%81%A8%E6%B8%B8%E4%BA%92%E8%81%94%E7%BD%91%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/code-server.png">
+<meta property="article:published_time" content="2023-10-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.818Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="开源">
+<meta property="article:tag" content="内网穿透">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.wh1isper.top/img/2023-10-27-%E9%81%A8%E6%B8%B8%E4%BA%92%E8%81%94%E7%BD%91%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/remote-develop.png">
+  
+  
+  
+  <title>🚀遨游互联网远程开发指北 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-coffee.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="遨游互联网远程开发指北"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-27 00:00" pubdate>
+          2023年10月27日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">遨游互联网远程开发指北</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="TLDR"><a href="#TLDR" class="headerlink" title="TLDR"></a>TLDR</h1><p>用一个域名实现公网ipv6直连、公网ipv4穿透、内网直连访问</p>
+<blockquote>
+<p>此教程并非通用教程，可参考修改</p>
+</blockquote>
+<p><img src="/../img/2023-10-27-%E9%81%A8%E6%B8%B8%E4%BA%92%E8%81%94%E7%BD%91%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/remote-develop.png" srcset="/img/loading.gif" lazyload alt="网络拓扑图"></p>
+<h1 id="案例与效果展示"><a href="#案例与效果展示" class="headerlink" title="案例与效果展示"></a>案例与效果展示</h1><p>内网用户访问<code>yourdomain</code>，可以直接访问到内网机器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ curl -v https://wh1isper.top:8080<br>*   Trying [::ffff:192.168.31.254]:8080...<br>* Connected to wh1isper.top (::ffff:192.168.31.254) port 8080<br></code></pre></td></tr></table></figure>
+
+<p>外网ipv6用户访问<code>yourdomain</code>，可以通过ipv6公网地址直连</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ curl -v https://wh1isper.top:8080<br>*   Trying [2408:8256:3284:1522::905]:8080...<br>* Connected to wh1isper.top (2408:8256:3284:1522::905) port 8080 (<span class="hljs-comment">#0)</span><br></code></pre></td></tr></table></figure>
+
+<p>外网ipv4用户访问<code>yourdomain</code>，可以通过跳板机访问</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ nslookup wh1isper.top<br>curl -v https://wh1isper.top:8080<br>*   Trying 42.193.219.110:8080...<br>Connected to wh1isper.top (42.193.219.110) port 8080 (<span class="hljs-comment">#0)</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="案例：部署一个codeserver"><a href="#案例：部署一个codeserver" class="headerlink" title="案例：部署一个codeserver"></a>案例：部署一个codeserver</h2><p><code>yay code-server</code>，安装<code>aur/code-server-marketplace</code>和<code>aur/code-server</code></p>
+<p>根据文档配置证书、密码等：<a target="_blank" rel="noopener" href="https://github.com/coder/code-server">https://github.com/coder/code-server</a></p>
+<p>证书可以在域名服务商申请，也可以使用免费的letsencrypt，本教程不包含相关内容</p>
+<p><code>~/.config/code-server/config.yaml</code></p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">host:</span> <span class="hljs-string">&quot;::&quot;</span><br><span class="hljs-symbol">port:</span> <span class="hljs-number">2443</span><br><span class="hljs-symbol">auth:</span> password<br><span class="hljs-symbol">password:</span><br><span class="hljs-symbol">cert:</span> <span class="hljs-keyword">/path/</span>to<span class="hljs-keyword">/cert/</span>xxx.crt<br>cert-key: <span class="hljs-keyword">/path/</span>to<span class="hljs-keyword">/cert/</span>xxx.key<br></code></pre></td></tr></table></figure>
+
+<p>然后将2443端口映射到跳板机的2443端口</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[FRP-CODE-SERVER]</span><br><span class="hljs-attr">type</span> = tcp<br><span class="hljs-attr">local_ip</span> = <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span><br><span class="hljs-attr">local_port</span> = <span class="hljs-number">2443</span><br><span class="hljs-attr">remote_port</span> = <span class="hljs-number">2443</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>目前，HTTPS+TCP跳板的方式可以绕过腾讯云域名备案检测，可以使用腾讯云的服务器，否则可能需要境外服务器以绕过备案，或者进行备案</p>
+</blockquote>
+<p><img src="/../img/2023-10-27-%E9%81%A8%E6%B8%B8%E4%BA%92%E8%81%94%E7%BD%91%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E6%8C%87%E5%8C%97/code-server.png" srcset="/img/loading.gif" lazyload alt="效果图"></p>
+<h1 id="场景说明"><a href="#场景说明" class="headerlink" title="场景说明"></a>场景说明</h1><ul>
+<li>家庭宽带提供ipv6公网地址，但是没有ipv4公网地址<ul>
+<li>大部分省份的家庭宽带都有这项功能，一般而言，开发机器获得公网ipv6地址可以通过设置光猫为桥接模式，路由器拨号，然后再路由器ipv6处使用DHCPv6协议获取公网ipv6地址</li>
+<li>大部分省份手机流量已经支持ipv6，这使得我们在外时可以使用手机流量直连机器，获取满带宽</li>
+</ul>
+</li>
+<li>有一台具有公网ipv4地址的服务器，作为内网穿透跳板机</li>
+<li>家庭使用的路由器可以设置dhcp地址绑定和静态域名解析<ul>
+<li>这使得在家使用时，可以通过域名直接访问内网机器。dhcp地址绑定是可选的，你也可以静态分配ip</li>
+<li>以红米路由器为例，可以破解进入ssh配置静态域名解析</li>
+<li>如果有Clash等软路由，一般都支持静态域名解析，甚至可以自动做优选</li>
+</ul>
+</li>
+<li>一个域名，选你喜欢的即可</li>
+</ul>
+<h1 id="重点问题"><a href="#重点问题" class="headerlink" title="重点问题"></a>重点问题</h1><h2 id="如何将开发机的ipv6地址进行绑定"><a href="#如何将开发机的ipv6地址进行绑定" class="headerlink" title="如何将开发机的ipv6地址进行绑定"></a>如何将开发机的ipv6地址进行绑定</h2><p>难点： 由于ipv6地址是动态分配的，所以需要一个机制将ipv6地址绑定到域名上，每次变动后刷新（即DDNS）。如果有任何DDNS的服务商，可以直接使用其提供的API进行绑定，如果没有，可以使用脚本进行绑定。</p>
+<p>这里以dnspod（腾讯云dns）为例，给出使用其API的地址绑定方案脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> socket<br><span class="hljs-keyword">import</span> sys<br><span class="hljs-keyword">import</span> smtplib<br><span class="hljs-keyword">import</span> subprocess<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">import</span> urllib.request<br><span class="hljs-keyword">from</span> email.header <span class="hljs-keyword">import</span> Header<br><span class="hljs-keyword">from</span> email.mime.text <span class="hljs-keyword">import</span> MIMEText<br><br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">from</span> tencentcloud.common <span class="hljs-keyword">import</span> credential<br><span class="hljs-keyword">from</span> tencentcloud.common.exception.tencent_cloud_sdk_exception <span class="hljs-keyword">import</span> (<br>    TencentCloudSDKException,<br>)<br><br><span class="hljs-keyword">from</span> tencentcloud.dnspod.v20210323 <span class="hljs-keyword">import</span> dnspod_client, models<br><br><span class="hljs-comment"># 为了保护密钥安全，建议将密钥设置在环境变量中或者配置文件中，请参考本文凭证管理章节。</span><br><span class="hljs-comment"># 硬编码密钥到代码中有可能随代码泄露而暴露，有安全隐患，并不推荐。</span><br><span class="hljs-comment"># cred = credential.Credential(&quot;secretId&quot;, &quot;secretKey&quot;)</span><br>cred = credential.Credential(<br>    os.environ.get(<span class="hljs-string">&quot;TENCENTCLOUD_SECRET_ID&quot;</span>, <span class="hljs-string">&quot;&quot;</span>),<br>    os.environ.get(<span class="hljs-string">&quot;TENCENTCLOUD_SECRET_KEY&quot;</span>, <span class="hljs-string">&quot;&quot;</span>),<br>)<br><span class="hljs-comment"># DOMAIN = &quot;example.com&quot; 是你注册的域名</span><br>DOMAIN = os.environ.get(<span class="hljs-string">&quot;DOMAIN&quot;</span>, <span class="hljs-string">&quot;&quot;</span>)<br>client = dnspod_client.DnspodClient(cred, <span class="hljs-string">&quot;ap-guangzhou&quot;</span>)<br><br><br>cmd = <span class="hljs-string">&quot;ifconfig&quot;</span><br>encoding = <span class="hljs-string">&quot;utf-8&quot;</span><br>splitter = <span class="hljs-string">&quot;inet6&quot;</span><br><br><span class="hljs-keyword">import</span> socket<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">isNetOK</span>(<span class="hljs-params">testserver</span>):<br>    s = socket.socket()<br>    s.settimeout(<span class="hljs-number">3</span>)<br>    <span class="hljs-keyword">try</span>:<br>        status = s.connect_ex(testserver)<br>        <span class="hljs-keyword">if</span> status == <span class="hljs-number">0</span>:<br>            s.close()<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span><br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">isNetChainOK</span>(<span class="hljs-params">testserver=(<span class="hljs-params"><span class="hljs-string">&quot;www.baidu.com&quot;</span>, <span class="hljs-number">443</span></span>)</span>):<br>    isOK = isNetOK(testserver)<br>    <span class="hljs-keyword">return</span> isOK<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">ddns_refresh</span>(<span class="hljs-params">v6_address</span>):<br>    <span class="hljs-keyword">for</span> addr <span class="hljs-keyword">in</span> v6_address:<br>        <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;::&quot;</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> addr:<br>            <span class="hljs-keyword">continue</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;refreshing ddns &#x27;<span class="hljs-subst">&#123;addr&#125;</span>&#x27;&quot;</span>)<br><br>        m = models.DescribeRecordListRequest()<br>        m.Domain = DOMAIN<br>        records = client.DescribeRecordList(m)<br>        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records.RecordList:<br>            <span class="hljs-comment"># remove all records</span><br>            <span class="hljs-keyword">if</span> record.<span class="hljs-type">Type</span> == <span class="hljs-string">&quot;AAAA&quot;</span>:<br>                req = models.DeleteRecordRequest()<br>                req.Domain = DOMAIN<br>                req.RecordId = record.RecordId<br>                client.DeleteRecord(req)<br><br>        <span class="hljs-comment"># add new record for addr</span><br>        req = models.CreateRecordRequest()<br>        req.Domain = DOMAIN<br>        req.RecordType = <span class="hljs-string">&quot;AAAA&quot;</span><br>        req.Value = addr<br>        req.RecordLine = <span class="hljs-string">&quot;默认&quot;</span><br><br>        resp = client.CreateRecord(req)<br>        <span class="hljs-built_in">print</span>(resp.to_json_string())<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_v6_address</span>():<br>    cmd_output = subprocess.run(cmd, capture_output=<span class="hljs-literal">True</span>).stdout.decode(encoding)<br>    v6_address = <span class="hljs-built_in">set</span>()<br>    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> cmd_output.splitlines():<br>        <span class="hljs-keyword">if</span> splitter <span class="hljs-keyword">in</span> line <span class="hljs-keyword">and</span> <span class="hljs-string">&quot;fe80&quot;</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> line:<br>            addr = line.split(splitter)[<span class="hljs-number">1</span>].strip()<br>            addr = addr.split(<span class="hljs-string">&quot;/64&quot;</span>)[<span class="hljs-number">0</span>]<br>            <span class="hljs-keyword">if</span> addr == <span class="hljs-string">&quot;::1&quot;</span>:<br>                <span class="hljs-keyword">continue</span><br>            v6_address.add(addr)<br>    <span class="hljs-keyword">return</span> v6_address<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">set_to_str</span>(<span class="hljs-params">sets</span>):<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;\n&quot;</span>.join(sets)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> isNetChainOK():<br>        time.sleep(<span class="hljs-number">10</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;No network connection, waiting...&quot;</span>)<br>    v6_address = get_v6_address()<br>    ddns_refresh(v6_address)<br>    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> send_list:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;设备联网，开始监测V6地址&quot;</span>)<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        time.sleep(<span class="hljs-number">60</span>)<br>        new_v6_address = get_v6_address()<br>        <span class="hljs-keyword">if</span> isNetChainOK() <span class="hljs-keyword">and</span> new_v6_address <span class="hljs-keyword">and</span> new_v6_address != v6_address:<br>            <span class="hljs-keyword">try</span>:<br>                ddns_refresh(new_v6_address)<br>            <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>                <span class="hljs-built_in">print</span>(e)<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;error refreshing ddns...&quot;</span>)<br>            v6_address = new_v6_address<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="配置frp"><a href="#配置frp" class="headerlink" title="配置frp"></a>配置frp</h2><p>我们使用<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">frp</a>为例</p>
+<p>需要下载frp的release，然后将frps和frpc放到<code>/usr/bin</code>目录下（其他目录也都可以，注意一会systemd配置里面执行命令和相对应配置文件的位置）</p>
+<p>配置systemd服务，分别放到<code>/etc/systemd/system/frps.service</code>和<code>/etc/systemd/system/frpc.service</code>中。(一说放在<code>/usr/lib/systemd/system/</code>下也可以)。跳板机只需要配置frps，开发机配置frpc</p>
+<p><code>frps.service</code>跳板机使用root，这样可以绑定低端口</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=Frp Server Service<br><span class="hljs-attr">After</span>=network.target<br><br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">Type</span>=simple<br><span class="hljs-attr">User</span>=root<br><span class="hljs-attr">Restart</span>=<span class="hljs-literal">on</span>-failure<br><span class="hljs-attr">RestartSec</span>=<span class="hljs-number">5</span>s<br><span class="hljs-attr">ExecStart</span>=/usr/bin/frps -c /etc/frp/frps.ini<br><span class="hljs-attr">LimitNOFILE</span>=<span class="hljs-number">1048576</span><br><br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=multi-user.target<br></code></pre></td></tr></table></figure>
+
+<p><code>frpc.service</code>开发机配置</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=Frp Client Service<br><span class="hljs-attr">After</span>=network.target<br><br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">Type</span>=simple<br><span class="hljs-attr">User</span>=nobody<br><span class="hljs-attr">Restart</span>=always<br><span class="hljs-attr">RestartSec</span>=<span class="hljs-number">5</span>s<br><span class="hljs-attr">ExecStart</span>=/usr/bin/frpc -c /etc/frp/frpc.ini<br><span class="hljs-attr">ExecReload</span>=/usr/bin/frpc reload -c /etc/frp/frpc.ini<br><span class="hljs-attr">LimitNOFILE</span>=<span class="hljs-number">1048576</span><br><br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=multi-user.target<br></code></pre></td></tr></table></figure>
+
+<p>接着我们配置frp的配置文件，分别放到<code>/etc/frp/frps.ini</code>和<code>/etc/frp/frpc.ini</code>中</p>
+<p>跳板机配置<code>/etc/frp/frps.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[common]</span><br><span class="hljs-comment"># frp服务端口和密码</span><br><span class="hljs-attr">bind_port</span> = <span class="hljs-number">7000</span><br>token =<br><br><br><span class="hljs-comment"># frp管理后台端口，请按自己需求更改</span><br><span class="hljs-attr">dashboard_port</span> = <span class="hljs-number">7500</span><br><span class="hljs-comment"># frp管理后台用户名和密码，请改成自己的</span><br><span class="hljs-attr">dashboard_user</span> =<br><span class="hljs-attr">dashboard_pwd</span> =<br><span class="hljs-attr">enable_prometheus</span> = <span class="hljs-literal">true</span><br><br><br><span class="hljs-comment"># frp日志配置</span><br><span class="hljs-attr">log_file</span> = /var/log/frps.log<br><span class="hljs-attr">log_level</span> = info<br><span class="hljs-attr">log_max_days</span> = <span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+
+<p>开发机配置<code>/etc/frp/frpc.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[common]</span><br><span class="hljs-comment"># 你的跳板机的ip地址</span><br>server_addr =<br><span class="hljs-comment"># 你的跳板机的frp服务端口</span><br><span class="hljs-attr">server_port</span> = <span class="hljs-number">7000</span><br><span class="hljs-comment"># frp服务密码</span><br>token =<br><br><span class="hljs-comment"># 案例：将本地的22端口映射到跳板机的2222端口</span><br><span class="hljs-comment"># 创建一个叫FRP-SSH的tcp隧道，将本地的22端口映射到跳板机的2222端口</span><br><span class="hljs-section">[FRP-SSH]</span><br><span class="hljs-attr">type</span> = tcp<br><span class="hljs-attr">local_ip</span> = <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span><br><span class="hljs-attr">local_port</span> = <span class="hljs-number">22</span><br><span class="hljs-attr">remote_port</span> = <span class="hljs-number">2222</span><br></code></pre></td></tr></table></figure>
+
+<p>在实际使用的过程中，我们可以将开发机的SSH端口也改为2222（相应，上面的<code>local_port</code>应该为2222），这样就可以直接使用<code>ssh -p 2222 user@yourdomain</code>统一连接了</p>
+<h2 id="内网地址解析"><a href="#内网地址解析" class="headerlink" title="内网地址解析"></a>内网地址解析</h2><p>以shellclash为例，破解了ssh的红米路由器可以直接安装shellclash，即可实现软路由（科学上网不在本教程内）</p>
+<p>然后在shellclash的配置文件中，添加如下配置</p>
+<p>这个是某个用户文件的地址，可以通过用户自定义文件的高级功能看到目前的自定义文件地址</p>
+<p><code>/userdisk/clash/yamls/user.yaml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><br><span class="hljs-attr">hosts:</span><br>  <span class="hljs-attr">&#x27;yourdomain&#x27;:</span> <span class="hljs-number">192.168</span><span class="hljs-string">.x.x</span><br></code></pre></td></tr></table></figure>
+
+<p>如果不使用clash的dns，一种方式是在hosts文件(<code>/etc/hosts</code>)里配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">192.168.x.x yourdomain<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" class="category-chain-item">技术分享</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%80%E6%BA%90/" class="print-no-link">#开源</a>
+      
+        <a href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" class="print-no-link">#内网穿透</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>🚀遨游互联网远程开发指北</div>
+      <div>https://blog.wh1isper.top/2023/10/26/2023-10-27-遨游互联网远程开发指北/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/27/2023-10-28-%E6%88%91%E7%A9%B6%E7%AB%9F%E5%9C%A8%E6%8A%B1%E6%80%A8%E4%BB%80%E4%B9%88/" title="❗我究竟在抱怨什么">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">❗我究竟在抱怨什么</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/10/24/2023-10-25-%E5%A5%87%E7%BE%8E%E6%8B%89%E8%AE%A1%E5%88%92%E6%9E%84%E6%83%B3/" title="🐱奇美拉计划构想">
+                        <span class="hidden-mobile">🐱奇美拉计划构想</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,894 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="深入讲解Agent开发中最重要的上下文工程，涵盖上下文压缩、多Agent系统设计、LLM评估等核心议题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Context Engineering-The Most Important Thing in Agent Development">
+<meta property="og:url" content="https://blog.wh1isper.top/2025/06/16/2025-06-17-context-engineering/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="深入讲解Agent开发中最重要的上下文工程，涵盖上下文压缩、多Agent系统设计、LLM评估等核心议题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.820Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Context Engineering">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Context Engineering-The Most Important Thing in Agent Development - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-unix-linux.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Context Engineering-The Most Important Thing in Agent Development"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-17 00:00" pubdate>
+          2025年6月17日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Context Engineering-The Most Important Thing in Agent Development</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Context-Engineering-The-Most-Important-Thing-in-Agent-Development"><a href="#Context-Engineering-The-Most-Important-Thing-in-Agent-Development" class="headerlink" title="Context Engineering-The Most Important Thing in Agent Development"></a>Context Engineering-The Most Important Thing in Agent Development</h1><blockquote>
+<p>English version is below. Translated by Claude and Wh1isper(Human in the loop).</p>
+</blockquote>
+<h2 id="What-is-Context-Engineering"><a href="#What-is-Context-Engineering" class="headerlink" title="What is Context Engineering"></a>What is Context Engineering</h2><p>前两个月我写了一篇<a href="https://blog.wh1isper.top/2025/04/07/2025-04-08-agent-design-note/">博客(Agent Design Note)</a>记录我在设计Coding Agent中的一些重点，现在我想完整的阐述一下对其中Context Engineering的理解。我认为这或许是目前构建任何Agent最重要的内容。</p>
+<h2 id="Key-Points-of-Context-Engineering"><a href="#Key-Points-of-Context-Engineering" class="headerlink" title="Key Points of Context Engineering"></a>Key Points of Context Engineering</h2><p>LLM当前最重要的就是上下文窗口，虽然LLM在大海捞针的测试中表现得越来越好，但一旦有任何逻辑相关出现时，LLM通常很难理解这其中的逻辑。Context Engineering就是为了能够更好地管理上下文，让LLM更好地理解问题或完成任务。</p>
+<p>这是我目前的思考重点：</p>
+<ul>
+<li>用Agent的角度思考并提供上下文<ul>
+<li>通过Tool 的 description、参数、实现和返回值（Observation）</li>
+<li>在system prompt中通过few shots替代workflow</li>
+<li>其他上下文集成方案（RAG、HyDE、Post prompt等）</li>
+</ul>
+</li>
+<li>保护Agent上下文<ul>
+<li>通过分包子任务的方式（下面会讨论）</li>
+<li>通过Compact Context的方式优化上下文</li>
+</ul>
+</li>
+<li>保持简单，基建先行<ul>
+<li>保持简单、原子化的通用工具设计，否则使用few shots+固定工具的工作流</li>
+<li>先完成compact等基建，再考虑多agent等复杂系统</li>
+</ul>
+</li>
+</ul>
+<h2 id="Compact-Context"><a href="#Compact-Context" class="headerlink" title="Compact Context"></a>Compact Context</h2><p>首先我们讨论如何在长任务中管理Agent的上下文。目前，SOTA的模型有200K的上下文长度，Gemini 2.5 Pro甚至有1M的上下文长度，但对于代码工程而言，多轮对话往往很快就能吃光200K的上下文，这时我们就需要上下文压缩。</p>
+<p>一种基于策略的上下文压缩方式是，设定一个固定的水位线，比如50%的token消耗，触发一次上下文压缩，在保留N条消息的情况下，对前N条上下文进行总结后，用总结的结果替换这N条消息。这个N可以选择为0（不保留消息），2（最近2条），1&#x2F;2（一半上下文）或者1&#x2F;4（25%上下文）。这种情况下主要调整三个方向：</p>
+<ul>
+<li>上下文压缩模型的prompt和输出结构</li>
+<li>N值：这代表了统计学上有多少最近上下文是重要的</li>
+<li>水位线：这代表压缩效率</li>
+</ul>
+<p>另一种策略是设计一个记忆系统，每次从记忆系统中获取上下文，而不是保留所有上下文。这一记忆系统可以是LLM based，也可以是基于RAG或其他搜索技术的。</p>
+<p>二者对比，前者的缓存效率更高，调试重点更明确，更容易做出足够好的实现，后者则更加智能，但目前没有比较通用的实践。我在Cline、Claude code等看到的方式都是前者，而Windsurf据称是二者混合。</p>
+<h2 id="Role-Based-Multi-Agent-Systems"><a href="#Role-Based-Multi-Agent-Systems" class="headerlink" title="Role Based Multi Agent Systems"></a>Role Based Multi Agent Systems</h2><p>针对上下文问题还有一个想法是通过多个Agent协作完成工作，为此，人们设计了工作流或者中心化Agent。其中一种方式是人工或自动地设计各种角色，然后让LLM以一种角色扮演的方式，沉浸于其角色之中，完成指定的任务。</p>
+<p>我对这种方式表示怀疑，主要在于：</p>
+<ul>
+<li>角色扮演是额外的心智负担：对于理解自身角色，再到做出正确行动，本质是基于人类分工，基于个人认知，而LLM通常有非常广的知识，这二者并不能类比转换</li>
+<li>基于角色的上下文隔离是低效的：人类常常陷入分工过细的“电话地狱”，Agent也不例外</li>
+<li>基于角色的流程是脆弱的：经常由于某一个角色设计存在缺陷，导致整体处于木桶效应之中</li>
+</ul>
+<h2 id="Task-Based-Multi-Agent-Systems"><a href="#Task-Based-Multi-Agent-Systems" class="headerlink" title="Task Based Multi Agent Systems"></a>Task Based Multi Agent Systems</h2><p>Anthropic（和我）比较倡导的方案是按照任务划分子Agent，从而保护主Agent的上下文。比如在搜索场景中，可以并发多个Agent搜索多个领域，最后汇总成多份报告，再由审查者或主Agent进行分析。</p>
+<p>这种方式的优势在于，主Agent从始至终负责用户需求或任务目标，而子Agent仅提供上下文层面的参考，而不是负责整个任务的执行。其次，子Agent不需要理解自身角色，从而可以更加专注自身任务，从而获得更好的性能表现。</p>
+<p>但这一模式并不是万能的，我曾尝试分包一些代码编辑任务，但实际上表现并不好，目前来看，这一模式行之有效的只有信息搜集&#x2F;上下文获取，而不是进行修改。这和单个人类使用各种工具辅助最后完成任务非常相似，或许用超级个体来比喻这种构建方式更加适当。</p>
+<h2 id="LLM-as-judge-evaluation"><a href="#LLM-as-judge-evaluation" class="headerlink" title="LLM-as-judge evaluation"></a>LLM-as-judge evaluation</h2><p>现在我们已经有了足够的经验来构建一个长时间运行的Agent，至少我们可以让他一直跑下去，并知道在某些任务中可以并行或协作。现在，我们还有一个最重要的问题有待解决：如何评估Agent的行动是否正确&#x2F;恰当&#x2F;有效。当一次代码编辑操作成功的时候，Agent只能从工具返回中获悉<code>编辑成功</code>，而不是真实看到所带来的改变。即使有测试用例，也只能规范代码的“围栏”而不是确认代码的正确。在其他领域，比如报告撰写、个人助手，则可能连测试用例也没有。</p>
+<p>目前的一大研究重点是使用LLM进行评价，而其中最重要的是人类在LLM进行自动化评价的过程中，如何为评价Agent构建上下文，这包括：</p>
+<ul>
+<li>设计工具来观测当前任务状态和主Agent影响</li>
+<li>设计工作流程来指导Agent进行评测</li>
+<li>收集欺骗性案例，帮助评测Agent避开欺骗性事实</li>
+</ul>
+<p>正如<a target="_blank" rel="noopener" href="https://ysymyth.github.io/The-Second-Half/">The Second Half</a>一文，现在Agent设计已经进入下半场，如何评测Agent将是把强化学习从后训练扩展到推理时的重要研究课题。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://ankitmaloo.com/bitter-lesson/">https://ankitmaloo.com/bitter-lesson/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents">https://www.anthropic.com/engineering/building-effective-agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/built-multi-agent-research-system">https://www.anthropic.com/engineering/built-multi-agent-research-system</a></li>
+<li><a target="_blank" rel="noopener" href="https://cognition.ai/blog/dont-build-multi-agents">https://cognition.ai/blog/dont-build-multi-agents</a></li>
+</ul>
+<h1 id="English-Version"><a href="#English-Version" class="headerlink" title="English Version"></a>English Version</h1><h2 id="What-is-Context-Engineering-1"><a href="#What-is-Context-Engineering-1" class="headerlink" title="What is Context Engineering"></a>What is Context Engineering</h2><p>Two months ago, I wrote a <a href="https://blog.wh1isper.top/2025/04/07/2025-04-08-agent-design-note/">blog post (Agent Design Note)</a> documenting some key points in designing a Coding Agent. Now I want to provide a complete exposition of my understanding of Context Engineering, which I believe is perhaps the most important aspect of building any Agent today.</p>
+<h2 id="Key-Points-of-Context-Engineering-1"><a href="#Key-Points-of-Context-Engineering-1" class="headerlink" title="Key Points of Context Engineering"></a>Key Points of Context Engineering</h2><p>The most crucial aspect of LLMs currently is the context window. While LLMs perform increasingly well in needle-in-haystack tests, they typically struggle to understand logical relationships once any logic-related content appears. Context Engineering aims to better manage context, enabling LLMs to better understand problems or complete tasks.</p>
+<p>These are my current focal points:</p>
+<ul>
+<li>Think from an Agent’s perspective and provide context<ul>
+<li>Through Tool descriptions, parameters, implementations, and return values (Observations)</li>
+<li>Replace workflows with few-shots in system prompts</li>
+<li>Other context integration solutions (RAG, HyDE, Post prompt, etc.)</li>
+</ul>
+</li>
+<li>Protect Agent context<ul>
+<li>Through task decomposition approaches (discussed below)</li>
+<li>Through Compact Context methods to optimize context</li>
+</ul>
+</li>
+<li>Keep it simple, infrastructure first<ul>
+<li>Maintain simple, atomic, general-purpose tool design; otherwise use workflows with few-shots + fixed tools</li>
+<li>Complete infrastructure like compacting first, then consider complex systems like multi-agent</li>
+</ul>
+</li>
+</ul>
+<h2 id="Compact-Context-1"><a href="#Compact-Context-1" class="headerlink" title="Compact Context"></a>Compact Context</h2><p>First, let’s discuss how to manage Agent context in long tasks. Currently, SOTA models have 200K context length, with Gemini 2.5 Pro even reaching 1M context length. However, for code engineering, multi-turn conversations can quickly exhaust 200K context, necessitating context compression.</p>
+<p>One policy-based context compression approach sets a fixed watermark, such as 50% token consumption, to trigger context compression. While preserving N messages, it summarizes the previous N contexts and replaces these N messages with the summary. N can be chosen as 0 (preserve no messages), 2 (most recent 2), 1&#x2F;2 (half the context), or 1&#x2F;4 (25% of context). This approach mainly adjusts three dimensions:</p>
+<ul>
+<li>Context compression model’s prompt and output structure</li>
+<li>N value: represents how many recent contexts are statistically important</li>
+<li>Watermark: represents compression efficiency</li>
+</ul>
+<p>Another strategy involves designing a memory system that retrieves context from the memory system rather than preserving all context. This memory system can be LLM-based or based on RAG or other search technologies.</p>
+<p>Comparing the two, the former has higher caching efficiency, clearer debugging focus, and is easier to implement well, while the latter is more intelligent but lacks widely adopted practices. I’ve seen the former approach in Cline, Claude Code, etc., while Windsurf reportedly uses a hybrid of both.</p>
+<h2 id="Role-Based-Multi-Agent-Systems-1"><a href="#Role-Based-Multi-Agent-Systems-1" class="headerlink" title="Role Based Multi Agent Systems"></a>Role Based Multi Agent Systems</h2><p>Another approach to address context issues involves multiple Agents collaborating to complete work, leading to the design of workflows or centralized Agents. One method involves manually or automatically designing various roles, then having LLMs engage in role-playing, immersing themselves in their roles to complete designated tasks.</p>
+<p>I’m skeptical of this approach, mainly because:</p>
+<ul>
+<li>Role-playing creates additional cognitive burden: Understanding one’s role and then taking correct action is essentially based on human division of labor and individual cognition, while LLMs typically have very broad knowledge—these two cannot be analogously converted</li>
+<li>Role-based context isolation is inefficient: Humans often fall into “phone hell” due to overly detailed division of labor, and Agents are no exception</li>
+<li>Role-based processes are fragile: Often, flaws in a single role design cause the entire system to suffer from the barrel effect</li>
+</ul>
+<h2 id="Task-Based-Multi-Agent-Systems-1"><a href="#Task-Based-Multi-Agent-Systems-1" class="headerlink" title="Task Based Multi Agent Systems"></a>Task Based Multi Agent Systems</h2><p>Anthropic (and I) advocate for dividing sub-Agents by task to protect the main Agent’s context. For example, in search scenarios, multiple Agents can concurrently search different domains, finally consolidating into multiple reports for analysis by a reviewer or main Agent.</p>
+<p>This approach’s advantage is that the main Agent remains responsible for user needs or task objectives throughout, while sub-Agents only provide contextual reference rather than being responsible for entire task execution. Additionally, sub-Agents don’t need to understand their own roles, allowing them to focus more on their tasks and achieve better performance.</p>
+<p>However, this model isn’t universal. I’ve attempted to decompose some code editing tasks, but the actual performance wasn’t good. Currently, this model seems effective only for information gathering&#x2F;context acquisition, not for making modifications. This closely resembles a single human using various tools to ultimately complete tasks—perhaps describing this construction method as a “super individual” is more appropriate.</p>
+<h2 id="LLM-as-judge-evaluation-1"><a href="#LLM-as-judge-evaluation-1" class="headerlink" title="LLM-as-judge evaluation"></a>LLM-as-judge evaluation</h2><p>Now we have sufficient experience to build a long-running Agent—at least we can keep it running continuously and know it can parallelize or collaborate on certain tasks. Now we face one final crucial question: how to evaluate whether an Agent’s actions are correct&#x2F;appropriate&#x2F;effective. When a code editing operation succeeds, the Agent can only learn “edit successful” from tool returns, not actually see the changes brought about. Even with test cases, they only regulate code “boundaries” rather than confirm code correctness. In other domains like report writing or personal assistance, there might not even be test cases.</p>
+<p>A major current research focus is using LLMs for evaluation, with the most important aspect being how humans construct context for evaluation Agents during automated LLM evaluation processes, including:</p>
+<ul>
+<li>Designing tools to observe current task state and main Agent impact</li>
+<li>Designing workflows to guide Agents in evaluation</li>
+<li>Collecting deceptive cases to help evaluation Agents avoid deceptive facts</li>
+</ul>
+<p>As stated in <a target="_blank" rel="noopener" href="https://ysymyth.github.io/The-Second-Half/">The Second Half</a>, Agent design has now entered the second half, and how to evaluate Agents will be an important research topic for extending reinforcement learning from post-training to inference time.</p>
+<h2 id="References-1"><a href="#References-1" class="headerlink" title="References"></a>References</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://ankitmaloo.com/bitter-lesson/">https://ankitmaloo.com/bitter-lesson/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/building-effective-agents">https://www.anthropic.com/engineering/building-effective-agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/built-multi-agent-research-system">https://www.anthropic.com/engineering/built-multi-agent-research-system</a></li>
+<li><a target="_blank" rel="noopener" href="https://cognition.ai/blog/dont-build-multi-agents">https://cognition.ai/blog/dont-build-multi-agents</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" class="category-chain-item">技术分享</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/Context-Engineering/" class="print-no-link">#Context Engineering</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Context Engineering-The Most Important Thing in Agent Development</div>
+      <div>https://blog.wh1isper.top/2025/06/16/2025-06-17-context-engineering/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/20/2025-06-21-AGI-is-possible-and-impossible/" title="AGI is possible and impossible">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AGI is possible and impossible</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/07/2025-06-08-agi-product-design/" title="The AGI era requires end-to-end product design">
+                        <span class="hidden-mobile">The AGI era requires end-to-end product design</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

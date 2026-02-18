@@ -1,0 +1,853 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="介绍pymupdf4llm-mcp工具，一个为LLM Agent提供高质量PDF解析能力的MCP服务器，支持完整文本提取和图片定位。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pymupdf4llm-mcp - Best pdf2llm mcp for your agent">
+<meta property="og:url" content="https://blog.wh1isper.top/2025/04/29/2025-04-30-pymupdf4llm-mcp/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="介绍pymupdf4llm-mcp工具，一个为LLM Agent提供高质量PDF解析能力的MCP服务器，支持完整文本提取和图片定位。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.820Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="MCP">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>pymupdf4llm-mcp - Best pdf2llm mcp for your agent - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-unix-linux.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="pymupdf4llm-mcp - Best pdf2llm mcp for your agent"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-30 00:00" pubdate>
+          2025年4月30日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">pymupdf4llm-mcp - Best pdf2llm mcp for your agent</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="pymupdf4llm-mcp-Enhancing-LLM-Agents-with-High-Quality-PDF-Context"><a href="#pymupdf4llm-mcp-Enhancing-LLM-Agents-with-High-Quality-PDF-Context" class="headerlink" title="pymupdf4llm-mcp: Enhancing LLM Agents with High-Quality PDF Context"></a>pymupdf4llm-mcp: Enhancing LLM Agents with High-Quality PDF Context</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In the rapidly evolving landscape of AI agents, providing high-quality context to Large Language Models (LLMs) is crucial for their effectiveness. One common challenge is extracting structured, usable content from PDF documents - a format that’s ubiquitous in academic, business, and technical domains.</p>
+<p>As the developer of <a target="_blank" rel="noopener" href="https://github.com/ai-zerolab/lightblue-ai">lightblue-ai</a>, I found myself needing a reliable, LLM-friendly PDF parsing tool that could preserve both textual content and the spatial relationships of elements like images. After evaluating various options, pymupdf4llm emerged as the standout solution, offering complete textual extraction and accurate image placement.</p>
+<p>While I could have directly implemented this tool within my own agent framework, I realized the value of making pymupdf4llm accessible to other agent developers. This is where the Model Context Protocol (MCP) became invaluable – it provides a standardized way for closed agent systems to integrate external tools. By creating an MCP wrapper for pymupdf4llm, I could enable other developers to immediately leverage official best practices for PDF parsing without needing to spend time discovering optimal configurations and implementations themselves.</p>
+<p>This led to the creation of <a target="_blank" rel="noopener" href="https://github.com/pymupdf/pymupdf4llm-mcp">pymupdf4llm-mcp</a>, a Model Context Protocol (MCP) server that makes this powerful PDF parsing capability easily accessible to LLM agents.</p>
+<h2 id="What-is-pymupdf4llm-mcp"><a href="#What-is-pymupdf4llm-mcp" class="headerlink" title="What is pymupdf4llm-mcp?"></a>What is pymupdf4llm-mcp?</h2><p><a target="_blank" rel="noopener" href="https://github.com/pymupdf/pymupdf4llm-mcp">pymupdf4llm-mcp</a> is an MCP server that wraps the functionality of pymupdf4llm, providing a standardized interface for converting PDF documents to markdown format. This conversion is specifically optimized for consumption by Large Language Models.</p>
+<p>The tool leverages the robust PDF parsing capabilities of PyMuPDF (formerly MuPDF) and enhances it with features specifically designed for LLM consumption:</p>
+<ol>
+<li><p><strong>Complete Textual Content Extraction</strong>: It preserves the semantic structure of documents, including headings, paragraphs, and lists.</p>
+</li>
+<li><p><strong>Accurate Image Placement</strong>: Images are extracted and referenced in the markdown output, maintaining their relationship to the surrounding text.</p>
+</li>
+<li><p><strong>Standardized Output</strong>: The consistent markdown format makes it easy for LLMs to process and understand the document structure.</p>
+</li>
+<li><p><strong>MCP Integration</strong>: As an MCP server, it can be easily integrated with various LLM agent frameworks that support the Model Context Protocol.</p>
+</li>
+</ol>
+<p>By converting PDFs to markdown, pymupdf4llm-mcp transforms opaque binary documents into a format that LLMs can effectively process, understand, and reason about.</p>
+<h2 id="Installation-Guide"><a href="#Installation-Guide" class="headerlink" title="Installation Guide"></a>Installation Guide</h2><p>Getting started with pymupdf4llm-mcp is straightforward via <a target="_blank" rel="noopener" href="https://github.com/astral-sh/uv">uv</a>, a fast Python package installer and resolver that makes dependency management seamless.</p>
+<p>First, install uv if you don’t have it already:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Install uv using pip</span><br>pip install uv<br><br><span class="hljs-comment"># Or using the official installer script</span><br>curl -sSf https://astral.sh/uv/install.sh | bash<br></code></pre></td></tr></table></figure>
+
+<p>Then configure your MCP client (such as Cursor, Windsurf, or a custom agent) to use pymupdf4llm-mcp, add the following configuration:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;pymupdf4llm-mcp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;command&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;uvx&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;args&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-string">&quot;pymupdf4llm-mcp@latest&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-string">&quot;stdio&quot;</span><br>      <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;env&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Usage-Examples"><a href="#Usage-Examples" class="headerlink" title="Usage Examples"></a>Usage Examples</h2><p>Now I’ll show you how to use pymupdf4llm-mcp in a simple way: Building an <a target="_blank" rel="noopener" href="https://arxiv.org/">arxiv</a> summary agent via <a target="_blank" rel="noopener" href="https://github.com/pydantic/pydantic-ai">pydantic-ai</a>. This example demonstrates how to integrate pymupdf4llm-mcp into an LLM agent workflow to automatically download and summarize academic papers.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Annotated<br><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> Field<br><span class="hljs-keyword">from</span> pydantic_ai <span class="hljs-keyword">import</span> Agent<br><span class="hljs-keyword">from</span> pydantic_ai.mcp <span class="hljs-keyword">import</span> MCPServerStdio<br><br><span class="hljs-keyword">import</span> httpx<br><br>server = MCPServerStdio(<br>    <span class="hljs-string">&quot;uvx&quot;</span>,<br>    args=[<br>        <span class="hljs-string">&quot;pymupdf4llm-mcp@latest&quot;</span>,<br>        <span class="hljs-string">&quot;stdio&quot;</span>,<br>    ],<br>)<br>agent = Agent(<br>    <span class="hljs-string">&quot;bedrock:us.anthropic.claude-3-7-sonnet-20250219-v1:0&quot;</span>, mcp_servers=[server]<br>)<br><br><br><span class="hljs-meta">@agent.tool_plain</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">download_web</span>(<span class="hljs-params"></span><br><span class="hljs-params">    url: Annotated[<span class="hljs-built_in">str</span>, Field(<span class="hljs-params">description=<span class="hljs-string">&quot;URL to download&quot;</span></span>)],</span><br><span class="hljs-params">    save_path: Annotated[</span><br><span class="hljs-params">        <span class="hljs-built_in">str</span>, Field(<span class="hljs-params">description=<span class="hljs-string">&quot;Absolute path where the file should be saved&quot;</span></span>)</span><br><span class="hljs-params">    ],</span><br><span class="hljs-params"></span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>]:<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    Download a file from a URL and save it to the specified path</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br><br>    <span class="hljs-keyword">try</span>:<br>        response = httpx.get(url)<br>        response.raise_for_status()<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(save_path, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> f:<br>            f.write(response.content)<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-keyword">return</span> &#123;<br>            <span class="hljs-string">&quot;success&quot;</span>: <span class="hljs-literal">False</span>,<br>            <span class="hljs-string">&quot;error&quot;</span>: <span class="hljs-built_in">str</span>(e),<br>            <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">f&quot;Failed to download <span class="hljs-subst">&#123;url&#125;</span>&quot;</span>,<br>        &#125;<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">return</span> &#123;<br>            <span class="hljs-string">&quot;success&quot;</span>: <span class="hljs-literal">True</span>,<br>            <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">f&quot;Successfully downloaded <span class="hljs-subst">&#123;url&#125;</span> to <span class="hljs-subst">&#123;save_path&#125;</span>&quot;</span>,<br>        &#125;<br><br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> agent.run_mcp_servers():<br>        result = <span class="hljs-keyword">await</span> agent.run(<br>            <span class="hljs-string">&quot;Please summarize the paper: https://arxiv.org/pdf/1706.03762&quot;</span><br>        )<br>    <span class="hljs-built_in">print</span>(result.output)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    <span class="hljs-keyword">import</span> asyncio<br><br>    asyncio.run(main())<br></code></pre></td></tr></table></figure>
+
+<p>LLM Output:</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-section"># Summary of &quot;Attention Is All You Need&quot; (arXiv:1706.03762)</span><br><br>This groundbreaking paper by Vaswani et al. introduces the <span class="hljs-strong">**Transformer**</span>, a novel neural network architecture for sequence transduction tasks like machine translation. Here&#x27;s a comprehensive summary:<br><br><span class="hljs-section">## Key Innovation</span><br>The Transformer represents a paradigm shift in neural machine translation by <span class="hljs-strong">**completely eliminating recurrence and convolutions**</span>, instead relying entirely on <span class="hljs-strong">**attention mechanisms**</span> to model relationships between input and output sequences.<br><br><span class="hljs-section">## Core Architecture</span><br><span class="hljs-bullet">1.</span> <span class="hljs-strong">**Encoder-Decoder Structure**</span>:<br><span class="hljs-bullet">   -</span> <span class="hljs-strong">**Encoder**</span>: Stack of 6 identical layers, each containing a multi-head self-attention mechanism and a position-wise feed-forward network<br><span class="hljs-bullet">   -</span> <span class="hljs-strong">**Decoder**</span>: Stack of 6 identical layers with an additional cross-attention layer that attends to the encoder output<br><br><span class="hljs-bullet">2.</span> <span class="hljs-strong">**Key Mechanisms**</span>:<br><span class="hljs-bullet">   -</span> <span class="hljs-strong">**Multi-Head Attention**</span>: Allows the model to jointly attend to information from different representation subspaces<br><span class="hljs-bullet">   -</span> <span class="hljs-strong">**Scaled Dot-Product Attention**</span>: Computes attention weights between query-key pairs and applies them to values<br><span class="hljs-bullet">   -</span> <span class="hljs-strong">**Positional Encoding**</span>: Adds information about the position of tokens in the sequence using sine and cosine functions<br><span class="hljs-bullet">   -</span> <span class="hljs-strong">**Residual connections and layer normalization**</span>: Used throughout to facilitate training<br><br><span class="hljs-section">## Advantages over RNN/CNN models</span><br><span class="hljs-bullet">1.</span> <span class="hljs-strong">**Superior Parallelization**</span>: Allows much more efficient training by computing all positions simultaneously<br><span class="hljs-bullet">2.</span> <span class="hljs-strong">**Constant path length between positions**</span>: Makes learning long-range dependencies easier (compared to linear/logarithmic path lengths in CNNs)<br><span class="hljs-bullet">3.</span> <span class="hljs-strong">**Reduced training time**</span>: Achieves state-of-the-art results with significantly less training time<br><br><span class="hljs-section">## Performance Results</span><br><span class="hljs-bullet">1.</span> <span class="hljs-strong">**English-to-German translation**</span>: 28.4 BLEU score on WMT 2014, exceeding previous state-of-the-art by over 2 BLEU points<br><span class="hljs-bullet">2.</span> <span class="hljs-strong">**English-to-French translation**</span>: 41.8 BLEU score, establishing a new single-model state-of-the-art<br><span class="hljs-bullet">3.</span> <span class="hljs-strong">**Training efficiency**</span>: Achieved these results after just 3.5 days of training on eight GPUs, a fraction of the time required by previous models<br><span class="hljs-bullet">4.</span> <span class="hljs-strong">**Generalization**</span>: Successfully applied to English constituency parsing, demonstrating the model&#x27;s versatility<br><br><span class="hljs-section">## Impact</span><br>The Transformer architecture has become foundational in natural language processing, serving as the backbone for models like BERT, GPT, and other large language models that have revolutionized the field. Its self-attention mechanism allows for more effective modeling of long-range dependencies in sequences, making it particularly effective for language tasks.<br><br>The paper demonstrates that attention mechanisms alone are sufficient to build powerful sequence-to-sequence models, challenging the previous consensus that recurrent or convolutional architectures were necessary for these tasks.<br></code></pre></td></tr></table></figure>
+
+<h3 id="How-the-Example-Works"><a href="#How-the-Example-Works" class="headerlink" title="How the Example Works"></a>How the Example Works</h3><ol>
+<li><p><strong>Setting up the MCP Server</strong>: We initialize an MCP server that runs pymupdf4llm-mcp using the <code>stdio</code> transport method.</p>
+</li>
+<li><p><strong>Creating the Agent</strong>: We create a Claude 3.7 Sonnet agent and connect it to our MCP server.</p>
+</li>
+<li><p><strong>Implementing a Download Tool</strong>: We define a <code>download_web</code> tool that fetches PDF files from URLs.</p>
+</li>
+<li><p><strong>Behind the Scenes</strong>: When the agent runs, it:</p>
+<ul>
+<li>Downloads the PDF from arXiv using our custom tool</li>
+<li>Uses pymupdf4llm-mcp to convert the PDF to markdown format</li>
+<li>Processes the markdown content to understand the paper</li>
+<li>Generates a comprehensive summary</li>
+</ul>
+</li>
+</ol>
+<p>This workflow enables LLM agents to work with PDF content almost as effectively as they work with plain text, opening up vast repositories of knowledge that were previously difficult to access programmatically.</p>
+<h2 id="The-Role-of-Context-in-LLM-Agents"><a href="#The-Role-of-Context-in-LLM-Agents" class="headerlink" title="The Role of Context in LLM Agents"></a>The Role of Context in LLM Agents</h2><p>Current LLM agents have two key components: tools and context. While tools enable agents to interact with the world and perform actions, context is what informs their understanding and decision-making.</p>
+<p>Context can come from two sources:</p>
+<ol>
+<li><strong>User-provided information</strong>: Direct input from users that frames the task or provides background.</li>
+<li><strong>Observations</strong>: Information gathered through tool use, such as web searches, file reading, or in this case, PDF parsing.</li>
+</ol>
+<p>The quality of this context directly impacts the quality of the agent’s outputs. When dealing with PDFs, poor parsing can lead to:</p>
+<ul>
+<li>Lost structural information (headings, sections, etc.)</li>
+<li>Missing or misplaced images</li>
+<li>Garbled text or formatting issues</li>
+<li>Loss of tables and other structured data</li>
+</ul>
+<p>pymupdf4llm-mcp addresses these issues by providing high-quality, structured context from PDF documents. This enables LLMs to:</p>
+<ul>
+<li>Understand the document’s organization and flow</li>
+<li>Reference specific sections or figures accurately</li>
+<li>Maintain the relationship between text and visual elements</li>
+<li>Process information in a way that preserves the author’s intended meaning</li>
+</ul>
+<p>As Claude 3.7 Sonnet and other advanced models demonstrate increasing proficiency at utilizing tools to gather context, the importance of high-quality context providers like pymupdf4llm-mcp becomes even more significant.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>By bridging the gap between the ubiquitous PDF format and the markdown format that LLMs can effectively process, pymupdf4llm-mcp removes a significant barrier to incorporating valuable document-based knowledge into AI agent workflows.</p>
+<p>I hope to see more tools in the community that focus on providing high-quality context to LLMs, as this is a crucial foundation for building truly capable and helpful AI systems.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" class="category-chain-item">技术分享</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/MCP/" class="print-no-link">#MCP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>pymupdf4llm-mcp - Best pdf2llm mcp for your agent</div>
+      <div>https://blog.wh1isper.top/2025/04/29/2025-04-30-pymupdf4llm-mcp/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/08/2025-05-09-renaissance-and-llm/" title="LLM时代的文艺复兴">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">LLM时代的文艺复兴</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/07/2025-04-08-agent-design-note/" title="Agent Design Note">
+                        <span class="hidden-mobile">Agent Design Note</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

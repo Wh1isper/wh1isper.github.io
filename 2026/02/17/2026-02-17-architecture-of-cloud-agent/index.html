@@ -1,0 +1,1240 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="本文将深入探讨云上Agent的架构设计，分析其核心组件和功能，以及如何实现高效的Agent系统。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊云上Agent的架构设计">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/02/17/2026-02-17-architecture-of-cloud-agent/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="本文将深入探讨云上Agent的架构设计，分析其核心组件和功能，以及如何实现高效的Agent系统。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-17T13:54:00.000Z">
+<meta property="article:modified_time" content="2026-02-18T04:43:56.821Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="架构设计">
+<meta property="article:tag" content="CloudAgent">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>聊聊云上Agent的架构设计 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-unix-linux.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="云上Agent的架构设计——计算负载、状态管理和安全性"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-02-17 21:54" pubdate>
+          2026年2月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">云上Agent的架构设计——计算负载、状态管理和安全性</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>总结一下Agent的发展历程和架构演进，聊聊几个抽象概念，最后说说我觉得未来Agent架构的一个可能方向。</p>
+</blockquote>
+<h1 id="Chatbot"><a href="#Chatbot" class="headerlink" title="Chatbot"></a>Chatbot</h1><p>最开始出现的是Chatbot应用。Chatbot 是一个状态系统。每轮请求执行四个步骤：读取上下文、构造 prompt、调用模型、写回状态。系统设计的重点不在模型接口，而在状态组织方式。</p>
+<p>会话状态建议分为两层：</p>
+<ul>
+<li><strong>显示层（Display Layer）</strong>：保存原始事件流，面向 UI 展示、回放与审计。</li>
+<li><strong>业务层（Business Layer）</strong>：保存推理就绪上下文，面向 prompt 构造与成本控制。</li>
+</ul>
+<p>该分层支持一条工程约束：业务层允许静默压缩与摘要，显示层保持完整历史，不做语义改写。</p>
+<h2 id="1-分层职责图"><a href="#1-分层职责图" class="headerlink" title="1) 分层职责图"></a>1) 分层职责图</h2><pre><code class=" mermaid">flowchart LR
+    UI[Display Layer&lt;br/&gt;raw events / replay / audit]
+    BL[Business Layer&lt;br/&gt;processed context / prompt-ready]
+    UI -. isolated goals .- BL
+</code></pre>
+
+<p>这张图定义职责边界。两层的输入输出、服务对象、演化策略均不同。混用单层存储会产生三类问题：</p>
+<ol>
+<li>prompt 长度随轮次线性增长，推理成本和时延同步上升。</li>
+<li>展示格式、系统指令、工具中间消息进入模型输入，降低上下文信噪比。</li>
+<li>压缩策略直接作用于用户可见历史，破坏回放一致性与审计可读性。</li>
+</ol>
+<h2 id="2-写路径图"><a href="#2-写路径图" class="headerlink" title="2) 写路径图"></a>2) 写路径图</h2><pre><code class=" mermaid">flowchart LR
+    U[User] --&gt; API[Chat API] --&gt; SVC[Conversation Service]
+    SVC --&gt; CP[Context Processor]
+    CP --&gt; LLM[LLM Inference]
+    LLM --&gt; SVC
+    SVC --&gt; DDB[(Display History Store)]
+    SVC --&gt; BDB[(Business Context Store)]
+</code></pre>
+
+<p>写路径采用双写：同一轮请求同时更新显示层与业务层。</p>
+<ul>
+<li><code>Display History Store</code> 记录 raw user&#x2F;assistant events。</li>
+<li><code>Business Context Store</code> 记录 processed context。</li>
+</ul>
+<p><code>Context Processor</code> 负责从“展示消息”生成“推理上下文”，常见操作为：</p>
+<ul>
+<li>truncate（窗口裁剪）</li>
+<li>compress（信息压缩）</li>
+<li>summarize（阶段摘要）</li>
+<li>metadata filtering（移除展示噪声字段）</li>
+</ul>
+<h2 id="3-推理读路径图"><a href="#3-推理读路径图" class="headerlink" title="3) 推理读路径图"></a>3) 推理读路径图</h2><pre><code class=" mermaid">flowchart LR
+    SVC[Conversation Service] --&gt;|load prompt context| BDB[(Business Context Store)]
+    BDB --&gt; SVC
+    SVC --&gt; LLM[LLM Inference]
+</code></pre>
+
+<p>推理路径只读取业务层。该约束保证三点：</p>
+<ul>
+<li>输入长度可预测。</li>
+<li>关键语义可延续。</li>
+<li>prompt 结构可标准化。</li>
+</ul>
+<h2 id="4-显示回放图"><a href="#4-显示回放图" class="headerlink" title="4) 显示回放图"></a>4) 显示回放图</h2><pre><code class=" mermaid">flowchart LR
+    UI[Chat UI] --&gt; API[Chat API]
+    API --&gt; DDB[(Display History Store)]
+    DDB --&gt; API --&gt; UI
+</code></pre>
+
+<p>展示路径只读取显示层。UI 获取的是原始事件轨迹，不依赖推理优化后的上下文快照。该路径为回放、排障、审计提供稳定数据源。</p>
+<h2 id="5-Context-Engineering"><a href="#5-Context-Engineering" class="headerlink" title="5) Context Engineering"></a>5) Context Engineering</h2><p>在 Chatbot 阶段，Context Engineering 关注两个问题：</p>
+<ol>
+<li><strong>上下文压缩</strong>：在 token budget 固定的前提下，保留任务相关信息。</li>
+<li><strong>用户记忆 &#x2F; 偏好</strong>：在跨轮次交互中维持行为一致性。</li>
+</ol>
+<p>这一阶段的重点是定义问题边界和评估标准，不在于引入复杂机制。</p>
+<p><strong>结论</strong></p>
+<ul>
+<li>Chatbot 架构已经形成显示层与业务层的初步分层：前者负责事件回放与审计，后者负责推理上下文组织。</li>
+<li>Chatbot 阶段已经出现上下文管理问题：上下文压缩与用户记忆&#x2F;偏好管理成为后续架构演进的核心输入。</li>
+</ul>
+<h1 id="Agent-in-VM"><a href="#Agent-in-VM" class="headerlink" title="Agent in VM"></a>Agent in VM</h1><p>第二种形态是 <strong>Agent 与用户共处同一台 VM</strong>。与 Chatbot 阶段相比，这一形态把“对话系统”扩展为“执行系统”：Agent 不再只组织上下文，还直接操作 Shell、文件系统、浏览器和桌面环境。</p>
+<p>这个形态的核心变化是：</p>
+<ul>
+<li>执行环境从 API 工具调用，转为真实操作系统环境。</li>
+<li>状态边界从会话消息，扩展为 VM 全状态（文件、进程、浏览器、环境变量）。</li>
+<li>用户可通过 VNC&#x2F;SSH 与 Agent 并行操作同一环境。</li>
+</ul>
+<h2 id="1-形态定义与架构边界"><a href="#1-形态定义与架构边界" class="headerlink" title="1) 形态定义与架构边界"></a>1) 形态定义与架构边界</h2><pre><code class=" mermaid">flowchart LR
+    U[User] --&gt;|VNC/SSH| VM[User VM]
+    WEB[Web Chat] --&gt; AG[Agent Process in VM]
+
+    subgraph VM[User VM]
+        AG
+        SH[Shell]
+        FS[(Filesystem)]
+        BR[Browser]
+        DE[Desktop]
+    end
+
+    AG --&gt; SH
+    AG --&gt; FS
+    AG --&gt; BR
+    DE --&gt; SH
+    DE --&gt; BR
+</code></pre>
+
+<p>该架构的边界很直接：Agent 和用户共享同一运行时。系统一致性高，系统隔离弱。</p>
+<h2 id="2-运行时交互流"><a href="#2-运行时交互流" class="headerlink" title="2) 运行时交互流"></a>2) 运行时交互流</h2><pre><code class=" mermaid">sequenceDiagram
+    participant User as User(VNC/SSH)
+    participant Web as Web Chat
+    participant Agent as Agent(in VM)
+    participant LLM as LLM API
+    participant Shell as Shell
+    participant FS as Filesystem
+    participant Browser as Browser
+
+    User-&gt;&gt;Shell: direct command
+    Shell-&gt;&gt;FS: read/write
+
+    Web-&gt;&gt;Agent: task request
+    Agent-&gt;&gt;LLM: planning + tool call
+    LLM--&gt;&gt;Agent: action
+    Agent-&gt;&gt;Shell: execute command
+    Shell-&gt;&gt;FS: read/write
+    Agent-&gt;&gt;Browser: open/click/type
+    Agent--&gt;&gt;Web: result
+
+    User-&gt;&gt;FS: inspect changes immediately
+</code></pre>
+
+<p>这一形态的优势在于“可观察 + 可干预”：用户可以实时看到 Agent 的执行结果，也可以随时接管。</p>
+<h2 id="3-状态持久化：从会话状态到-VM-快照"><a href="#3-状态持久化：从会话状态到-VM-快照" class="headerlink" title="3) 状态持久化：从会话状态到 VM 快照"></a>3) 状态持久化：从会话状态到 VM 快照</h2><p>Chatbot 阶段主要持久化消息与上下文。Agent-in-VM 阶段需要持久化完整环境状态，通常依赖 VM Snapshot。</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant P as Platform
+    participant VM as VM
+    participant S as Snapshot Storage
+
+    P-&gt;&gt;VM: pause
+    VM--&gt;&gt;P: frozen
+    P-&gt;&gt;S: save memory snapshot
+    P-&gt;&gt;S: save disk snapshot
+    P-&gt;&gt;VM: terminate
+
+    P-&gt;&gt;S: load snapshots
+    S--&gt;&gt;P: memory + disk
+    P-&gt;&gt;VM: restore
+    VM--&gt;&gt;P: resumed
+</code></pre>
+
+<p>快照带来的工程收益是“连续执行上下文”：文件、进程、浏览器状态可以跨会话恢复。典型场景是开发服务器和调试现场的延续。</p>
+<h2 id="4-主要约束与风险"><a href="#4-主要约束与风险" class="headerlink" title="4) 主要约束与风险"></a>4) 主要约束与风险</h2><p>这个形态在通用性上很强，但成本与安全边界会前置成为架构问题：</p>
+<ul>
+<li><strong>成本约束</strong>：每用户独占 VM，空闲成本高，扩展效率低于共享计算架构。</li>
+<li><strong>调度约束</strong>：VM 启停与快照恢复时延高于无状态容器调度。</li>
+<li><strong>安全约束</strong>：Agent 进程与用户共域，密钥管理、权限边界、篡改防护更复杂。</li>
+<li><strong>持久化风险</strong>：恶意进程或敏感凭证可能通过快照跨会话保留。</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li>Agent in VM 形态把系统能力从“对话组织”推进到“环境执行”，获得了强交互、强观察、强持久化能力。</li>
+<li>这一形态同时引入了新的主问题：多租户安全边界、VM 成本模型与快照生命周期治理。</li>
+</ul>
+<h1 id="Agentic-LLM-API"><a href="#Agentic-LLM-API" class="headerlink" title="Agentic LLM API"></a>Agentic LLM API</h1><p>第三种形态可以定义为 <strong>Agentic LLM API</strong>：交互入口仍是 Chatbot，但执行能力已经升级为 Agent，并由模型 API 厂商托管执行环境。与 Agent in VM 的区别在于，用户不直接进入执行环境；与第一阶段 Chatbot 的区别在于，系统不仅维护消息状态，还维护可执行环境状态。</p>
+<p>这一形态的目标是把“对话编排”与“环境执行”做成一条端到端链路：</p>
+<ul>
+<li>对用户暴露稳定的聊天接口。</li>
+<li>对系统内部暴露可控的工具与执行环境。</li>
+<li>在 token 成本、延迟与可观察性之间取得工程平衡。</li>
+</ul>
+<h2 id="1-形态定义与系统边界"><a href="#1-形态定义与系统边界" class="headerlink" title="1) 形态定义与系统边界"></a>1) 形态定义与系统边界</h2><pre><code class=" mermaid">flowchart LR
+    U[User]
+    CHAT[Chat Interface]
+    AGENT[Agent Orchestrator]
+    MEM[(Session &amp; Memory Store)]
+    CE[Code Execution Runtime]
+    TOOLS[Internal/External Tools]
+
+    U --&gt; CHAT --&gt; AGENT
+    AGENT &lt;--&gt; MEM
+    AGENT --&gt; CE
+    CE --&gt; TOOLS
+    TOOLS --&gt; CE --&gt; AGENT --&gt; CHAT --&gt; U
+</code></pre>
+
+<p>边界定义：</p>
+<ul>
+<li><strong>Control Plane</strong>：会话、记忆、策略、路由。</li>
+<li><strong>Execution Plane</strong>：代码执行容器或沙箱运行时。</li>
+<li><strong>Tool Plane</strong>：数据库、检索、业务 API、浏览器等外部能力。</li>
+</ul>
+<h2 id="2-执行流：从直接工具调用到程序化工具调用"><a href="#2-执行流：从直接工具调用到程序化工具调用" class="headerlink" title="2) 执行流：从直接工具调用到程序化工具调用"></a>2) 执行流：从直接工具调用到程序化工具调用</h2><p>Agentic Chatbot 的关键变化，是把多步工具调用下沉到执行环境中，以减少模型轮次开销。典型实现是 Programmatic Tool Calling（PTC）模式：模型生成可执行代码，在运行时中循环调用工具、过滤中间结果，再回传高价值输出。</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant U as User
+    participant A as Agent Orchestrator
+    participant L as LLM
+    participant R as Execution Runtime
+    participant T as Tool/API
+
+    U-&gt;&gt;A: task
+    A-&gt;&gt;L: planning prompt
+    L--&gt;&gt;A: code-oriented action
+    A-&gt;&gt;R: run code block
+
+    loop in runtime
+        R-&gt;&gt;T: call tool
+        T--&gt;&gt;R: raw result
+        R-&gt;&gt;R: filter/aggregate/branch
+    end
+
+    R--&gt;&gt;A: compact result
+    A-&gt;&gt;L: final reasoning
+    L--&gt;&gt;A: answer
+    A--&gt;&gt;U: response
+</code></pre>
+
+<p>该流程的工程意义是：中间数据处理不进入主上下文窗口，模型只消费压缩后的关键结果。</p>
+<h2 id="3-状态模型：消息状态-环境状态-运行状态"><a href="#3-状态模型：消息状态-环境状态-运行状态" class="headerlink" title="3) 状态模型：消息状态 + 环境状态 + 运行状态"></a>3) 状态模型：消息状态 + 环境状态 + 运行状态</h2><p>Chatbot 阶段主要管理消息状态；Agentic Chatbot 需要三类状态并存。</p>
+<pre><code class=" mermaid">flowchart LR
+    M[(Message State)]
+    E[(Environment State)]
+    R[(Run State)]
+
+    M --&gt; C[Context Builder]
+    E --&gt; C
+    R --&gt; C
+    C --&gt; P[Prompt/Action Decision]
+</code></pre>
+
+<ul>
+<li><strong>Message State</strong>：对话历史、摘要、用户偏好。</li>
+<li><strong>Environment State</strong>：容器 ID、文件系统变更、工具上下文。</li>
+<li><strong>Run State</strong>：任务阶段、工具调用链、重试与超时信息。</li>
+</ul>
+<p>系统可恢复性依赖于这三类状态的一致性，而不是单一会话历史。</p>
+<h2 id="4-主要约束"><a href="#4-主要约束" class="headerlink" title="4) 主要约束"></a>4) 主要约束</h2><p>Agentic LLM API 的主要工程约束集中在五点：</p>
+<ul>
+<li><strong>安全约束</strong>：执行环境必须隔离，工具调用需要 caller 权限边界与 allowlist。</li>
+<li><strong>时效约束</strong>：执行容器存在 TTL，跨步调用需要超时恢复和幂等设计。</li>
+<li><strong>观测约束</strong>：需要保留 action trace、tool I&#x2F;O、版本化 prompt 以支持回放。</li>
+<li><strong>成本约束</strong>：执行时长、容器复用、上下文压缩共同决定单位任务成本。</li>
+<li><strong>供应商锁定约束</strong>：执行环境上下文（container state、intermediate artifacts、tool-call runtime state）主要保存在 API 厂商侧，迁移到其他模型供应商时，状态可移植性与行为一致性难以保证。</li>
+</ul>
+<p>关于供应商锁定，这一形态有两个具体后果：</p>
+<ol>
+<li><strong>状态不可携带</strong>：迁移供应商时，通常只能带走消息历史，难以带走运行时上下文。</li>
+<li><strong>行为不可等价</strong>：即使接口相似，不同厂商在执行容器、超时策略、工具调用协议上的差异会导致任务行为漂移。</li>
+</ol>
+<p>锁定面的核心不在 API schema，而在运行时语义：</p>
+<pre><code class=" mermaid">flowchart TB
+    subgraph HighPortability[High Portability]
+        M[Message History&lt;br/&gt;input/output transcripts]
+    end
+
+    subgraph MediumPortability[Medium Portability]
+        T[Tool Contracts&lt;br/&gt;name/schema/params]
+    end
+
+    subgraph LowPortability[Low Portability]
+        R[Runtime State&lt;br/&gt;container/session/artifacts]
+        S[Execution Semantics&lt;br/&gt;timeout/retry/caller policy]
+    end
+
+    M --&gt; T --&gt; R
+    T --&gt; S
+</code></pre>
+
+<p>可迁移性通常呈分层下降：消息层 &gt; 工具协议层 &gt; 运行时状态层。</p>
+<blockquote>
+<p>这里和很多厂商（OpenAI &amp; Gemini）在API中隐藏自己的thinking过程不同，环境状态的丢失使得迁移供应商是不可能的，而非之前的“丢失一些中间思考”。</p>
+</blockquote>
+<h2 id="结论-1"><a href="#结论-1" class="headerlink" title="结论"></a>结论</h2><p>这对于模型厂商获取数据和用户锁定都有积极意义，也为第一方应用提供了非常强大的能力，但对于开发者来说，几乎不可能选择这类方案，其供应商锁定和不透明问题带来的风险太高了。</p>
+<h1 id="Next-Agent-Mounts-Environment"><a href="#Next-Agent-Mounts-Environment" class="headerlink" title="Next: Agent Mounts Environment"></a>Next: Agent Mounts Environment</h1><p>Agent in VM 形态虽然提供了强交互能力，但存在两个核心问题：一是每用户独占 VM 的成本模式导致空闲成本高；二是 Agent 与用户共域，API Keys 与内部逻辑暴露在 VM 环境，难以安全整合私有服务。</p>
+<p><strong>Agent Mounts Environment</strong> 将 Agent 与执行环境解耦：Agent 仍运行在平台侧（可访问私有服务、密钥隔离），但将执行环境降级为一个”挂载点”。VM 内仅运行轻量级 Executor，负责接收 Agent 的指令（Shell 命令、文件操作、浏览器控制）并反馈结果。</p>
+<pre><code class=" mermaid">flowchart LR
+    subgraph Platform[&quot;Platform (Secure Zone)&quot;]
+        Agent[&quot;Agent Service&quot;]
+        PrivateAPI[&quot;Private Services&quot;]
+    end
+
+    subgraph VM[&quot;User VM (Mounted Environment)&quot;]
+        Executor[&quot;Executor&quot;]
+        Shell[&quot;Shell&quot;]
+        FS[&quot;Filesystem&quot;]
+    end
+
+    Agent &lt;--&gt;|&quot;SSH/CDP&quot;| Executor
+    Agent &lt;--&gt;|&quot;API&quot;| PrivateAPI
+    Executor --&gt; Shell
+    Executor --&gt; FS
+</code></pre>
+
+<h2 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h2><p><strong>1. 安全隔离</strong>：Agent 与用户环境物理分离，密钥与内部逻辑不暴露在 VM 中。Agent 可安全访问私有数据库、内部 API，而无需在 VM 中存储凭证。</p>
+<p><strong>2. 成本优化</strong>：Agent 进程不与用户 VM 绑定，可跨多用户复用（或采用共享计算资源池）。VM 仅作为执行容器，不需要持续为每用户保留计算资源。</p>
+<p><strong>3. 权限边界清晰</strong>：Executor 可施加细粒度权限控制：允许的工具集、可访问的文件路径、外部 API 调用权限均由平台策略决定，用户无法绕过。</p>
+<p><strong>4. 与 Agentic LLM API 兼容</strong>：该架构天然支持多模型厂商，Agent 逻辑独立于执行环境实现，迁移或切换 LLM 供应商时，运行时语义保持一致。</p>
+<h2 id="挑战"><a href="#挑战" class="headerlink" title="挑战"></a>挑战</h2><p><strong>1. 通信协议复杂性</strong>：Agent 需要通过 SSH、SFTP、CDP Over SSH Tunnel 等多种协议与 VM 通信。每种协议的超时、重试、错误恢复策略都需要精心设计。协议层的不稳定会导致任务中断或重复执行。</p>
+<p><strong>2. 状态一致性困难</strong>：Agent 侧的任务状态与 VM 侧的执行状态可能不一致（如网络分区、超时导致的半成功操作）。需要设计操作幂等性、事务语义与恢复协议来保证最终一致性。</p>
+<p><strong>3. VM 快照与 Git 同步</strong>：若采用 VM 快照持久化完整运行时状态，需要在恢复后重新同步 Git 状态，否则磁盘内容与 Remote 不一致。这引入了额外的状态管理层。</p>
+<h2 id="结论-2"><a href="#结论-2" class="headerlink" title="结论"></a>结论</h2><p>Agent Mounts Environment 是 Agent in VM 与 Agentic LLM API 之间的中间态：保留了本地执行环境的完整可观察性和持久状态能力，同时恢复了平台侧的安全边界与成本效率。代价是需要投入工程力量处理分布式系统的一致性问题。</p>
+<h1 id="Bonus-Durable-Execution"><a href="#Bonus-Durable-Execution" class="headerlink" title="Bonus: Durable Execution"></a>Bonus: Durable Execution</h1><p>Agentic Loop 中的执行容易失败：网络中断、超时、工具错误、模型幻觉都可能中断任务。要支持重试与恢复，需要把任务状态分层管理，而不是盲目地快照整个 VM 或重新执行任务。</p>
+<p>关键是认识到不同类型的状态有不同的恢复语义：</p>
+<h2 id="1-上下文（Context）"><a href="#1-上下文（Context）" class="headerlink" title="1) 上下文（Context）"></a>1) 上下文（Context）</h2><p><strong>定义</strong>：LLM 模型推理所需的信息，包括prompt、当前目标、已执行步骤。</p>
+<p><strong>恢复策略</strong>：上下文应完全可重建，无需从快照恢复。重试时重新加载上一步的结果，让模型基于完整的执行历史做出新的决策。</p>
+<p><strong>为什么</strong>：即使模型上一次的决策有误，完整的history 能让它在第二次重试中做出不同的选择。</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant A as Agent
+    participant M as Message Store
+    participant L as LLM
+
+    A-&gt;&gt;M: Load history + last result
+    M--&gt;&gt;A: [step1, step2, step3: failed]
+    A-&gt;&gt;L: Continue with full context
+    L--&gt;&gt;A: New action based on failure
+</code></pre>
+
+<h2 id="2-消息状态（Message-State）"><a href="#2-消息状态（Message-State）" class="headerlink" title="2) 消息状态（Message State）"></a>2) 消息状态（Message State）</h2><p><strong>定义</strong>：对话历史、用户请求、AI 响应。</p>
+<p><strong>恢复策略</strong>：消息状态应仅追加（append-only），支持版本化重试。一次重试对应一条新分支，记录”第一次尝试失败”与”第二次重试成功”的完整轨迹。</p>
+<p><strong>存储方案</strong>：</p>
+<pre><code class=" mermaid">flowchart LR
+    Root[&quot;Message 1: user request&quot;]
+    Exec1[&quot;Message 2a: Agent planning (attempt 1)&quot;]
+    Exec2[&quot;Message 2b: Agent planning (attempt 2)&quot;]
+    Result1[&quot;Message 3a: Tool result FAILED&quot;]
+    Result2[&quot;Message 3b: Tool result OK&quot;]
+
+    Root --&gt; Exec1
+    Root --&gt; Exec2
+    Exec1 --&gt; Result1
+    Exec2 --&gt; Result2
+</code></pre>
+
+<p>通过消息树（而非单线性链表）记录重试分支，支持审计与故障分析。</p>
+<h2 id="3-文件系统状态（Filesystem-State）"><a href="#3-文件系统状态（Filesystem-State）" class="headerlink" title="3) 文件系统状态（Filesystem State）"></a>3) 文件系统状态（Filesystem State）</h2><p><strong>定义</strong>：VM 或容器内的文件、目录、权限。</p>
+<p><strong>恢复策略</strong>：文件系统状态通过 git commit 或 VM 快照持久化。重试时的关键决策是：<strong>是否需要恢复到操作前的状态还是基于当前状态重新操作</strong>。</p>
+<p><strong>两种模式</strong>：</p>
+<p><strong>模式 A：Ephemeral + Rollback（容器&#x2F;Sandbox 方案）</strong></p>
+<ul>
+<li>每次工具调用在隔离容器内执行</li>
+<li>失败时容器销毁，文件系统回滚</li>
+<li>下一次重试从 Git Checkout 状态开始</li>
+</ul>
+<pre><code class=" mermaid">sequenceDiagram
+    participant A as Agent
+    participant C1 as Container (attempt 1)
+    participant C2 as Container (attempt 2)
+    participant FS as Shared FS (Git managed)
+
+    FS--&gt;&gt;C1: mount current HEAD
+    A-&gt;&gt;C1: npm install
+    C1-&gt;&gt;FS: write XXX (not committed)
+    Note over C1: Fails, container destroyed
+
+    FS--&gt;&gt;C2: mount current HEAD (clean state)
+    A-&gt;&gt;C2: npm install (retry)
+    C2-&gt;&gt;FS: write YYY
+</code></pre>
+
+<p>优点：简单、可预测。缺点：无法利用前一次的中间成果（如部分安装的依赖）。</p>
+<p><strong>模式 B：Persistent VM + Checkpoint（VM 快照方案）</strong></p>
+<ul>
+<li>使用 Firecracker Snapshot 保存完整运行时状态</li>
+<li>失败时从快照恢复，保留内存中的进程、缓存</li>
+<li>需要额外的 checkpoint 机制记录”哪些文件修改可以撤销”</li>
+</ul>
+<pre><code class=" mermaid">sequenceDiagram
+    participant A as Agent
+    participant VM as VM
+    participant S as Snapshot
+
+    A-&gt;&gt;VM: Save checkpoint (git state + memory snapshot)
+    S--&gt;&gt;VM: checkpoint_id_v1
+    A-&gt;&gt;VM: npm install
+    VM-&gt;&gt;VM: partial install (process in memory)
+    Note over VM: Fails
+
+    A-&gt;&gt;S: Restore checkpoint_id_v1
+    S--&gt;&gt;VM: Memory + disk restored
+    A-&gt;&gt;VM: npm install (retry, hot cache)
+</code></pre>
+
+<p>优点：快速恢复、热启动。缺点：快照本身占用存储空间，恢复涉及内存一致性问题。</p>
+<h2 id="4-外部资源状态（External-Resource-State）"><a href="#4-外部资源状态（External-Resource-State）" class="headerlink" title="4) 外部资源状态（External Resource State）"></a>4) 外部资源状态（External Resource State）</h2><p><strong>定义</strong>：API 调用、数据库事务、第三方服务的执行结果。</p>
+<p><strong>恢复策略</strong>：外部资源操作的可恢复性取决于操作是否幂等。</p>
+<p><strong>分类</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>操作类型</th>
+<th>幂等性</th>
+<th>恢复策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Read DB</td>
+<td>✓</td>
+<td>直接重试</td>
+</tr>
+<tr>
+<td>GET API</td>
+<td>✓</td>
+<td>直接重试</td>
+</tr>
+<tr>
+<td>Create resource</td>
+<td>✗</td>
+<td>需要 idempotency key，防止重复创建</td>
+</tr>
+<tr>
+<td>Update resource</td>
+<td>✓&#x2F;✗</td>
+<td>需要检验当前状态是否已更新</td>
+</tr>
+<tr>
+<td>Delete resource</td>
+<td>~</td>
+<td>重试返回 404，需要 idempotent delete semantic</td>
+</tr>
+<tr>
+<td>Payment &#x2F; Charge</td>
+<td>✗</td>
+<td>必须通过事务 ID 检查是否已执行</td>
+</tr>
+</tbody></table>
+<p><strong>实现模式</strong>：Idempotency Key</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant A as Agent
+    participant API as External API
+    participant Cache as Idempotency Cache
+
+    A-&gt;&gt;Cache: Lookup idempotency_key = &quot;task_step_3&quot;
+    Cache--&gt;&gt;A: Not found
+    A-&gt;&gt;API: POST /charge (idempotency_key: &quot;task_step_3&quot;, amount: 100)
+    API-&gt;&gt;Cache: Save result (charged: true)
+    Cache--&gt;&gt;API: OK
+    API--&gt;&gt;A: success
+
+    Note over A: Network timeout, retry
+    A-&gt;&gt;Cache: Lookup idempotency_key = &quot;task_step_3&quot;
+    Cache--&gt;&gt;A: Found (charged: true)
+    A-&gt;&gt;A: Return cached result without re-charging
+</code></pre>
+
+<p>系统需要为每个工具调用分配全局唯一的 idempotency_key，存储每次调用的结果。重试时先查询缓存，避免重复操作。</p>
+<h2 id="综合设计"><a href="#综合设计" class="headerlink" title="综合设计"></a>综合设计</h2><p>完整的 Durable Execution 系统需要四层状态管理：</p>
+<pre><code class=" mermaid">flowchart TB
+    Context[&quot;Context Layer&lt;br/&gt;(Stateless, computed from Message State)&quot;]
+    Message[&quot;Message State&lt;br/&gt;(Append-only, versioned history)&quot;]
+    FileSystem[&quot;Filesystem State&lt;br/&gt;(Git checkpoint or VM snapshot)&quot;]
+    External[&quot;External State&lt;br/&gt;(Idempotency cache + verification)&quot;]
+
+    Message --&gt; Context
+    Message --&gt; FileSystem
+    Message --&gt; External
+
+    Context -.-&gt; Recovery[&quot;Recovery via Context + Message Replay&quot;]
+</code></pre>
+
+<p>在故障发生时，恢复顺序为：</p>
+<ol>
+<li>检查外部资源状态（是否已执行）→ 如有缓存结果则直接返回</li>
+<li>检查文件系统状态（Snapshot 或 Git HEAD）→ 重建执行环境</li>
+<li>加载消息历史 → 重建 LLM 上下文</li>
+<li>重新执行失败的步骤</li>
+</ol>
+<h2 id="结论-3"><a href="#结论-3" class="headerlink" title="结论"></a>结论</h2><p>Durable Execution 的核心是认识到：<strong>系统的可恢复性不源于单一快照，而源于分层的状态管理与操作的幂等性设计</strong>。不同类型的状态有不同的持久化需求与恢复成本，混为一谈会导致过度的快照成本或无法恢复的局面。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI-Engineering/" class="category-chain-item">AI Engineering</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="print-no-link">#架构设计</a>
+      
+        <a href="/tags/CloudAgent/" class="print-no-link">#CloudAgent</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>聊聊云上Agent的架构设计</div>
+      <div>https://blog.wh1isper.top/2026/02/17/2026-02-17-architecture-of-cloud-agent/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年2月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/02/18/2026-02-18-cloud-agent-implementation-details/" title="构建 Effective Cloud Agent">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">构建 Effective Cloud Agent</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/08/2026-02-08-AI-Native-Organization-Thoughts/" title="AI Native 组织思考">
+                        <span class="hidden-mobile">AI Native 组织思考</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
