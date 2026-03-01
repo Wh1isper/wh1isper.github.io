@@ -12,9 +12,9 @@ date: 2026-02-15 00:00:01
 - Cloud IDE & Coding Agent
 - 网络安全、数据安全
 
-![Wh1isper's GitHub stats](https://github-readme-stats.wh1isper.top/api?username=wh1isper&count_private=true)
+![Wh1isper's GitHub stats](https://github-readme-stats.wh1isper.top/api?username=wh1isper&count_private=true&role=OWNER,ORGANIZATION_MEMBER,COLLABORATOR)
 
-![Top Langs](https://github-readme-stats.wh1isper.top/api/top-langs/?username=wh1isper&hide=javascript,css,html,jupyter%20notebook&layout=compact)
+![Top Langs](https://github-readme-stats.wh1isper.top/api/top-langs/?username=wh1isper&hide=javascript,css,html,jupyter%20notebook&layout=compact&role=OWNER,ORGANIZATION_MEMBER,COLLABORATOR)
 
 [![GitHub Streak](https://ghstreak.wh1isper.top?user=Wh1isper)](https://git.io/streak-stats)
 
