@@ -37,13 +37,13 @@ Anthropic 和 OpenAI 都提供了 Prompt Cache 能力。核心思路是：当连
 
 对于 Anthropic Claude，缓存的输入 token 费用是标准价格的 10%；对于 OpenAI，缓存命中时输入 token 费用减半。对于长上下文的 Agent 应用来说，这是一个显著的成本差异。
 
-缓存命中的前提是**前缀完全一致**。一次 LLM API 请求的前缀结构大致是：
+缓存命中的前提是**前缀完全一致**。以 Anthropic Claude 为例，一次 API 请求的前缀结构是：
 
 ```
-[System Prompt] + [Tool Definitions] + [Conversation History...]
+[Tool Definitions] + [System Prompt] + [Conversation History...]
 ```
 
-关键点在于：**工具定义（Tool Definitions）位于前缀中**。如果工具列表发生变化——哪怕只是新增了一个工具——从变化点开始的所有内容都不再命中缓存。
+工具定义排在最前面。这意味着工具列表一旦发生变化——哪怕只是新增了一个工具——从变化点开始，System Prompt 和整个对话历史的缓存全部失效。
 
 # 动态工具列表为什么破坏缓存
 
@@ -218,7 +218,7 @@ ToolProxyToolset 复用了 ToolSearchToolSet 的基础设施：
 
 新增的设计点：
 
-- **动态指令（Dynamic Instructions）**：ToolProxyToolset 生成包含命名空间列表、已发现工具摘要的动态指令，注入到 System Prompt 中。由于 System Prompt 在工具定义之前，这部分变化不影响工具定义的缓存。（System Prompt 的变化会影响 System Prompt 之后的缓存，但工具发现通常发生在会话早期，后续轮次中指令保持稳定。）
+- **动态指令（Dynamic Instructions）**：ToolProxyToolset 生成包含命名空间列表、已发现工具摘要的动态指令，注入到 System Prompt 中。以 Anthropic 为例，Tool Definitions 排列在 System Prompt 之前，因此 System Prompt 的变化不会破坏工具定义部分的缓存前缀。（System Prompt 的变化会影响其之后的对话历史缓存，但工具发现通常发生在会话早期，后续轮次中指令保持稳定。）
 - **XML 格式的搜索结果和错误信息**：选择 XML 而非 JSON，是因为 XML 的标签结构对模型的解析更友好，在对话上下文中的可读性也更好。
 
 # 延伸：Code Execution 方案——更激进的思路
