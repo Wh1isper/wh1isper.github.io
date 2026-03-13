@@ -1,0 +1,1065 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="上一篇文章讨论了 Agent 工具发现的按需加载方案。本文聚焦其引入的新问题——动态工具列表导致 Prompt Cache 失效，介绍不改变工具列表的替代方案 ToolProxyToolset，并对比 Anthropic 的 Code Execution 思路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent 工具代理：不改变工具列表的 Tool Search">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/03/12/2026-03-12-tool-proxy-for-agents/index.html">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="上一篇文章讨论了 Agent 工具发现的按需加载方案。本文聚焦其引入的新问题——动态工具列表导致 Prompt Cache 失效，介绍不改变工具列表的替代方案 ToolProxyToolset，并对比 Anthropic 的 Code Execution 思路。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-12T11:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-13T05:02:00.661Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="ToolSearch">
+<meta property="article:tag" content="SDK">
+<meta property="article:tag" content="PromptCache">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Agent 工具代理：不改变工具列表的 Tool Search - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-unix-linux.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从 Prompt Cache 失效问题出发，设计固定工具列表的代理方案"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-03-12 19:00" pubdate>
+          2026年3月12日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          32 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从 Prompt Cache 失效问题出发，设计固定工具列表的代理方案</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>上一篇<a href="/2026/03/06/tool-search-for-agents/">《Agent 工具发现：从上下文膨胀到按需加载》</a>介绍了 ToolSearchToolSet——通过搜索发现并动态加载工具到模型的工具列表中。方案解决了上下文膨胀问题，但引入了一个新的工程约束：每次加载新工具都会改变工具列表，导致 Prompt Cache 失效。本文讨论这个问题的成因和一种不改变工具列表的替代方案。</p>
+</blockquote>
+<h1 id="问题回顾：ToolSearchToolSet-做了什么"><a href="#问题回顾：ToolSearchToolSet-做了什么" class="headerlink" title="问题回顾：ToolSearchToolSet 做了什么"></a>问题回顾：ToolSearchToolSet 做了什么</h1><p>先简要回顾上一篇的方案。ToolSearchToolSet 的核心逻辑是：</p>
+<ol>
+<li>初始状态下，模型只看到 <code>tool_search</code> 这一个搜索工具。</li>
+<li>模型调用 <code>tool_search</code> 发现目标工具后，SDK 将其加入工具列表。</li>
+<li>下一轮对话时，模型直接看到并调用新工具。</li>
+</ol>
+<p>这个方案的优点是模型通过原生工具调用（native tool call）与工具交互，调用体验和普通工具一致。但”动态加入工具列表”这一步带来了一个成本问题。</p>
+<h1 id="Prompt-Cache-的工作原理"><a href="#Prompt-Cache-的工作原理" class="headerlink" title="Prompt Cache 的工作原理"></a>Prompt Cache 的工作原理</h1><p>理解问题之前，需要先了解 Prompt Cache 的机制。</p>
+<p>Anthropic 和 OpenAI 都提供了 Prompt Cache 能力。核心思路是：当连续的 API 请求共享相同的前缀内容时，服务端可以缓存这部分内容的 KV Cache，后续请求跳过前缀的重新计算，降低延迟和成本。</p>
+<p>对于 Anthropic Claude，缓存的输入 token 费用是标准价格的 10%；对于 OpenAI，缓存命中时输入 token 费用减半。对于长上下文的 Agent 应用来说，这是一个显著的成本差异。</p>
+<p>缓存命中的前提是<strong>前缀完全一致</strong>。以 Anthropic Claude 为例，一次 API 请求的前缀结构是：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-attr">[Tool Definitions]</span> + <span class="hljs-selector-attr">[System Prompt]</span> + <span class="hljs-selector-attr">[Conversation History...]</span><br></code></pre></td></tr></table></figure>
+
+<p>工具定义排在最前面。这意味着工具列表一旦发生变化——哪怕只是新增了一个工具——从变化点开始，System Prompt 和整个对话历史的缓存全部失效。</p>
+<h1 id="动态工具列表为什么破坏缓存"><a href="#动态工具列表为什么破坏缓存" class="headerlink" title="动态工具列表为什么破坏缓存"></a>动态工具列表为什么破坏缓存</h1><p>ToolSearchToolSet 的工作流程中，工具列表在运行时变化：</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant App as Application
+    participant API as LLM API
+
+    Note over App,API: Turn 1: tools = [tool_search]
+    App-&gt;&gt;API: Request with 1 tool defined
+    API--&gt;&gt;App: call tool_search, query=github
+
+    Note over App,API: Turn 2: tools = [tool_search, create_issue, list_repos, ...]
+    App-&gt;&gt;API: Request with N tools defined
+    Note right of API: Tool list changed, cache miss from tool defs onward
+    API--&gt;&gt;App: call create_issue
+</code></pre>
+
+<p>Turn 1 的请求缓存了 <code>[System Prompt] + [tool_search definition]</code> 这段前缀。Turn 2 的工具列表变成了 <code>[tool_search, create_issue, list_repos, ...]</code>，前缀从工具定义部分开始就不同了。之后对话历史中积累的所有 token 都无法命中缓存。</p>
+<p>对于长对话的 Agent（比如一个编程 Agent 可能一次会话有 50-100 轮对话、100K+ token 上下文），每次工具发现都触发缓存失效，累积的成本开销不可忽略。</p>
+<p>更具体地量化：假设一个 Agent 会话在发现工具后还有 80K token 的对话历史。如果使用 Anthropic Claude，缓存命中时这 80K token 的输入费用是标准价的 10%。缓存失效意味着每次请求都要按全价计算这 80K token。对于一个每天处理上千个会话的系统，差异会体现在账单上。</p>
+<h1 id="ToolProxyToolset：固定工具列表的方案"><a href="#ToolProxyToolset：固定工具列表的方案" class="headerlink" title="ToolProxyToolset：固定工具列表的方案"></a>ToolProxyToolset：固定工具列表的方案</h1><p>解决思路直接：<strong>不改变工具列表</strong>。</p>
+<p>ToolProxyToolset 把所有外部工具藏在两个固定的代理工具背后：</p>
+<ul>
+<li><strong><code>search_tools</code></strong>: 搜索可用工具，返回工具名称、描述和完整参数 Schema</li>
+<li><strong><code>call_tool</code></strong>: 通过名称调用任意已发现的工具</li>
+</ul>
+<p>工具列表始终是 <code>[search_tools, call_tool]</code>，不会因为发现新工具而变化。</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant Model
+    participant Proxy as ToolProxyToolset
+    participant MCP as MCP Server
+
+    Note over Model,Proxy: Tool list: [search_tools, call_tool] (fixed)
+
+    Model-&gt;&gt;Proxy: search_tools(query=&quot;github issues&quot;)
+    Proxy-&gt;&gt;Proxy: Keyword/Embedding search
+    Proxy--&gt;&gt;Model: XML with tool schemas
+
+    Model-&gt;&gt;Proxy: call_tool(name=&quot;create_issue&quot;, arguments=&#123;...&#125;)
+    Proxy-&gt;&gt;MCP: create_issue(&#123;repo: &quot;...&quot;, title: &quot;...&quot;&#125;)
+    MCP--&gt;&gt;Proxy: &#123;issue_url: &quot;...&quot;&#125;
+    Proxy--&gt;&gt;Model: &#123;issue_url: &quot;...&quot;&#125;
+
+    Note over Model,Proxy: Tool list still: [search_tools, call_tool]
+</code></pre>
+
+<p>模型不再直接调用 <code>create_issue</code>，而是通过 <code>call_tool</code> 间接调用。工具定义前缀从始至终不变，Prompt Cache 始终命中。</p>
+<h1 id="search-tools-的信息传递"><a href="#search-tools-的信息传递" class="headerlink" title="search_tools 的信息传递"></a>search_tools 的信息传递</h1><p>工具列表不变，意味着模型永远不会在工具定义中看到目标工具的 Schema。那模型怎么知道如何构造参数？</p>
+<p>答案是 <code>search_tools</code> 的返回值中包含完整的参数 Schema。结果以 XML 格式返回：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">search-results</span> <span class="hljs-attr">query</span>=<span class="hljs-string">&quot;github issues&quot;</span> <span class="hljs-attr">count</span>=<span class="hljs-string">&quot;3&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">tool</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;create_issue&quot;</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;github&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Create a new issue in a repository<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">parameters</span>&gt;</span>&#123;&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: &#123;&quot;repo&quot;: &#123;&quot;type&quot;: &quot;string&quot;&#125;, &quot;title&quot;: &#123;&quot;type&quot;: &quot;string&quot;&#125;, &quot;body&quot;: &#123;&quot;type&quot;: &quot;string&quot;&#125;&#125;, &quot;required&quot;: [&quot;repo&quot;, &quot;title&quot;]&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">parameters</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">tool</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">tool</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;list_issues&quot;</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;github&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>List issues in a repository<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">parameters</span>&gt;</span>&#123;&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: &#123;&quot;repo&quot;: &#123;&quot;type&quot;: &quot;string&quot;&#125;, &quot;state&quot;: &#123;&quot;type&quot;: &quot;string&quot;, &quot;default&quot;: &quot;open&quot;&#125;&#125;, &quot;required&quot;: [&quot;repo&quot;]&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">parameters</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">tool</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">tool</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;close_issue&quot;</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;github&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Close an existing issue<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">parameters</span>&gt;</span>&#123;&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: &#123;&quot;repo&quot;: &#123;&quot;type&quot;: &quot;string&quot;&#125;, &quot;issue_number&quot;: &#123;&quot;type&quot;: &quot;integer&quot;&#125;&#125;, &quot;required&quot;: [&quot;repo&quot;, &quot;issue_number&quot;]&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">parameters</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">tool</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">search-results</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>模型从这段对话内容中读取 Schema，然后构造 <code>call_tool</code> 调用。Schema 信息在对话历史中而不在工具定义中——对话历史本身不会影响前缀缓存的有效性（对话历史追加在前缀之后）。</p>
+<h1 id="错误处理与自修正"><a href="#错误处理与自修正" class="headerlink" title="错误处理与自修正"></a>错误处理与自修正</h1><p>原生工具调用时，参数校验由框架（pydantic-ai）自动完成，模型收到的是结构化的验证错误。ToolProxyToolset 中，工具调用通过 <code>call_tool</code> 代理，校验逻辑由代理层捕获并转换为 XML 格式的错误信息：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">tool-call-error</span> <span class="hljs-attr">tool</span>=<span class="hljs-string">&quot;create_issue&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span>Missing required argument: repo<span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">parameters</span>&gt;</span>&#123;&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: &#123;&quot;repo&quot;: &#123;&quot;type&quot;: &quot;string&quot;&#125;, &quot;title&quot;: &#123;&quot;type&quot;: &quot;string&quot;&#125;&#125;, &quot;required&quot;: [&quot;repo&quot;, &quot;title&quot;]&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">parameters</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">tool-call-error</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>错误信息中附带完整的参数 Schema，模型可以据此修正参数并重试。实践表明，主流模型（Claude、GPT-4o）在看到这种结构化错误后的修正成功率与原生验证错误基本一致。</p>
+<h1 id="跳过搜索直接调用"><a href="#跳过搜索直接调用" class="headerlink" title="跳过搜索直接调用"></a>跳过搜索直接调用</h1><p><code>call_tool</code> 不要求模型必须先搜索。如果模型已经知道工具名称和参数（比如从对话上下文、历史搜索结果、或 Session 恢复后的动态指令中获知），可以直接调用：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">call<span class="hljs-constructor">_tool(<span class="hljs-params">name</span>=<span class="hljs-string">&quot;create_issue&quot;</span>, <span class="hljs-params">arguments</span>=&#123;<span class="hljs-string">&quot;repo&quot;</span>: <span class="hljs-string">&quot;org/repo&quot;</span>, <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;Bug fix&quot;</span>&#125;)</span><br></code></pre></td></tr></table></figure>
+
+<p>这避免了”搜索 -&gt; 调用”的强制两步流程。在 Session 恢复场景中，ToolProxyToolset 通过动态指令列出之前已发现的工具摘要，模型看到摘要后可以直接发起 <code>call_tool</code>，不需要重新搜索。</p>
+<h1 id="与-ToolSearchToolSet-的权衡"><a href="#与-ToolSearchToolSet-的权衡" class="headerlink" title="与 ToolSearchToolSet 的权衡"></a>与 ToolSearchToolSet 的权衡</h1><p>两种方案并非简单的替代关系，而是不同约束下的不同选择。</p>
+<pre><code class=" mermaid">flowchart LR
+    subgraph ToolSearchToolSet
+        A1[tool_search] --&gt; A2[Dynamic tool list]
+        A2 --&gt; A3[Native tool call]
+        A3 --&gt; A4[Cache invalidated on discovery]
+    end
+
+    subgraph ToolProxyToolset
+        B1[search_tools] --&gt; B2[Fixed tool list]
+        B2 --&gt; B3[Proxy via call_tool]
+        B3 --&gt; B4[Cache always stable]
+    end
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>ToolSearchToolSet</th>
+<th>ToolProxyToolset</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>工具列表</td>
+<td>发现后动态增长</td>
+<td>始终 2 个工具</td>
+</tr>
+<tr>
+<td>Prompt Cache</td>
+<td>发现时失效</td>
+<td>始终稳定</td>
+</tr>
+<tr>
+<td>模型调用方式</td>
+<td>原生工具调用</td>
+<td>通过 call_tool 代理</td>
+</tr>
+<tr>
+<td>Schema 可见性</td>
+<td>模型在工具定义中看到 Schema</td>
+<td>模型从搜索结果文本中读取 Schema</td>
+</tr>
+<tr>
+<td>参数校验</td>
+<td>框架原生校验</td>
+<td>代理层捕获，XML 错误反馈</td>
+</tr>
+<tr>
+<td>模型认知负荷</td>
+<td>低（标准工具调用）</td>
+<td>较高（需理解代理模式）</td>
+</tr>
+<tr>
+<td>状态存储</td>
+<td>AgentContext</td>
+<td>AgentContext（共享）</td>
+</tr>
+<tr>
+<td>搜索策略</td>
+<td>相同接口</td>
+<td>相同接口</td>
+</tr>
+<tr>
+<td>HITL</td>
+<td>相同行为</td>
+<td>相同行为（re-raise ApprovalRequired）</td>
+</tr>
+</tbody></table>
+<p>核心权衡是 <strong>Cache 稳定性 vs. 模型交互简单性</strong>。</p>
+<p>ToolSearchToolSet 对模型更友好——模型直接看到工具定义并原生调用，这是 LLM 训练时最常见的交互模式。ToolProxyToolset 要求模型理解”通过一个间接层调用工具”的模式，这对较弱的模型可能是个挑战。</p>
+<p>但对于成本敏感的生产系统，ToolProxyToolset 的 Cache 稳定性带来的成本节省往往更重要。尤其是当 Agent 接入大量 MCP Server、单次会话上下文较长时，Cache 命中率的差异会直接体现在延迟和费用上。</p>
+<h1 id="选择建议"><a href="#选择建议" class="headerlink" title="选择建议"></a>选择建议</h1><p>基于上述分析：</p>
+<p><strong>选 ToolProxyToolset 的场景</strong>：</p>
+<ul>
+<li>MCP Server 数量多、工具总数大（30+）</li>
+<li>单次会话上下文长（50K+ token）</li>
+<li>成本敏感，需要最大化 Prompt Cache 命中率</li>
+<li>使用的模型能力强（Claude Sonnet&#x2F;Opus、GPT-4o），能可靠处理代理调用模式</li>
+</ul>
+<p><strong>选 ToolSearchToolSet 的场景</strong>：</p>
+<ul>
+<li>工具数量适中（10-30），发现行为不频繁</li>
+<li>使用较小的模型，代理模式可能导致调用错误率上升</li>
+<li>会话较短，Cache 失效的成本影响有限</li>
+<li>优先考虑调用可靠性而非成本优化</li>
+</ul>
+<p><strong>10 个以下工具</strong>：两种方案都不需要。直接全部加载到工具列表即可。</p>
+<h1 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h1><p>ToolProxyToolset 复用了 ToolSearchToolSet 的基础设施：</p>
+<ul>
+<li><strong>SearchStrategy 接口</strong>：相同的 <code>KeywordSearchStrategy</code> 和 <code>EmbeddingSearchStrategy</code>，可互换。</li>
+<li><strong>ToolMetadata</strong>：相同的工具元数据提取逻辑。</li>
+<li><strong>AgentContext 状态字段</strong>：<code>tool_search_loaded_tools</code> 和 <code>tool_search_loaded_namespaces</code>，两种方案共享状态存储，甚至可以在两种方案之间切换而不丢失已发现的工具状态。</li>
+<li><strong>Namespace &#x2F; Loose 加载</strong>：相同的原子加载语义。</li>
+<li><strong>Optional Namespaces</strong>：相同的可选命名空间机制，适配不稳定的 MCP Server。</li>
+</ul>
+<p>新增的设计点：</p>
+<ul>
+<li><strong>动态指令（Dynamic Instructions）</strong>：ToolProxyToolset 生成包含命名空间列表、已发现工具摘要的动态指令，注入到 System Prompt 中。以 Anthropic 为例，Tool Definitions 排列在 System Prompt 之前，因此 System Prompt 的变化不会破坏工具定义部分的缓存前缀。（System Prompt 的变化会影响其之后的对话历史缓存，但工具发现通常发生在会话早期，后续轮次中指令保持稳定。）</li>
+<li><strong>XML 格式的搜索结果和错误信息</strong>：选择 XML 而非 JSON，是因为 XML 的标签结构对模型的解析更友好，在对话上下文中的可读性也更好。</li>
+</ul>
+<h1 id="延伸：Code-Execution-方案——更激进的思路"><a href="#延伸：Code-Execution-方案——更激进的思路" class="headerlink" title="延伸：Code Execution 方案——更激进的思路"></a>延伸：Code Execution 方案——更激进的思路</h1><p>Anthopic 在 2025 年 11 月发表了一篇工程博客 <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/code-execution-with-mcp">Code execution with MCP</a>，提出了一个更激进的方案来解决同一类问题。</p>
+<p>其核心思路是：不让模型通过工具调用（tool call）与 MCP 交互，而是让模型<strong>写代码</strong>来调用工具。MCP Server 的每个工具被映射为文件系统上的一个 TypeScript 函数，模型通过浏览文件系统发现工具定义，然后编写代码在沙盒中执行。</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant Model
+    participant Sandbox as Code Sandbox
+    participant MCP as MCP Servers
+
+    Model-&gt;&gt;Sandbox: Write code to call gdrive.getDocument
+    Sandbox-&gt;&gt;MCP: getDocument documentId=abc123
+    MCP--&gt;&gt;Sandbox: Full document content, 10K words
+    Sandbox-&gt;&gt;Sandbox: Filter and transform data in code
+    Sandbox--&gt;&gt;Model: Processed summary, 50 words
+</code></pre>
+
+<p>这个方案解决了 ToolProxyToolset 没有解决的一个问题：<strong>中间结果膨胀</strong>。</p>
+<p>在 ToolProxyToolset 中，<code>call_tool</code> 的返回值仍然完整地回流到模型上下文。如果一个工具返回了 10K 行的表格数据，模型会看到全部内容。而在 Code Execution 方案中，模型可以在沙盒里执行 <code>filter</code>、<code>map</code>、<code>slice</code> 等操作，只把处理后的结果返回给自己。Anthropic 的文章举了一个例子：10,000 行表格经过代码过滤后，模型只看到 5 行。</p>
+<p>此外，Code Execution 方案还支持<strong>组合调用</strong>——一段代码中可以串联多个工具调用，中间结果在沙盒内流转而不经过模型。这进一步减少了上下文消耗和模型推理轮次。</p>
+<h2 id="ToolProxyToolset-与-Code-Execution-的对比"><a href="#ToolProxyToolset-与-Code-Execution-的对比" class="headerlink" title="ToolProxyToolset 与 Code Execution 的对比"></a>ToolProxyToolset 与 Code Execution 的对比</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>ToolProxyToolset</th>
+<th>Code Execution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>中间层</td>
+<td>结构化代理工具（call_tool）</td>
+<td>代码执行沙盒</td>
+</tr>
+<tr>
+<td>中间结果处理</td>
+<td>完整回流到模型上下文</td>
+<td>在沙盒中过滤后再返回</td>
+</tr>
+<tr>
+<td>组合调用</td>
+<td>一次调一个工具</td>
+<td>一段代码调多个工具</td>
+</tr>
+<tr>
+<td>基础设施要求</td>
+<td>无（纯 SDK 层）</td>
+<td>需要安全沙盒环境</td>
+</tr>
+<tr>
+<td>关注的核心问题</td>
+<td>Prompt Cache 稳定性</td>
+<td>Token 效率（定义 + 中间结果）</td>
+</tr>
+<tr>
+<td>模型能力要求</td>
+<td>理解代理调用模式</td>
+<td>能写正确的异步代码</td>
+</tr>
+<tr>
+<td>安全性复杂度</td>
+<td>低（工具调用有权限控制）</td>
+<td>高（需要沙盒隔离、资源限制）</td>
+</tr>
+</tbody></table>
+<p>两种方案并不互斥。ToolProxyToolset 解决的是工具定义层面的问题（定义膨胀、Cache 失效），Code Execution 解决的是执行层面的问题（中间结果膨胀、多步编排）。一个可能的组合方式是：用 ToolProxyToolset 做工具发现和 Schema 管理，用 Code Execution 做实际调用和数据处理。</p>
+<p>但 Code Execution 方案的工程成本也更高。安全沙盒的构建和维护（资源限制、网络隔离、超时控制）是一个独立的基础设施问题。</p>
+<h2 id="编程-Agent-已经是-Code-Execution-环境"><a href="#编程-Agent-已经是-Code-Execution-环境" class="headerlink" title="编程 Agent 已经是 Code Execution 环境"></a>编程 Agent 已经是 Code Execution 环境</h2><p>仔细审视 Anthropic 描述的 Code Execution 方案，会发现一个有趣的事实：它所构建的能力，编程 Agent 已经天然具备了。</p>
+<p>把 Anthropic 方案的核心要素逐一对应：</p>
+<table>
+<thead>
+<tr>
+<th>Anthropic Code Execution</th>
+<th>编程 Agent（如 yaacli）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件系统发现工具定义</td>
+<td>Skills 目录 + 文件系统浏览</td>
+</tr>
+<tr>
+<td>代码执行沙盒</td>
+<td>Shell &#x2F; Bash 执行</td>
+</tr>
+<tr>
+<td>中间结果在沙盒内过滤</td>
+<td>Shell 管道 + 脚本处理</td>
+</tr>
+<tr>
+<td>保存可复用函数（Skills）</td>
+<td>Skills 系统（SKILL.md + 脚本）</td>
+</tr>
+<tr>
+<td>状态持久化到文件</td>
+<td>工作目录文件读写</td>
+</tr>
+</tbody></table>
+<p>一个拥有 Shell 访问权限和 Skills 系统的编程 Agent，本身就是一个代码执行环境。它不需要额外构建沙盒来”将 MCP Server 呈现为代码 API”——它可以直接写一个脚本调用 MCP Server 的 CLI 工具，用管道过滤数据，把结果存到文件里供后续使用。这些都是 Shell 环境的原生能力。</p>
+<p>这指向一个更深层的架构观察：<strong>Anthropic 的 Code Execution 方案本质上是在给 MCP 打补丁，试图让工具调用协议接近编程环境的表达能力。而编程 Agent 从一开始就选择了正确的抽象层次——模型就是一个有环境访问权限的程序员，工具交互只是它编程能力的自然延伸。</strong></p>
+<p>MCP 作为工具协议，解决的是”如何标准化地连接工具”的问题。但当工具数量增长到需要 progressive disclosure、code execution、skills 等机制来管理时，问题的本质已经从”工具连接”变成了”环境交互”。在这个层面上，Shell + 文件系统 + Skills 是一个更自然、更成熟、更通用的抽象。</p>
+<p>这不是说 MCP 没有价值。MCP 在标准化工具接口、跨语言互操作方面仍然重要。但对于编程 Agent 来说，与其在 MCP 上层叠加越来越多的补丁机制（Tool Search、Tool Proxy、Code Execution sandbox），不如直接利用 Agent 已有的编程能力来处理工具发现、数据过滤和多步编排。ToolProxyToolset 解决的 Prompt Cache 问题是一个纯粹的 LLM API 层面的工程约束，它和工具交互的抽象层次无关，所以仍然有独立存在的价值。</p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>ToolProxyToolset 的实现在 <a target="_blank" rel="noopener" href="https://github.com/Wh1isper/ya-agent-sdk/pull/53">ya-agent-sdk PR #53</a>。yaacli（ya-agent-sdk 的 CLI 运行时）已经从 ToolSearchToolSet 切换到 ToolProxyToolset 作为默认的 MCP 工具管理方案。</p>
+<p>两种方案不是互斥的。在同一个 SDK 中提供两种选择，开发者可以根据自己的模型能力、成本约束和工具规模选择合适的方案。这也是客户端实现工具管理的优势——选择权在开发者手中，而不是被厂商的 API 设计锁定。</p>
+<p>关注本站 RSS，我会持续分享 Agent 构建过程中的架构思路和工程实践。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI-Engineering/" class="category-chain-item">AI Engineering</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/MCP/" class="print-no-link">#MCP</a>
+      
+        <a href="/tags/ToolSearch/" class="print-no-link">#ToolSearch</a>
+      
+        <a href="/tags/SDK/" class="print-no-link">#SDK</a>
+      
+        <a href="/tags/PromptCache/" class="print-no-link">#PromptCache</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Agent 工具代理：不改变工具列表的 Tool Search</div>
+      <div>https://blog.wh1isper.top/2026/03/12/2026-03-12-tool-proxy-for-agents/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年3月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/03/12/2026-03-13-ai-coding-is-a-framework/" title="AI Coding is a framework, and...">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AI Coding is a framework, and...</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/03/06/2026-03-06-tool-search-for-agents/" title="Agent 工具发现：从上下文膨胀到按需加载">
+                        <span class="hidden-mobile">Agent 工具发现：从上下文膨胀到按需加载</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
