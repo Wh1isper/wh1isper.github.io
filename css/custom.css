@@ -1,0 +1,27 @@
+/* Lightweight UX polish without changing content structure */
+
+/* Improve code block readability and visual hierarchy */
+.highlight {
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.highlight pre {
+  padding: 0.9rem 1rem;
+}
+
+/* Subtle inline code styling */
+code {
+  border-radius: 6px;
+}
+
+/* Better focus for post body */
+.post-content {
+  line-height: 1.82;
+}
+
+/* Refined link transition */
+a {
+  transition: color 0.2s ease, background-color 0.2s ease;
+}

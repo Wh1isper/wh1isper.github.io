@@ -1,0 +1,1012 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="随着 MCP 等工具协议的普及，Agent 的工具库规模快速膨胀。本文对比 Anthropic、OpenAI 的 Tool Search 方案与开源 SDK 的客户端实现，讨论如何管理大规模工具集、实现动态发现，以及如何避免供应商锁定。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent 工具发现：从上下文膨胀到按需加载">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/03/06/2026-03-06-tool-search-for-agents/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="随着 MCP 等工具协议的普及，Agent 的工具库规模快速膨胀。本文对比 Anthropic、OpenAI 的 Tool Search 方案与开源 SDK 的客户端实现，讨论如何管理大规模工具集、实现动态发现，以及如何避免供应商锁定。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-06T08:20:00.000Z">
+<meta property="article:modified_time" content="2026-03-23T06:42:51.491Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="ToolSearch">
+<meta property="article:tag" content="SDK">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Agent 工具发现：从上下文膨胀到按需加载 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/03/06/2026-03-06-tool-search-for-agents/">
+  <meta property="og:image" content="https://blog.wh1isper.top/img/post-bg-unix-linux.jpg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Agent 工具发现：从上下文膨胀到按需加载","url":"https://blog.wh1isper.top/2026/03/06/2026-03-06-tool-search-for-agents/","datePublished":"2026-03-06T08:20:00.000Z","dateModified":"2026-03-23T06:42:51.491Z","author":{"@type":"Person","name":"Wh1isper"},"publisher":{"@type":"Person","name":"Wh1isper"},"description":"随着 MCP 等工具协议的普及，Agent 的工具库规模快速膨胀。本文对比 Anthropic、OpenAI 的 Tool Search 方案与开源 SDK 的客户端实现，讨论如何管理大规模工具集、实现动态发现，以及如何避免供应商锁定。","image":"https://blog.wh1isper.top/img/post-bg-unix-linux.jpg"}</script>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-unix-linux.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="对比厂商闭源方案与开源 SDK 实现，讨论工具管理、动态发现和供应商无关设计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-03-06 16:20" pubdate>
+          2026年3月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">对比厂商闭源方案与开源 SDK 实现，讨论工具管理、动态发现和供应商无关设计</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>当 Agent 接入 5 个 MCP Server、200+ 工具时，光工具定义就能吃掉 55K token。工具多了选不准，上下文还不够用。这篇文章聊聊各家怎么解决这个问题，以及如何在 SDK 层做到供应商无关。</p>
+</blockquote>
+<h1 id="问题：工具规模与上下文窗口的矛盾"><a href="#问题：工具规模与上下文窗口的矛盾" class="headerlink" title="问题：工具规模与上下文窗口的矛盾"></a>问题：工具规模与上下文窗口的矛盾</h1><p>Agent 应用从”聊天机器人”演进到”工具调用代理”之后，核心约束从”对话质量”转向”工具管理”。一个典型的企业级 Agent 可能同时接入 GitHub、Slack、Sentry、Grafana、数据库等多个服务，每个服务暴露 10-50 个工具函数。</p>
+<p>这带来两个工程问题：</p>
+<ol>
+<li><strong>上下文膨胀</strong>。每个工具的 JSON Schema 定义占 200-500 token，200 个工具就是 40K-100K token。在 200K 上下文窗口的模型里，还没开始做事就用掉了一半预算。</li>
+<li><strong>选择精度下降</strong>。实践表明，当可用工具数超过 30-50 个时，模型正确选中目标工具的概率显著下降。工具越多，噪声越大。</li>
+</ol>
+<p>这两个问题互相加强：工具多导致上下文长，上下文长又进一步稀释模型对单个工具描述的注意力。</p>
+<p>解决思路是一致的：<strong>按需加载</strong>（on-demand loading）。不把所有工具定义塞进初始上下文，而是让模型在需要时通过搜索发现并加载工具。</p>
+<h1 id="厂商方案：Anthropic-与-OpenAI-的-Tool-Search"><a href="#厂商方案：Anthropic-与-OpenAI-的-Tool-Search" class="headerlink" title="厂商方案：Anthropic 与 OpenAI 的 Tool Search"></a>厂商方案：Anthropic 与 OpenAI 的 Tool Search</h1><p>Anthropic 和 OpenAI 都在 2025 年推出了各自的 Tool Search 功能。它们的核心思路相同，但在实现细节和架构选择上有差异。</p>
+<h2 id="共同的设计模式"><a href="#共同的设计模式" class="headerlink" title="共同的设计模式"></a>共同的设计模式</h2><p>两家方案共享一个基本流程：</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant Client as Application
+    participant API as LLM API
+    participant Search as Tool Search
+    participant Model as LLM
+
+    Client-&gt;&gt;API: 请求（tools 含 tool_search + deferred tools）
+    API-&gt;&gt;Model: 仅注入 tool_search + 非 deferred 工具
+    Model-&gt;&gt;Search: 调用 tool_search（query）
+    Search--&gt;&gt;Model: 返回匹配的 3-5 个工具定义
+    Model-&gt;&gt;Client: 调用已发现的工具
+</code></pre>
+
+<p>关键概念：</p>
+<ul>
+<li><strong>defer_loading</strong>: 标记工具为”延迟加载”。初始请求时模型看不到这些工具的完整定义。</li>
+<li><strong>tool_search</strong>: 一个特殊的内置工具。模型通过调用它来搜索和加载延迟工具。</li>
+<li><strong>tool_reference</strong>: 搜索结果的引用。API 自动将引用展开为完整的工具定义。</li>
+</ul>
+<h2 id="Anthropic-的方案"><a href="#Anthropic-的方案" class="headerlink" title="Anthropic 的方案"></a>Anthropic 的方案</h2><p>Anthropic 提供两种搜索变体：</p>
+<table>
+<thead>
+<tr>
+<th>变体</th>
+<th>搜索方式</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tool_search_tool_regex</code></td>
+<td>模型构造 Python 正则表达式</td>
+<td>精确匹配工具名</td>
+</tr>
+<tr>
+<td><code>tool_search_tool_bm25</code></td>
+<td>模型使用自然语言查询</td>
+<td>语义模糊搜索</td>
+</tr>
+</tbody></table>
+<p>搜索在服务端执行。客户端只需要在 tools 列表中声明 tool_search 工具和带 <code>defer_loading: true</code> 的工具定义，API 在一次请求内完成搜索、展开和调用。</p>
+<p>Anthropic 同时支持 MCP 集成。可以对 MCP Server 的所有工具设置 <code>defer_loading</code> 默认值，并对个别工具单独覆盖。这意味着整个 MCP Server 可以作为一个延迟加载单元。</p>
+<p>Anthropic 也支持客户端自行实现搜索逻辑：返回 <code>tool_reference</code> 类型的 content block 即可，API 会自动展开引用。</p>
+<h2 id="OpenAI-的方案"><a href="#OpenAI-的方案" class="headerlink" title="OpenAI 的方案"></a>OpenAI 的方案</h2><p>OpenAI 的设计引入了两个额外概念：</p>
+<p><strong>Namespace</strong>。工具可以按命名空间分组。模型初始只看到 namespace 的名称和描述，搜索时按 namespace 为单位加载。这比逐个工具加载更节省 token，也更符合”一个 MCP Server 对应一个 namespace”的直觉。OpenAI 建议每个 namespace 不超过 10 个工具。</p>
+<p><strong>Hosted vs Client-executed</strong>。OpenAI 明确区分了两种执行模式：</p>
+<ul>
+<li><strong>Hosted</strong>: 工具定义全部在请求中声明，搜索由 OpenAI 服务端执行。模型在单次请求内完成搜索和调用。</li>
+<li><strong>Client-executed</strong>: 模型输出 <code>tool_search_call</code>，客户端自行执行搜索逻辑，返回 <code>tool_search_output</code>。适用于工具库动态变化、依赖租户状态等场景。</li>
+</ul>
+<p>两种模式的区别在于搜索逻辑的控制权：Hosted 模式省事但不灵活，Client-executed 模式灵活但需要额外的请求轮次。</p>
+<h2 id="厂商方案的局限"><a href="#厂商方案的局限" class="headerlink" title="厂商方案的局限"></a>厂商方案的局限</h2><p>两家方案都解决了上下文膨胀问题，但存在一个共同的结构性限制：<strong>供应商锁定</strong>。</p>
+<ul>
+<li>搜索协议是各家私有的。Anthropic 用 <code>server_tool_use</code> + <code>tool_search_tool_result</code>，OpenAI 用 <code>tool_search_call</code> + <code>tool_search_output</code>，两者不兼容。</li>
+<li>工具定义的延迟加载标记（<code>defer_loading</code>）嵌入在各自的 API 参数中。</li>
+<li>服务端搜索的索引算法不透明，无法定制。</li>
+<li>如果你的 Agent 需要在 Anthropic 和 OpenAI 之间切换（或同时使用多个 provider），工具管理逻辑需要写两套。</li>
+</ul>
+<p>这个问题不仅存在于 Tool Search。Web Search、Code Interpreter、Computer Use 等”增强工具”都有类似的供应商耦合。每家厂商都在往 API 里塞越来越多的内置能力，而这些能力的接口互不兼容。</p>
+<h1 id="SDK-方案：客户端实现-Tool-Search"><a href="#SDK-方案：客户端实现-Tool-Search" class="headerlink" title="SDK 方案：客户端实现 Tool Search"></a>SDK 方案：客户端实现 Tool Search</h1><p>另一条路线是在 SDK（客户端）层面实现 Tool Search，完全绕开厂商的服务端搜索。这是 <a target="_blank" rel="noopener" href="https://github.com/Wh1isper/ya-agent-sdk">ya-agent-sdk</a> 的 <code>ToolSearchToolSet</code> 所采取的方式。</p>
+<h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>不依赖任何厂商的 Tool Search API。把 <code>tool_search</code> 实现为一个普通的客户端工具函数，对模型而言它和 <code>read_file</code>、<code>run_shell</code> 没有区别。</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant Model as LLM (any provider)
+    participant SDK as ToolSearchToolSet
+    participant Strategy as SearchStrategy
+    participant Toolsets as Wrapped Toolsets
+
+    Note over Model,SDK: Turn 1: 模型只看到 tool_search
+    Model-&gt;&gt;SDK: call tool_search(&#123;query: &quot;github issues&quot;&#125;)
+    SDK-&gt;&gt;Strategy: search(&quot;github issues&quot;, candidates)
+    Strategy--&gt;&gt;SDK: [github namespace matched]
+    SDK-&gt;&gt;SDK: 标记 github namespace 为已加载
+    SDK--&gt;&gt;Model: &quot;Found: [github] 3 tools loaded&quot;
+
+    Note over Model,SDK: Turn 2: 模型看到 tool_search + github 工具
+    Model-&gt;&gt;SDK: call create_issue(&#123;repo: &quot;...&quot;, title: &quot;...&quot;&#125;)
+    SDK-&gt;&gt;Toolsets: 转发到 github toolset
+    Toolsets--&gt;&gt;Model: &#123;issue_url: &quot;...&quot;&#125;
+</code></pre>
+
+<p>核心差异：搜索发生在客户端进程内，不经过 LLM API 服务端。模型只是调用了一个返回文本结果的普通工具。下一轮对话时，SDK 的 <code>get_tools()</code> 方法动态返回已加载的工具列表。</p>
+<h2 id="Namespace-与-Loose-加载"><a href="#Namespace-与-Loose-加载" class="headerlink" title="Namespace 与 Loose 加载"></a>Namespace 与 Loose 加载</h2><p>SDK 支持两种加载粒度：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>条件</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Namespace</strong></td>
+<td>Toolset 设置了 <code>toolset_id</code></td>
+<td>命中任意一个工具即加载整个 namespace 的所有工具</td>
+</tr>
+<tr>
+<td><strong>Loose</strong></td>
+<td>Toolset 未设置 <code>toolset_id</code></td>
+<td>每个工具独立加载</td>
+</tr>
+</tbody></table>
+<p>Namespace 加载对应的直觉是：一个 MCP Server 是一个原子单元。如果模型需要用 GitHub 的某个工具，大概率也需要同一 Server 下的其他工具。Loose 加载适用于零散的工具函数。</p>
+<h2 id="可插拔的搜索策略"><a href="#可插拔的搜索策略" class="headerlink" title="可插拔的搜索策略"></a>可插拔的搜索策略</h2><p>搜索算法不是硬编码的。SDK 定义了 <code>SearchStrategy</code> 协议，内置两种实现：</p>
+<p><strong>KeywordSearchStrategy</strong>（默认）。零外部依赖。对工具名称、描述、参数名做正则匹配，按命中位置加权打分。适合工具命名规范的场景。</p>
+<p><strong>EmbeddingSearchStrategy</strong>。基于 FastEmbed 的本地向量搜索。把工具元数据编码为向量，用余弦相似度排序。适合自然语言查询和语义模糊匹配。依赖约 50MB 的 ONNX 模型，CPU 上单次查询约 5ms。</p>
+<p>还有一个 <code>create_best_strategy()</code> 工厂函数：优先尝试 Embedding 策略，如果 fastembed 未安装则自动降级到 Keyword 策略。</p>
+<p>开发者也可以实现自己的策略，比如基于远程向量数据库的搜索、基于 LLM 的重排序等。</p>
+<h2 id="Session-Restore"><a href="#Session-Restore" class="headerlink" title="Session Restore"></a>Session Restore</h2><p>已加载的工具状态持久化在 <code>AgentContext</code> 中，通过 <code>ResumableState</code> 跨会话恢复。恢复会话时，之前加载过的工具和 namespace 立即可用，不需要重新搜索。</p>
+<p>这意味着工具发现的结果可以跨越多轮对话甚至多次会话存活。</p>
+<h1 id="三种方案的对比"><a href="#三种方案的对比" class="headerlink" title="三种方案的对比"></a>三种方案的对比</h1><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Anthropic Tool Search</th>
+<th>OpenAI Tool Search</th>
+<th>SDK ToolSearchToolSet</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>搜索执行位置</td>
+<td>服务端（支持客户端自定义）</td>
+<td>服务端 &#x2F; 客户端</td>
+<td>客户端</td>
+</tr>
+<tr>
+<td>搜索算法</td>
+<td>Regex &#x2F; BM25</td>
+<td>不透明（Hosted）&#x2F; 自定义（Client）</td>
+<td>Keyword &#x2F; Embedding &#x2F; 自定义</td>
+</tr>
+<tr>
+<td>Namespace 支持</td>
+<td>MCP toolset 级别</td>
+<td>Namespace 原生支持</td>
+<td>toolset_id 原子加载</td>
+</tr>
+<tr>
+<td>模型绑定</td>
+<td>Claude 系列</td>
+<td>GPT 系列</td>
+<td>任意模型</td>
+</tr>
+<tr>
+<td>协议兼容</td>
+<td>Anthropic Messages API</td>
+<td>OpenAI Responses API</td>
+<td>标准工具调用</td>
+</tr>
+<tr>
+<td>Session 恢复</td>
+<td>自动展开历史引用</td>
+<td>Cache 友好设计</td>
+<td>AgentContext 持久化</td>
+</tr>
+<tr>
+<td>搜索算法可定制</td>
+<td>否（客户端模式除外）</td>
+<td>否（Hosted）&#x2F; 是（Client）</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<h1 id="更广泛的问题：供应商锁定"><a href="#更广泛的问题：供应商锁定" class="headerlink" title="更广泛的问题：供应商锁定"></a>更广泛的问题：供应商锁定</h1><p>Tool Search 只是一个缩影。类似的供应商耦合模式出现在多个领域：</p>
+<p><strong>Web Search</strong>。Anthropic 有内置的 web search tool，OpenAI 有 web search connector。两者的输入输出格式不同，搜索引擎不同，结果质量也不同。如果你在 SDK 层把 web search 实现为一个普通工具（调用 Google&#x2F;Bing&#x2F;SearxNG API），就完全不依赖厂商的内置能力。</p>
+<p><strong>Code Interpreter</strong>。两家都提供沙盒代码执行环境，但执行环境的配置、可用库、超时策略都不同。SDK 方案是启动自己的沙盒容器（E2B、Docker 等）。</p>
+<p><strong>Computer Use &#x2F; Browser</strong>。Anthropic 的 Computer Use 和 OpenAI 的 Computer Use 接口不兼容。SDK 方案是对接 Playwright 或 Browser MCP Server。</p>
+<p><strong>MCP 本身</strong>。虽然 MCP 是一个开放协议，但两家厂商对 MCP 的集成方式不同——Anthropic 在 API 层支持 <code>mcp_servers</code> 参数直连，OpenAI 通过 Responses API 的 connector 机制接入。SDK 层面则通常直接管理 MCP Client 的生命周期。</p>
+<p>这些案例指向一个工程决策：<strong>把供应商特有的能力转化为 SDK 层面的可替换实现</strong>。</p>
+<pre><code class=" mermaid">flowchart TB
+    subgraph Vendor[&quot;Vendor-Specific (locked)&quot;]
+        A1[Anthropic Tool Search]
+        A2[OpenAI Tool Search]
+        A3[Anthropic Web Search]
+        A4[OpenAI Web Search]
+    end
+
+    subgraph SDK[&quot;SDK Layer (portable)&quot;]
+        B1[ToolSearchToolSet]
+        B2[WebSearchToolSet]
+        B3[BrowserToolSet]
+        B4[CodeExecToolSet]
+    end
+
+    subgraph Provider[&quot;Pluggable Providers&quot;]
+        C1[Anthropic API]
+        C2[OpenAI API]
+        C3[Local / OSS Model]
+    end
+
+    SDK --&gt; Provider
+    Vendor -.-&gt;|vendor coupling| Provider
+</code></pre>
+
+<p>这不是说厂商的方案没有价值。服务端 Tool Search 省去了客户端的计算和索引维护开销，对小团队来说是合理的选择。但当你的系统需要：</p>
+<ul>
+<li>跨多个 LLM Provider 工作</li>
+<li>定制搜索算法（比如租户级别的工具权限过滤）</li>
+<li>在离线&#x2F;私有化部署环境运行</li>
+<li>控制工具发现的确定性行为</li>
+</ul>
+<p>客户端实现就成为更稳健的架构选择。</p>
+<h1 id="工具管理的实践建议"><a href="#工具管理的实践建议" class="headerlink" title="工具管理的实践建议"></a>工具管理的实践建议</h1><p>基于以上分析，给出几条工具管理的实践建议：</p>
+<p><strong>1. 10 个工具以下不需要 Tool Search</strong>。工具少的时候，全部加载到上下文反而更简单，模型选择准确率也足够高。</p>
+<p><strong>2. 高频工具常驻，低频工具按需加载</strong>。把 3-5 个核心工具（如文件读写、Shell 执行）直接注册，其余工具通过 Tool Search 按需发现。</p>
+<p><strong>3. 按服务边界划分 Namespace</strong>。一个 MCP Server或一套工具集 对应一个 Namespace。Namespace 描述写清楚这组工具能做什么，不需要列举具体工具名。模型根据描述决定是否加载。</p>
+<p><strong>4. 工具描述是搜索质量的关键</strong>。无论用哪种搜索策略，工具的 name 和 description 都是最重要的检索信号。命名用 <code>verb_noun</code> 格式（如 <code>create_issue</code>、<code>search_papers</code>），描述用一句话说明输入输出。</p>
+<p><strong>5. 搜索策略按场景选择</strong>。工具命名规范、数量可控时，Keyword 策略就够了。工具来自多个第三方 MCP Server、命名不统一时，Embedding 策略更鲁棒。</p>
+<p><strong>6. 评估供应商耦合的成本</strong>。如果你的产品只用一家 LLM Provider 且不打算换，用厂商的内置 Tool Search 完全合理。如果你在构建需要支持多 Provider 的 SDK 或平台，客户端实现是更安全的选择。</p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>上述实践来自 <a target="_blank" rel="noopener" href="https://github.com/Wh1isper/ya-agent-sdk">ya-agent-sdk</a>（<a target="_blank" rel="noopener" href="https://github.com/Wh1isper/ya-agent-sdk/pull/39">PR #39</a>），ya-agent-sdk是我积极维护的agent-sdk，用于原型创建和研究。构建于<a target="_blank" rel="noopener" href="https://github.com/pydantic/pydantic-ai">Pydantic AI</a>之上，希望提供SOTA的上下文管理和开发体验。</p>
+<p>关注本站 RSS，我会持续分享 Agent 构建过程中的架构思路和工程实践。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI-Engineering/" class="category-chain-item">AI Engineering</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/MCP/" class="print-no-link">#MCP</a>
+      
+        <a href="/tags/ToolSearch/" class="print-no-link">#ToolSearch</a>
+      
+        <a href="/tags/SDK/" class="print-no-link">#SDK</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Agent 工具发现：从上下文膨胀到按需加载</div>
+      <div>https://blog.wh1isper.top/2026/03/06/2026-03-06-tool-search-for-agents/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年3月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/03/12/2026-03-12-tool-proxy-for-agents/" title="Agent 工具代理：不改变工具列表的 Tool Search">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Agent 工具代理：不改变工具列表的 Tool Search</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/18/2026-02-18-cloud-agent-implementation-details/" title="构建 Effective Cloud Agent">
+                        <span class="hidden-mobile">构建 Effective Cloud Agent</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
