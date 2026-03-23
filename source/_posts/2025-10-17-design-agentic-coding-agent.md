@@ -49,7 +49,7 @@ Agent本质上是在通过工具与上述两个环境进行交互，我们可以
 
 另一种方式是让Agent直接管理异步任务，但由于自动压缩等上下文管理策略，我们需要确保Agent不会忘记已经启动的任务，并观测其结果
 
-![](../img/2025-10-17-design-agentic-coding-agent/async-job.png)
+![Agent managing async jobs with context persistence](../img/2025-10-17-design-agentic-coding-agent/async-job.png)
 
 ## Sync Message and Environment
 

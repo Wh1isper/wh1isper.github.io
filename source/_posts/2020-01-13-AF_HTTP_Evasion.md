@@ -33,7 +33,7 @@ HTTP攻击分为响应端和请求端
 
 ## 1.1 HTTP响应端绕过原理 ##
 
-![](../img/2020-01-13-AF_HTTP_Evasion/response_eva_principle.jpg)
+![HTTP response-side evasion principle](../img/2020-01-13-AF_HTTP_Evasion/response_eva_principle.jpg)
 
 介绍响应端绕过原理之前，先要了解关于浏览器的两个重要特点：
 

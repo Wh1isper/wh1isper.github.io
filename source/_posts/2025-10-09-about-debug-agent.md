@@ -44,7 +44,7 @@ Debug Agent应当由三个重要部分组成：用户上下文、程序上下文
 
 ## 工作流程
 
-![](../img/2025-10-09-about-debug-agent/workflow.png)
+![Debug Agent workflow: from context collection to automated diagnosis](../img/2025-10-09-about-debug-agent/workflow.png)
 
 ## 发展阶段
 

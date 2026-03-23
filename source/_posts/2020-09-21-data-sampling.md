@@ -22,7 +22,7 @@ category:
 
 # 数据抽样相关笔记
 
-![](../img/2020-09-21-data-sampling/datasampling.png)
+![数据抽样方法分类概览](../img/2020-09-21-data-sampling/datasampling.png)
 
 ## [抽样]([https://zh.wikipedia.org/wiki/%E6%8A%BD%E6%A8%A3](https://zh.wikipedia.org/wiki/抽樣))
 
@@ -147,7 +147,7 @@ category:
 
 ### 困难
 
-![](../img/2020-09-21-data-sampling/restrict.png)
+![数据抽样面临的困难与限制](../img/2020-09-21-data-sampling/restrict.png)
 
 #### 数据不平衡：利用分层抽样减少数据不平衡的情况
 

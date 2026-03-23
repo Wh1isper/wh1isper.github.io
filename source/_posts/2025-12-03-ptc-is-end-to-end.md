@@ -23,7 +23,7 @@ category:
 
 下面这张图很好的解释了整个工作流程：
 
-![](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F65737d69a3290ed5c1f3c3b8dc873645a9dcc2eb-1999x1491.png&w=3840&q=75)
+![Anthropic PTC (Parallel Tool Calling) end-to-end workflow](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F65737d69a3290ed5c1f3c3b8dc873645a9dcc2eb-1999x1491.png&w=3840&q=75)
 
 以上基本上是大部分自媒体/公众号/营销号对于它的理解，以下我提供一些不一样的看法，可能不一定成熟。
 

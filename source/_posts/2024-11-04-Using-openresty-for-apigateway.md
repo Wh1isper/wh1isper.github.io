@@ -25,21 +25,21 @@ category:
 
 When building microservices, we often use a reverse proxy to expose different services through a single endpoint, which just looks like this:
 
-![](../img/2024-11-04-Using-openresty-for-apigateway/01.png)
+![Reverse proxy exposing multiple services through a single endpoint](../img/2024-11-04-Using-openresty-for-apigateway/01.png)
 
 In practical, we usually design the user system separately from the core business system and manage user login status using a cookie-session approach. Cookies are typically stored in an encrypted format on the client side, and decrypting them requires a server-side secret. In this kind of architecture, an internal HTTP request is often needed to convert the cookie into plaintext user information for use by the business system.
 
-![](../img/2024-11-04-Using-openresty-for-apigateway/02.png)
+![Cookie-session authentication with internal HTTP request to user system](../img/2024-11-04-Using-openresty-for-apigateway/02.png)
 
 This means that every service within the business system needs to implement an HTTP request and handle potential failures of the user system. While we could address this by providing a unified SDK, which would shift the challenge to SDK implementation and library management, the concept of a service mesh offers an alternative solution.
 
-![](../img/2024-11-04-Using-openresty-for-apigateway/03.png)
+![Service mesh approach to centralized authentication](../img/2024-11-04-Using-openresty-for-apigateway/03.png)
 
 By leveraging an API Gateway, we can centralize this process and effectively manage user authentication across services. Additionally, an API Gateway has the advantage of enabling permission management, auditing, and observability for each API route. However, I don't plan to go into detail about these aspects in this blog post.
 
 The only task we need to undertake is moving the work previously handled by the User Server SDK into our reverse proxy. Before forwarding requests to the business system, the reverse proxy converts the cookie into plaintext user data and injects it into a specific request header. This way, the business system can directly access the user data and respond accordingly.
 
-![](../img/2024-11-04-Using-openresty-for-apigateway/04.png)
+![API Gateway handling cookie-to-header exchange before forwarding](../img/2024-11-04-Using-openresty-for-apigateway/04.png)
 
 ## Why OpenResty?
 
