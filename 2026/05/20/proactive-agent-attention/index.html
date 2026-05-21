@@ -1,0 +1,1142 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="从 conversation session、memory lifecycle、paired agency session 演进到 Singleton Agency，讨论如何用 subconscious layer 构建更接近数字员工的 Proactive Agent。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建潜意识：一种 Proactive Agent 构建方式">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/05/20/proactive-agent-attention/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="从 conversation session、memory lifecycle、paired agency session 演进到 Singleton Agency，讨论如何用 subconscious layer 构建更接近数字员工的 Proactive Agent。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-20T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-21T03:40:05.202Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="架构">
+<meta property="article:tag" content="Proactive Agent">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>构建潜意识：一种 Proactive Agent 构建方式 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/05/20/proactive-agent-attention/">
+  <meta property="og:image" content="https://blog.wh1isper.top/img/post-bg-coffee.jpeg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"构建潜意识：一种 Proactive Agent 构建方式","url":"https://blog.wh1isper.top/2026/05/20/proactive-agent-attention/","datePublished":"2026-05-20T04:00:00.000Z","dateModified":"2026-05-21T03:40:05.202Z","author":{"@type":"Person","name":"Wh1isper"},"publisher":{"@type":"Person","name":"Wh1isper"},"description":"从 conversation session、memory lifecycle、paired agency session 演进到 Singleton Agency，讨论如何用 subconscious layer 构建更接近数字员工的 Proactive Agent。","image":"https://blog.wh1isper.top/img/post-bg-coffee.jpeg"}</script>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-coffee.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="一种以 context routing 为核心的 Proactive Agent 架构"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-05-20 12:00" pubdate>
+          2026年5月20日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">一种以 context routing 为核心的 Proactive Agent 架构</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="构建潜意识：一种-Proactive-Agent-构建方式"><a href="#构建潜意识：一种-Proactive-Agent-构建方式" class="headerlink" title="构建潜意识：一种 Proactive Agent 构建方式"></a>构建潜意识：一种 Proactive Agent 构建方式</h1><p>Proactive Agent 的核心是 context 的传递和管理。普通对话系统以 session 为边界，每个 session 稳定处理当前对话、当前工具调用和当前 memory 生命周期。主动性要求系统拥有一层类似潜意识的 <code>subconscious layer</code>：持续观察、连接、准备，并在合适的时机把 context 递回具体 session。</p>
+<p>Singleton Agency 更接近 IM 产品，也更接近人类工作方式。人类员工在群聊、私聊、会议、文档之间切换时，会在后台维护一个持续的 <code>attention system</code>：谁承诺了什么，哪个信息需要同步，哪个决策影响了另一个群，哪个风险需要提前提醒。数字员工也需要这层 <code>subconscious layer</code>。它在 front-stage conversation 之外维护 <code>global attention</code>，负责发现弱信号、连接跨 session context、准备后续动作，并把信息轻量送回 target session。</p>
+<p>这篇文章记录一个实际系统里的设计演进：先把 proactive logic 放进 conversation session，再把后台关注拆成 paired agency session，最后收敛成 singleton agency。每一步都解决上一层结构里的 context 管理问题，也暴露下一层结构需要处理的 context routing 问题。</p>
+<h2 id="1-Front-stage-Session：conversation-session-与-memory-lifecycle"><a href="#1-Front-stage-Session：conversation-session-与-memory-lifecycle" class="headerlink" title="1. Front-stage Session：conversation session 与 memory lifecycle"></a>1. Front-stage Session：conversation session 与 memory lifecycle</h2><p>当前系统的基本单位是 <code>conversation session</code>。用户消息、API 输入、IM bridge 消息都会进入某个 session。session 创建 run，run 执行 agent runtime，runtime 读取工具、workspace、历史消息、memory，再输出结果。</p>
+<p>一个 conversation session 有自己的生命周期：</p>
+<ul>
+<li>接收输入。</li>
+<li>创建或合并 run。</li>
+<li>运行 agent。</li>
+<li>写入 run output。</li>
+<li>提交消息历史。</li>
+<li>触发 memory lifecycle。</li>
+<li>memory agent 提取长期事实、偏好、任务线索和摘要。</li>
+<li>下一轮 run 重新读取 memory。</li>
+</ul>
+<p>这个模型能支撑普通对话代理。context ownership 清晰：当前 session 负责当前会话，memory lifecycle 负责把会话中稳定的信息转成 long-term context。</p>
+<pre><code class=" mermaid">flowchart TD
+    U[User / API / IM message] --&gt; S[Conversation Session]
+    S --&gt; R[Run]
+    R --&gt; A[Agent Runtime]
+    A --&gt; O[Run Output]
+    O --&gt; H[Message History]
+    O --&gt; M[Memory Lifecycle]
+    M --&gt; MS[Memory Session]
+    MS --&gt; MF[Memory Files / Memory Store]
+    MF --&gt; A
+</code></pre>
+
+<p>这套结构的关键边界是 session-local。一次 run 主要看到当前 session 的 context。memory lifecycle 会把当前 session 的稳定信息沉淀下来，再在后续 run 中注入。它擅长保存 long-term context，跨 session 的 proactive discovery 需要额外机制支撑。</p>
+<h2 id="2-Case：一个-release-path-变更如何穿过多个群聊"><a href="#2-Case：一个-release-path-变更如何穿过多个群聊" class="headerlink" title="2. Case：一个 release path 变更如何穿过多个群聊"></a>2. Case：一个 release path 变更如何穿过多个群聊</h2><p>考虑一个 Agent IM 场景：</p>
+<ol>
+<li>架构群里决定把 release path 从 <code>legacy-release</code> 改成 <code>canary-release</code>。</li>
+<li>项目群仍在按 <code>legacy-release</code> 讨论排期和负责人。</li>
+<li>某个开发在私聊里承诺周五前补齐迁移脚本。</li>
+<li>发布群里出现生产数据权限风险，需要提前确认审批路径。</li>
+<li>会议纪要里记录了最终 owner 和 deadline。</li>
+</ol>
+<p>这些信息分别落在不同 session：架构群、项目群、私聊、发布群、会议 memory。每个 session 都有自己的 context 和 memory。真正需要的是一个跨 session 的 context router：它能知道架构群的决策影响项目群，私聊承诺影响项目推进，发布群风险影响当前方案，会议 memory 可以补齐 owner 和 deadline。</p>
+<pre><code class=" mermaid">flowchart TD
+    Arch[Architecture Group Session] --&gt; D[release path decision]
+    Project[Project Group Session] --&gt; P[planning with early path]
+    DM[Direct Message Session] --&gt; C[script commitment]
+    Release[Release Group Session] --&gt; Risk[permission risk]
+    Meeting[Meeting Memory Session] --&gt; Owner[owner and deadline]
+
+    D --&gt; Need[Context Routing Need]
+    C --&gt; Need
+    Risk --&gt; Need
+    Owner --&gt; Need
+    Need --&gt; Project
+</code></pre>
+
+<p>这个 case 贯穿后面的设计。Proactive Agent 的问题可以具体化为：系统怎样把这些分散 context 送到正确 session，并让目标 session 用当前语气、权限和工作状态继续处理。</p>
+<h2 id="3-演进一：Session-local-Proactive-Logic"><a href="#3-演进一：Session-local-Proactive-Logic" class="headerlink" title="3. 演进一：Session-local Proactive Logic"></a>3. 演进一：Session-local Proactive Logic</h2><p>最直接的演进是在每个 conversation session 内增强 prompt 和 memory lifecycle。每条消息进来后，当前 session agent 自己判断：是否有 follow-up、是否需要提醒、是否需要写入 memory、是否需要发起下一步行动。</p>
+<pre><code class=" mermaid">flowchart TD
+    MSG[Message] --&gt; S[Conversation Session]
+    S --&gt; A[Agent Runtime]
+    A --&gt; D&#123;Need proactive action&#125;
+    D --&gt;|Yes| P[Prepare follow-up]
+    D --&gt;|Later| M[Write memory]
+    P --&gt; O[Output / Task / Reminder]
+    M --&gt; Next[Future run]
+</code></pre>
+
+<p>这个形态解决的是 current-session follow-up。context 在一个 session 内闭环，工具权限、用户语气、消息历史都在本地。每个 session agent 对当前对话拥有最强判断力。</p>
+<p>它的边界也清晰：</p>
+<ul>
+<li>context 传播依赖当前 session 自己看到的内容。</li>
+<li>跨 session 关系需要通过 memory 或外部检索间接发现。</li>
+<li>每个 session 都会重复维护主动性逻辑。</li>
+<li>主动行为的预算、风险策略和审计日志分散在多个 session 中。</li>
+</ul>
+<p>这个形态适合当前会话里的主动提醒，例如从一句话里识别待办、提醒用户补充 deadline、把当前对话总结成任务。对于 release path case，项目群 session 需要主动发现架构群、私聊、发布群、会议 memory 里的相关 context，系统成本会快速上升。这个边界推动下一步演进：把前台回答和后台关注拆开。</p>
+<h2 id="4-演进二：Paired-Agency-Session"><a href="#4-演进二：Paired-Agency-Session" class="headerlink" title="4. 演进二：Paired Agency Session"></a>4. 演进二：Paired Agency Session</h2><p>下一步演进是为每个 conversation session 创建一个配套的 <code>agency session</code>。conversation session 负责用户对话，agency session 负责后台观察、反思、计划和跟进。</p>
+<pre><code class=" mermaid">flowchart TD
+    U[User Message] --&gt; C[Conversation Session]
+    C --&gt; R[Conversation Run]
+    R --&gt; O[Run Output]
+    C --&gt; F[Agency Signal]
+    O --&gt; F
+    F --&gt; AS[Paired Agency Session]
+    AS --&gt; AM[Agency Memory Files]
+    AS --&gt; H[Handoff / Follow-up]
+    H --&gt; C
+</code></pre>
+
+<p>这个结构解决的是 background continuity。它把“正常回答”和“后台关注”拆成两个 session，让 agency session 拥有自己的 episode、intention、action log。它可以在 conversation session 空闲后继续整理，记录下一次唤醒条件，也可以在新信号到来时继续上一次 agency episode。</p>
+<p>它的主要边界来自数量和视角：</p>
+<ul>
+<li>每个 conversation session 都有自己的 agency session，后台状态数量随会话增长。</li>
+<li>每个 agency session 主要关注自己的 source session，跨 session context 需要额外路由。</li>
+<li>同一个人、同一个项目、同一个风险可能出现在多个 session 中，多个 agency session 会各自维护部分事实。</li>
+<li>主动提醒的全局优先级难统一，例如哪个群更值得提醒、哪个 stale wait 更紧急、哪个风险应该先处理。</li>
+</ul>
+<p>per-session agency 适合“每条对话都有一个 shadow agent”的产品形态。它把主动性做进了 session 体系，全局 context 仍然分散在多个 shadow agent 中。对于 release path case，每个 shadow agent 都能维护 local signal，跨群同步需要额外的 global coordination layer。这个边界推动下一步演进：把 background attention 从 per-session 结构提升到 singleton 结构。</p>
+<h2 id="5-演进三：Singleton-Agency"><a href="#5-演进三：Singleton-Agency" class="headerlink" title="5. 演进三：Singleton Agency"></a>5. 演进三：Singleton Agency</h2><p>最终方案把 agency 收敛成一个全局 singleton session。整个 Claw 实例只有一个 <code>session_type=&quot;agency&quot;</code> session。它通过 durable fire 观察所有 conversation session、memory session 和 heartbeat，再通过统一的 session submit 机制把输入送入 Agency runtime。</p>
+<pre><code class=" mermaid">flowchart TD
+    C1[Architecture Group Session] --&gt; F[Agency Fires]
+    C2[Project Group Session] --&gt; F
+    C3[Direct Message Session] --&gt; F
+    C4[Release Group Session] --&gt; F
+    M[Meeting Memory Session] --&gt; F
+    H[Idle Heartbeat] --&gt; F
+
+    F --&gt; SA[Singleton Agency Session]
+    SA --&gt; AF[Agency Files]
+    SA --&gt; SUB[submit_to_session]
+    SUB --&gt; C1
+    SUB --&gt; C2
+    SUB --&gt; C3
+    SUB --&gt; C4
+</code></pre>
+
+<p>Singleton Agency 解决的是 global context routing。它是系统的 <code>subconscious layer</code>，接收 front-stage session 的消息、输出和 memory 产物，在后台维护 <code>global attention</code>。它的工作方式更接近人类员工：看见多个聊天窗口里的 weak signal，把分散事实连接成工作判断，然后在合适时机提醒正确的人或正确的群。</p>
+<p>它也是数字员工的必要结构。数字员工需要跨群、跨任务、跨会议、跨私聊维护 continuity。一个数字员工应该能记住“架构群已经改了 release path”，也能知道“项目群现在需要这条信息”，还能把 reminder 交给项目群 session，让项目群 agent 用当前 context 完成最终表达。</p>
+<p>Agency 观察四类 fire：</p>
+<table>
+<thead>
+<tr>
+<th>Fire</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>message_observed</code></td>
+<td>复制 source session 的新输入</td>
+</tr>
+<tr>
+<td><code>run_output_observed</code></td>
+<td>复制成功 conversation run 的输出</td>
+</tr>
+<tr>
+<td><code>memory_session_completed</code></td>
+<td>复制 memory agent 的产物</td>
+</tr>
+<tr>
+<td><code>heartbeat</code></td>
+<td>空闲时做低优先级主动回顾</td>
+</tr>
+</tbody></table>
+<p>这些 fire 进入同一个 durable queue。每条 fire 记录 source session、source run、payload、dedupe key、priority 和状态。Agency 通过 <code>pending -&gt; submitted / merged / steered -&gt; consumed / failed</code> 的状态流管理交付。</p>
+<pre><code class=" mermaid">stateDiagram-v2
+    [*] --&gt; pending
+    pending --&gt; submitted
+    pending --&gt; merged
+    pending --&gt; steered
+    submitted --&gt; consumed
+    merged --&gt; consumed
+    steered --&gt; consumed
+    submitted --&gt; failed
+    merged --&gt; failed
+    steered --&gt; failed
+</code></pre>
+
+<p>这里最重要的设计点是统一 submit 语义。Agency 自己收到 fire 时走 <code>SessionController.submit_input()</code>；Agency 想提醒某个 source session 时也走 <code>SessionController.submit_input()</code>。</p>
+<pre><code class=" mermaid">flowchart TD
+    I[Input Parts] --&gt; L[Session Lock]
+    L --&gt; A&#123;Active Run State&#125;
+    A --&gt;|Idle| N[Create Queued Run]
+    A --&gt;|Queued| M[Merge Input Parts]
+    A --&gt;|Running| S[Steer Runtime]
+    N --&gt; R[Run Event Stream]
+    M --&gt; R
+    S --&gt; R
+</code></pre>
+
+<p>这让 context 传递变成同一种数据结构：<code>input_parts + metadata + trigger_type</code>。用户输入、IM bridge、heartbeat、agency fire、agency handoff 都是 session input。系统只需要维护一套 session delivery 语义。</p>
+<h2 id="6-Context-Routing-Model：从-fire-到-handoff"><a href="#6-Context-Routing-Model：从-fire-到-handoff" class="headerlink" title="6. Context Routing Model：从 fire 到 handoff"></a>6. Context Routing Model：从 fire 到 handoff</h2><p>Singleton Agency 的核心能力是 context routing。它把 context 的发现、组织、持久化、交付拆成三层。</p>
+<p>第一层是 source context。它来自具体 conversation session，包括用户消息、bridge metadata、run output、source run ID、source session ID。Agency 通过 fire 获取这些上下文的复制件。复制件是第一层 context，source session 和 run trace 是按需读取的第二层 context。</p>
+<p>第二层是 agency context。Agency 拥有自己的 long-term attention state：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">AGENCY.md<br>agency/ACTION_LOG.md<br>agency/episodes/*.md<br>agency/intentions/*.md<br>agency/archive/*.md<br></code></pre></td></tr></table></figure>
+
+<p><code>AGENCY.md</code> 记录当前 attention index，<code>ACTION_LOG.md</code> 记录 material action 和 decision，<code>episodes/</code> 保存重要 investigation 过程，<code>intentions/</code> 保存 deferred opportunity 和 future trigger condition。</p>
+<p>第三层是 handoff context。当 Agency 发现某个 source session 可以受益于全局信息时，它调用 <code>submit_to_session</code>，把一段自然语言 nudge 注入目标 session，并附带轻量 metadata。</p>
+<pre><code class=" mermaid">flowchart TD
+    SF[Source Fire Payload] --&gt; A[Agency Runtime]
+    AF[Agency Files] --&gt; A
+    RT[Source Run Traces] --&gt; A
+    A --&gt; N[Nudge Prompt]
+    A --&gt; HM[Handoff Metadata]
+    N --&gt; T[Target Conversation Session]
+    HM --&gt; T
+    T --&gt; J[Local Judgment]
+    J --&gt; U[User-facing Output]
+</code></pre>
+
+<p>handoff 的内容通常包括：</p>
+<ul>
+<li>Agency 观察到了什么。</li>
+<li>这个信号当前为什么重要。</li>
+<li>建议 target session 采取什么下一步。</li>
+<li>涉及哪个人、哪个群、哪个 session、哪个 run 或哪个 artifact。</li>
+<li>fire IDs、source run IDs、async task IDs 等 provenance。</li>
+<li>影响判断的不确定性或置信度。</li>
+</ul>
+<p>它的 metadata 负责机器可读部分：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;handoff_kind&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;reminder&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;handoff_tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;agency-reminder&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;ask-person&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;stale-wait&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;fire_ids&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;source_run_ids&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;people&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Alice&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;artifact_paths&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;agency/episodes/...&quot;</span><span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>这个模型把 context 的 producer 和 consumer 拆开。Agency 负责 global discovery 和 preparation，conversation session 负责 local judgment 和 user-facing expression。这样可以保留 source session 的语气、权限、workspace 状态和当前对话意图。</p>
+<h2 id="7-Case-Walkthrough：release-path-变更如何被路由到项目群"><a href="#7-Case-Walkthrough：release-path-变更如何被路由到项目群" class="headerlink" title="7. Case Walkthrough：release path 变更如何被路由到项目群"></a>7. Case Walkthrough：release path 变更如何被路由到项目群</h2><p>回到前面的 release path case，Singleton Agency 的运行过程可以拆成五步。</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant Arch as Architecture Group
+    participant Project as Project Group
+    participant DM as Direct Message
+    participant Meeting as Meeting Memory
+    participant Agency as Singleton Agency
+
+    Arch-&gt;&gt;Agency: message_observed: release path changed
+    DM-&gt;&gt;Agency: message_observed: migration script commitment
+    Meeting-&gt;&gt;Agency: memory_session_completed: owner and deadline
+    Agency-&gt;&gt;Agency: connect decision, commitment, owner, target group
+    Agency-&gt;&gt;Project: submit_to_session: proactive nudge
+</code></pre>
+
+<p>Agency 收到架构群消息 fire，记录 release path 变更。它随后收到私聊承诺 fire，知道迁移脚本有人负责。会议 memory 完成后，它拿到 owner 和 deadline。项目群继续讨论早期路径时，Agency 能把这些 context 连接起来：项目群需要更新 release path，需要确认迁移脚本 owner，也需要把发布风险纳入排期。</p>
+<p>最终 Agency 通过 <code>submit_to_session</code> 给项目群 session 发送一段 nudge：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">Agency noticed a release-path update from the architecture group. The current path is canary-release. Alice committed to finish the migration script by Friday, and the meeting memory records Bob as the release owner. Suggested move: remind the project group to update the release plan, confirm the migration script owner, and include the permission risk check before finalizing the schedule.<br></code></pre></td></tr></table></figure>
+
+<p>项目群 session 收到这段 handoff 后，结合项目群当前 context 决定如何表达。它可以提醒群成员、询问 Alice、更新任务，也可以把风险确认放进下一步计划。Agency 负责送达 context，项目群 session 负责完成当前对话里的行动。</p>
+<h2 id="8-Task-Decomposition-vs-Context-Routing"><a href="#8-Task-Decomposition-vs-Context-Routing" class="headerlink" title="8. Task Decomposition vs Context Routing"></a>8. Task Decomposition vs Context Routing</h2><p>传统 Multi-Agent 系统通常把问题拆给多个角色：planner、researcher、coder、reviewer、manager。它适合完成一个明确任务。任务被拆解，agent 之间传递中间结果，最后收敛为一个 output。</p>
+<pre><code class=" mermaid">flowchart TD
+    Task[Task] --&gt; Manager[Manager Agent]
+    Manager --&gt; Planner[Planner]
+    Manager --&gt; Researcher[Researcher]
+    Manager --&gt; Executor[Executor]
+    Planner --&gt; Manager
+    Researcher --&gt; Manager
+    Executor --&gt; Manager
+    Manager --&gt; Output[Final Output]
+</code></pre>
+
+<p>这是一种 task decomposition 架构。核心问题是：如何把一个任务拆成多个子任务，并把结果合并。</p>
+<p>Agent IM 和数字员工面临的是 context routing。系统面对多条长期 session、多个人、多段承诺、会议 memory、跨群信息差、延迟触发和时机判断。核心问题是：哪个 context 应该在什么时间进入哪个 session。</p>
+<pre><code class=" mermaid">flowchart TD
+    G1[Group Chat A Session] --&gt; Fire[Global Fire Queue]
+    G2[Group Chat B Session] --&gt; Fire
+    DM[Direct Message Session] --&gt; Fire
+    Meeting[Meeting / Memory Session] --&gt; Fire
+    Fire --&gt; Agency[Singleton Agency / Subconscious Layer]
+    Agency --&gt; R&#123;Route Context&#125;
+    R --&gt; G1
+    R --&gt; G2
+    R --&gt; DM
+</code></pre>
+
+<p>两类系统的差异可以用 context 管理来描述：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Multi-Agent Task System</th>
+<th>Singleton Agency Context Routing</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心对象</td>
+<td>一个任务</td>
+<td>多个长期 session</td>
+</tr>
+<tr>
+<td>主要问题</td>
+<td>task decomposition</td>
+<td>context routing</td>
+</tr>
+<tr>
+<td>Context 形态</td>
+<td>task context 和 intermediate artifacts</td>
+<td>消息、输出、memory、heartbeat、cross-session signals</td>
+</tr>
+<tr>
+<td>调度方式</td>
+<td>manager 分派 subtask</td>
+<td>durable fire 唤醒 subconscious layer</td>
+</tr>
+<tr>
+<td>输出位置</td>
+<td>final output</td>
+<td>目标 conversation session</td>
+</tr>
+<tr>
+<td>状态管理</td>
+<td>task-local state</td>
+<td>global attention state + source session state</td>
+</tr>
+<tr>
+<td>介入方式</td>
+<td>执行任务步骤</td>
+<td>给正确 session 发送 bounded nudge</td>
+</tr>
+</tbody></table>
+<p>Multi-Agent 系统的强项是 task decomposition。Singleton Agency 的强项是 context routing。它可以在需要时使用 async subagents 做 investigation、summary、review 和 preparation，它自己的核心角色是 global attention layer。</p>
+<h2 id="9-为什么它更接近人和数字员工"><a href="#9-为什么它更接近人和数字员工" class="headerlink" title="9. 为什么它更接近人和数字员工"></a>9. 为什么它更接近人和数字员工</h2><p>人类员工的协作能力来自持续的 context routing。一个人参加会议、阅读文档、回复私聊、在群里协调事项时，会持续维护一张隐式工作图谱：谁拥有决策权，哪个承诺影响哪个项目，哪个风险需要提前暴露，哪个信息应该同步给哪个群。</p>
+<p>数字员工也需要这张 implicit work graph。它需要在多个 session 之间保持 continuity，同时尊重每个 session 的 local context。Singleton Agency 提供了这层 subconscious layer：</p>
+<ul>
+<li>它拥有跨 session 的观察面。</li>
+<li>它维护 global attention state。</li>
+<li>它通过 durable fire 管理触发与审计。</li>
+<li>它通过 handoff 把 context 送回具体对话。</li>
+<li>它让 source session 保留用户表达、权限和当前判断。</li>
+</ul>
+<p>因此，这个方案更像一个数字员工的后台认知结构：front-stage session 负责说话和执行，singleton agency 负责 attention、connection、preparation 和 reminder。</p>
+<h2 id="10-工程结果"><a href="#10-工程结果" class="headerlink" title="10. 工程结果"></a>10. 工程结果</h2><p>当前方案带来的直接结果是：</p>
+<ol>
+<li>Context 有明确分层：source context、agency context、handoff context。</li>
+<li>主动触发有 durable fire 管理，支持去重、排序、审计和失败恢复。</li>
+<li>Agency 和 source session 共用 submit 语义，idle、queued、running 三种状态统一处理。</li>
+<li>全局判断和局部执行分离，source session 保留用户表达和当前上下文所有权。</li>
+<li>Long-term state 有 material write policy，background agent 只在产生 durable value 时写文件。</li>
+<li>Agent IM 的跨群提醒、owner routing、stale wait、risk nudge 都能复用同一套机制。</li>
+</ol>
+<p>Proactive Agent 的架构重点是 context 的位置。普通 session 保存 local context，memory lifecycle 保存 stable facts，singleton agency 保存 global attention state，handoff 把 global context 送回具体对话。主动性来自这条 context routing pipeline。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Agent/" class="category-chain-item">Agent</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84/" class="print-no-link">#架构</a>
+      
+        <a href="/tags/Proactive-Agent/" class="print-no-link">#Proactive Agent</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>构建潜意识：一种 Proactive Agent 构建方式</div>
+      <div>https://blog.wh1isper.top/2026/05/20/proactive-agent-attention/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年5月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/03/16/some-thoughts/" title="零散的想法，无AI">
+                        <span class="hidden-mobile">零散的想法，无AI</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
