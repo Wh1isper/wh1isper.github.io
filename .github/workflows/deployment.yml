@@ -5,6 +5,8 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     name: Deployment
+    env:
+      TZ: Asia/Shanghai
 
     steps:
       - name: Check Out

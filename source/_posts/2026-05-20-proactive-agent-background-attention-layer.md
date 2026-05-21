@@ -3,8 +3,9 @@ layout: post
 title: 构建潜意识：一种 Proactive Agent 构建方式
 subtitle: 一种以 context routing 为核心的 Proactive Agent 架构
 description: 从 conversation session、memory lifecycle、paired agency session 演进到 Singleton Agency，讨论如何用 subconscious layer 构建更接近数字员工的 Proactive Agent。
-date: 2026-05-20
+date: 2026-05-20 12:00:00 +0800
 author: Wh1isper
+short_slug: proactive-agent-attention
 banner_img: /img/post-bg-coffee.jpeg
 catalog: true
 tags:
