@@ -37,6 +37,13 @@
 - Prefer Mermaid for diagrams in Markdown docs when practical.
 - For architecture articles, prefer an evolution narrative (e.g., from Chatbot to Agent) with less marketing tone and more practical reasoning.
 
+## AI Weekly Publishing
+- Publish AI Weekly as one new post per week; do not merge weekly posts into monthly files.
+- Use the date-prefixed filename pattern `YYYY-MM-DD-ai-weekly-YYYY-MM-DD-to-YYYY-MM-DD.md`.
+- Keep `category: [AI Weekly]` (YAML list form) so the post appears in the dedicated `/categories/AI-Weekly/` column.
+- Set `archive: true` in every AI Weekly front matter. Fluid uses this field to exclude the post from the home page while retaining it elsewhere.
+- AI Weekly remains available on its category page, archive pages, direct post URLs, and the main Atom feed.
+
 ## Configuration Notes
 - Main Hexo config: `_config.yml`
 - Theme config: `_config.fluid.yml`
