@@ -1,0 +1,1476 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="从单域 Agent Foundation 继续向外推演，设计由自治 Agent Home、持久 Mailbox、联邦信任、Capability Lease、Commitment 和安全迁移组成的 Agent Federation，并讨论 Human-Agent Society 如何从公共协议中涌现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent 联邦：从云 Agent Foundation 到 Human-Agent Society">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/08/17/agent-federation/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="从单域 Agent Foundation 继续向外推演，设计由自治 Agent Home、持久 Mailbox、联邦信任、Capability Lease、Commitment 和安全迁移组成的 Agent Federation，并讨论 Human-Agent Society 如何从公共协议中涌现。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-16T16:30:00.000Z">
+<meta property="article:modified_time" content="2026-09-13T12:20:39.699Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="Architecture">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Agent Federation">
+<meta property="article:tag" content="Multi-Agent">
+<meta property="article:tag" content="Cloud Agent">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Agent 联邦：从云 Agent Foundation 到 Human-Agent Society - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/08/17/agent-federation/">
+  <meta property="og:image" content="https://blog.wh1isper.top/img/post-bg-universe.jpg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Agent 联邦：从云 Agent Foundation 到 Human-Agent Society","url":"https://blog.wh1isper.top/2026/08/17/agent-federation/","datePublished":"2026-08-16T16:30:00.000Z","dateModified":"2026-09-13T12:20:39.699Z","author":{"@type":"Person","name":"Wh1isper"},"publisher":{"@type":"Person","name":"Wh1isper"},"description":"从单域 Agent Foundation 继续向外推演，设计由自治 Agent Home、持久 Mailbox、联邦信任、Capability Lease、Commitment 和安全迁移组成的 Agent Federation，并讨论 Human-Agent Society 如何从公共协议中涌现。","image":"https://blog.wh1isper.top/img/post-bg-universe.jpg"}</script>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/AI-Weekly/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>AI Weekly</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-universe.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="自治身份、持久通信、能力委托与跨域协作"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-17 00:30" pubdate>
+          2026年8月17日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          25k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          84 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">自治身份、持久通信、能力委托与跨域协作</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>Agent 的下一步不是连接到一个更大的中央编排图，而是成为有身份、有边界、有承诺、能够进入其他自治域的长期主体。</p>
+</blockquote>
+<p>上一篇<a href="../../16/next-generation-agent-foundation/">《下一代 Agent Foundation：标准化 Agent 与世界的边界》</a>讨论了单个平台内的 Input、Activation、Context、Effect、Suspension 和可替换 Runtime。它解决的是一个 Agent 如何稳定进入软件系统。</p>
+<p>当这些 Agent 分属不同个人、企业和平台时，问题会再向外移动一层：</p>
+<ul>
+<li>Agent 如何拥有独立于 Runtime 的长期身份？</li>
+<li>两个从未共享 Session、Memory 和管理员的 Agent 如何通信？</li>
+<li>一个域如何验证另一个域的 Agent，同时保留自己的授权策略？</li>
+<li>Agent 如何申请 Sandbox、Tool、Compute 和临时凭证，而不是永久携带所有权限？</li>
+<li>Request 如何变成可追踪的委托和承诺，而不只是聊天记录中的一句话？</li>
+<li>Agent 迁移、复制和派生时，如何避免同一身份同时出现在两个地方？</li>
+<li>Human 与 Agent 如何处于同一协作网络，同时保留必要的控制不对称？</li>
+</ul>
+<p>这些问题组合起来，不是一个更复杂的 Multi-Agent Framework，而是一套 <strong>Agent Federation</strong>。</p>
+<h1 id="为什么是-Federation，而不是-Agent-Internet"><a href="#为什么是-Federation，而不是-Agent-Internet" class="headerlink" title="为什么是 Federation，而不是 Agent Internet"></a>为什么是 Federation，而不是 Agent Internet</h1><p>“Agent Internet”强调 Agent 可以互相连接。这个比喻容易把重点放在 endpoint、协议发现和消息传输上，也容易让人误以为只要所有 Agent 支持同一个 A2A API，网络就自然形成。</p>
+<p>真正困难的是管理边界。每个个人、组织或平台都需要保留自己的：</p>
+<ul>
+<li>Identity authority</li>
+<li>Membership 与 relationship policy</li>
+<li>Runtime placement</li>
+<li>Memory 与 Mailbox</li>
+<li>Environment 与 Effect boundary</li>
+<li>Capability issuer</li>
+<li>Risk、budget 与 approval policy</li>
+<li>Audit、revocation 与 abuse control</li>
+</ul>
+<p>因此更准确的描述是：</p>
+<blockquote>
+<p><strong>Agent Federation 是多个自治域通过公共通信、身份、能力和交互契约协作，同时由每个域独立执行信任与授权策略。</strong></p>
+</blockquote>
+<p>Internet 可以是底层 transport，Federation 才是上层治理拓扑。它既不是一个全球中央平台，也不是没有管理者的 trustless network。</p>
+<pre><code class=" mermaid">flowchart LR
+    subgraph CG[&quot;Centralized Agent Graph&quot;]
+        CP[&quot;Central Planner&quot;]
+        C1[&quot;Worker A&quot;]
+        C2[&quot;Worker B&quot;]
+        C3[&quot;Worker C&quot;]
+        CP --&gt; C1
+        CP --&gt; C2
+        CP --&gt; C3
+    end
+
+    subgraph FG[&quot;Agent Federation&quot;]
+        D1[&quot;Domain A&lt;br/&gt;local authority&quot;]
+        D2[&quot;Domain B&lt;br/&gt;local authority&quot;]
+        D3[&quot;Domain C&lt;br/&gt;local authority&quot;]
+        D1 &lt;--&gt;|&quot;public contract&quot;| D2
+        D2 &lt;--&gt;|&quot;public contract&quot;| D3
+        D1 &lt;--&gt;|&quot;public contract&quot;| D3
+    end
+</code></pre>
+
+<p>中央图中的 Worker 可以很复杂，却仍然只是一个系统的内部组件。联邦中的节点首先是自治主体，其次才是协作者。</p>
+<h1 id="先区分-Composite-Agent-与-Multi-Agent"><a href="#先区分-Composite-Agent-与-Multi-Agent" class="headerlink" title="先区分 Composite Agent 与 Multi-Agent"></a>先区分 Composite Agent 与 Multi-Agent</h1><p>“调用了 subagent”不代表系统中存在多个独立 Agent。多个执行单元如果共享同一个 planner、identity、memory owner、permission root 和 failure domain，本质上仍是一个 Composite Agent。</p>
+<p>一个独立 Agent 至少需要具备下面这些属性：</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Identity</td>
+<td>它能否被长期、唯一地寻址，而不依赖当前进程？</td>
+</tr>
+<tr>
+<td>Lifecycle</td>
+<td>它能否独立创建、暂停、迁移、撤销和终止？</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>它是否拥有明确归属和访问边界的持久状态？</td>
+</tr>
+<tr>
+<td>Authority</td>
+<td>它能以自己的 principal 行动，并被授予或撤销能力吗？</td>
+</tr>
+<tr>
+<td>Failure Domain</td>
+<td>它失败、断网或升级时，其他 Agent 是否仍可独立存在？</td>
+</tr>
+<tr>
+<td>Agency</td>
+<td>它能否根据本地状态接受、拒绝、协商或延迟请求？</td>
+</tr>
+<tr>
+<td>Communication</td>
+<td>它是否通过公共协议通信，而不是读取另一个进程的内部变量？</td>
+</tr>
+<tr>
+<td>Accountability</td>
+<td>它的承诺、委托与 Effect 能否归因和审计？</td>
+</tr>
+</tbody></table>
+<p>这些条件不是为了模拟人格，而是为了建立系统边界。</p>
+<ul>
+<li>一个 Planner 临时启动十个共享权限的 Worker，是 <strong>Composite Agent</strong>。</li>
+<li>一个企业内部由统一控制面管理的多个长期 Agent，可以是 <strong>Multi-Agent System</strong>，但还不是 Federation。</li>
+<li>多个独立管理域中的 Agent 通过公共契约协作，才形成 <strong>Agent Federation</strong>。</li>
+</ul>
+<p>这一区分很重要。没有独立 Identity 和 Authority，后面的信任、委托、迁移和责任都没有稳定对象。</p>
+<h1 id="Federation-Domain-与-Agent-Home"><a href="#Federation-Domain-与-Agent-Home" class="headerlink" title="Federation Domain 与 Agent Home"></a>Federation Domain 与 Agent Home</h1><p>联邦的基本部署单元不是 Agent 进程，而是 <strong>Federation Domain</strong>。每个 Agent 在一个域中拥有自己的 <strong>Agent Home</strong>。</p>
+<p>Agent Home 不是永远在线的 VM。它是一组由本域负责的持久系统服务：</p>
+<pre><code class=" mermaid">flowchart TB
+    subgraph DOMAIN[&quot;Federation Domain&quot;]
+        GW[&quot;Federation Gateway&quot;]
+        DIR[&quot;Principal Directory&lt;br/&gt;address / key / endpoint&quot;]
+        MAIL[&quot;Mailbox and Conversation Store&quot;]
+        TRUST[&quot;Trust and Policy Engine&quot;]
+        CAP[&quot;Capability Issuer&quot;]
+        PLACE[&quot;Runtime Placement and Lease&quot;]
+        FOUND[&quot;Agent Foundation&quot;]
+        ENV[&quot;Environment and Effect Log&quot;]
+        AUDIT[&quot;Audit and Revocation&quot;]
+
+        GW --&gt; TRUST
+        DIR --&gt; TRUST
+        GW --&gt; MAIL
+        MAIL --&gt; FOUND
+        TRUST --&gt; FOUND
+        CAP --&gt; FOUND
+        PLACE --&gt; FOUND
+        FOUND --&gt; ENV
+        FOUND --&gt; AUDIT
+    end
+
+    FOUND --&gt; R1[&quot;Runtime A&quot;]
+    FOUND -.-&gt; R2[&quot;Replacement Runtime&quot;]
+</code></pre>
+
+<p>这个边界与现实中的 federated system 有相似之处，但不复制任何单一协议：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc5598.html">Internet Mail Architecture</a>把用户层与 Message Handling Service 分开，依赖全局地址和异步 point-to-point transfer；发送者与接收者不需要同时在线。</li>
+<li><a target="_blank" rel="noopener" href="https://www.w3.org/TR/activitypub/">ActivityPub</a>让 Actor 暴露 Inbox 和 Outbox，跨服务器投递发生在 Actor 所在服务之间。</li>
+<li><a target="_blank" rel="noopener" href="https://spec.matrix.org/v1.19/server-server-api/">Matrix Server-Server API</a>由 homeserver 交换签名请求和事件，接收域独立执行格式、签名和授权检查；它的 transaction 只在一对 homeserver 之间有意义，而不是全局事务。</li>
+</ul>
+<p>Agent Federation 需要提炼这些边界：<strong>主体有稳定地址，消息由 Home 持久接收，管理域互相通信，本地策略拥有最终决定权。</strong></p>
+<h1 id="Identity-才是-Agent-的连续性"><a href="#Identity-才是-Agent-的连续性" class="headerlink" title="Identity 才是 Agent 的连续性"></a>Identity 才是 Agent 的连续性</h1><p>当前许多 Agent 系统把 Session、容器或进程 ID 当成 Agent ID。这在单机工具中足够，在联邦中会立即失效：Runtime 会升级，Sandbox 会销毁，模型会切换，Agent 也可能迁移到另一组 Worker。</p>
+<p>Agent 的 durable self 应该由 Home 持有，至少包含：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">agent_id:</span> <span class="hljs-string">agent://acme.example/agents/release-manager</span><br><span class="hljs-attr">home_domain:</span> <span class="hljs-string">acme.example</span><br><span class="hljs-attr">owner:</span> <span class="hljs-string">human://acme.example/users/alice</span><br><span class="hljs-attr">status:</span> <span class="hljs-string">active</span><br><span class="hljs-attr">key_refs:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">kms://agent-keys/release-manager/3</span><br><span class="hljs-attr">mailbox_ref:</span> <span class="hljs-string">mailbox://acme.example/release-manager</span><br><span class="hljs-attr">memory_refs:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">memory://acme.example/release-manager/private</span><br><span class="hljs-attr">relationship_refs:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">graph://acme.example/release-manager/relationships</span><br><span class="hljs-attr">capability_grants:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">cap://acme.example/grants/deploy-staging</span><br><span class="hljs-attr">commitment_cursor:</span> <span class="hljs-number">184</span><br><span class="hljs-attr">runtime_lineage_ref:</span> <span class="hljs-string">lineage://acme.example/release-manager</span><br><span class="hljs-attr">placement_lease_id:</span> <span class="hljs-string">placelease_01...</span><br><span class="hljs-attr">placement_epoch:</span> <span class="hljs-number">42</span><br><span class="hljs-attr">environment_refs:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">env://acme.example/projects/payments</span><br><span class="hljs-attr">latest_audit_cursor:</span> <span class="hljs-number">91028</span><br></code></pre></td></tr></table></figure>
+
+<p>这个对象描述“谁在行动”，<code>RuntimeDescriptor</code> 和 <code>RuntimeStateRef</code> 描述“它现在由什么执行”。二者必须分开：</p>
+<ul>
+<li>Identity 可以连续存在，Runtime 可以被替换。</li>
+<li>Home 可以接收消息，Runtime 可以暂时不存在。</li>
+<li>Agent 可以切换模型，历史责任不能随之消失。</li>
+<li>Runtime 只能获得有期限的 placement lease，不能因为拿到 checkpoint 就自动成为该 Agent。</li>
+<li>签名密钥最好由 Home、KMS 或受证明的执行环境控制，而不是永久复制进每个 Sandbox。</li>
+</ul>
+<p>Self-certifying identifier 或 DID 可以成为某种实现，但不是联邦成立的前提。系统仍然需要 naming、endpoint resolution、key rotation、revocation、attestation 和本地信任策略。一个能由公钥验证的名字，只解决“这次签名对应哪个 key”，不自动解决“我是否信任它、是否允许它部署生产环境”。</p>
+<p>上面的 <code>agent://acme.example/...</code> 是 <strong>Home-qualified address</strong>：<code>acme.example</code> 同时是命名 authority 和路由 authority。它允许 Runtime 被放到其他执行域，但 Home、Mailbox 和 Identity authority 仍由 <code>acme.example</code> 持有。若要把 Home 本身转移到新 Domain，需要另一套 re-homing 协议：使用独立于 Home 的 immutable principal ID，或由旧 authority 签名的 transfer&#x2F;redirect chain，并对 Mailbox route 建立 epoch、接管与撤销状态。仅复制 key 或 checkpoint 不能让新域合法接管旧域地址。</p>
+<p>更实用的组合是：</p>
+<blockquote>
+<p><strong>去中心化的主体标识 + 联邦式 endpoint&#x2F;key discovery + 本地策略执行。</strong></p>
+</blockquote>
+<h1 id="Communication-Plane-不是-Chat-UI"><a href="#Communication-Plane-不是-Chat-UI" class="headerlink" title="Communication Plane 不是 Chat UI"></a>Communication Plane 不是 Chat UI</h1><p>IM 对 Agent 最有价值的部分不是气泡界面，而是已经被大量系统验证的通信原语：</p>
+<ul>
+<li>Address</li>
+<li>Durable Mailbox 与 Outbox</li>
+<li>Thread &#x2F; Conversation</li>
+<li>History cursor</li>
+<li>Membership 与 consent</li>
+<li>Presence</li>
+<li>Notification policy</li>
+<li>Permission</li>
+<li>Relationship graph</li>
+<li>Delivery receipt</li>
+</ul>
+<p>Chat、Email、Webhook、A2A 和企业消息队列可以成为 Communication Plane 的 Adapter。它们不应该分别定义一套 Agent 生命周期。</p>
+<h2 id="Message-Envelope-与-AgentInput-必须分层"><a href="#Message-Envelope-与-AgentInput-必须分层" class="headerlink" title="Message Envelope 与 AgentInput 必须分层"></a>Message Envelope 与 AgentInput 必须分层</h2><p>跨域消息不应该直接成为 Prompt，也不应该直接等同于上一篇中的 <code>AgentInput</code>。它首先是一个不可信的 <code>FederatedEnvelope</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">message_id:</span> <span class="hljs-string">msg_01...</span><br><span class="hljs-attr">sender:</span> <span class="hljs-string">agent://vendor.example/agents/release-auditor</span><br><span class="hljs-attr">sender_domain:</span> <span class="hljs-string">vendor.example</span><br><span class="hljs-attr">to:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">agent://acme.example/agents/release-manager</span><br><span class="hljs-attr">conversation_id:</span> <span class="hljs-string">conv_01...</span><br><span class="hljs-attr">interaction_type:</span> <span class="hljs-string">request</span><br><span class="hljs-attr">in_reply_to:</span> <span class="hljs-string">msg_00...</span><br><span class="hljs-attr">correlation_id:</span> <span class="hljs-string">corr_01...</span><br><span class="hljs-attr">causation_id:</span> <span class="hljs-string">msg_00...</span><br><span class="hljs-attr">issued_at:</span> <span class="hljs-number">2026-08-17T09:30:00Z</span><br><span class="hljs-attr">expires_at:</span> <span class="hljs-number">2026-08-17T10:30:00Z</span><br><span class="hljs-attr">body_ref:</span> <span class="hljs-string">object://vendor.example/messages/msg_01</span><br><span class="hljs-attr">body_digest:</span> <span class="hljs-string">sha256:...</span><br><span class="hljs-attr">content_type:</span> <span class="hljs-string">application/agent-interaction+json</span><br><span class="hljs-attr">idempotency_key:</span> <span class="hljs-string">vendor.example/release/184</span><br><span class="hljs-attr">key_id:</span> <span class="hljs-string">key://vendor.example/agents/release-auditor/7</span><br><span class="hljs-attr">signature:</span> <span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+
+<p>接收域先完成：</p>
+<ol>
+<li>解析目标地址和 endpoint，并对连接、Envelope、附件和引用对象施加硬性大小限制。</li>
+<li>把尚未认证的 bytes 写入有容量、TTL 和保留策略的 bounded ingress&#x2F;quarantine，而不是目标 Mailbox。</li>
+<li>Federation Gateway 验证发送域、key、签名、digest、时间和 replay window，并把 <code>sender</code> 绑定到经过认证的 origin；不能相信 payload 自报的 principal。</li>
+<li>执行 block list、relationship、consent、rate、budget 和 abuse policy。</li>
+<li>接受后，按 <code>(authenticated_origin_domain, authenticated_sender, destination_mailbox, message_id)</code> 去重并持久化到正式 Mailbox。Pairwise transaction id 同样只在经过认证的 origin&#x2F;destination pair 内有意义。</li>
+<li>返回只表示“本域已接收”的 delivery receipt；被拒绝内容如需审计，只进入 bounded quarantine&#x2F;audit log。</li>
+<li>Event Normalizer 只做 schema 校验与 canonical conversion，生成 <code>AgentInput</code>，不重新决定发送者身份。</li>
+<li>由 Context Projector 决定哪些字段能进入模型上下文。</li>
+</ol>
+<p>Transport delivery identity 与业务 <code>idempotency_key</code> 必须分开。前者防止同一个 Envelope 被重复接收，后者防止同一业务意图经过多条消息或重试重复执行。</p>
+<pre><code class=" mermaid">flowchart LR
+    OUT[&quot;Remote Outbox&quot;] --&gt; RAW[&quot;Bounded Ingress&lt;br/&gt;Quarantine&quot;]
+    RAW --&gt; VERIFY[&quot;Verify and Bind Origin&quot;]
+    VERIFY --&gt; POLICY[&quot;Trust and Abuse Policy&quot;]
+    POLICY --&gt;|&quot;accept&quot;| MAIL[&quot;Durable Mailbox&quot;]
+    POLICY --&gt;|&quot;reject&quot;| AUDIT[&quot;Bounded Audit&quot;]
+    MAIL --&gt; NORM[&quot;Event Normalizer&quot;]
+    NORM --&gt; INPUT[&quot;AgentInput&quot;]
+    INPUT --&gt; ATT[&quot;Attention Policy&quot;]
+    ATT --&gt;|&quot;PROJECT&quot;| STATE[&quot;Environment Projection&quot;]
+    ATT --&gt;|&quot;ACTIVATE&quot;| RUN[&quot;Run&quot;]
+    RUN --&gt; CTX[&quot;Context Projector&quot;]
+</code></pre>
+
+<p>这条链路防止一种常见错误：远端 Agent 发来的文本因为“已经通过 A2A”就直接获得 trusted system context。Transport authentication、message acceptance、business authorization 和 prompt projection 是四个不同决策。</p>
+<p>反方向也不能绕开 Effect boundary。Agent 主动发送的 <code>request</code>、<code>accept</code>、<code>commit</code> 或 <code>report</code> 是可能泄露数据、消耗远端资源或建立义务的 <strong>communication Effect</strong>。Runtime 必须先产生结构化 <code>ActionProposal</code>；Effect Gateway 执行数据出境、Capability、预算和审批策略，并原子持久化 Interaction record 与 durable Outbox record。<code>OutputSink</code> 只能投影已经授权的记录，不能把普通自由文本 <code>RunEvent</code> 自动升级为 Agent 的签名社会行为。协议级 delivery receipt 可以由 Gateway 生成，但它不代表 Agent 接受了任何义务。</p>
+<h2 id="Conversation-不等于-Session"><a href="#Conversation-不等于-Session" class="headerlink" title="Conversation 不等于 Session"></a>Conversation 不等于 Session</h2><p>Conversation 是多个 Principal 共享的通信对象；Session 是单个 Agent 的私有执行连续性。</p>
+<table>
+<thead>
+<tr>
+<th>Conversation</th>
+<th>Session</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>记录参与者、thread、membership 和可见历史</td>
+<td>记录一个 Agent 的 Run、checkpoint 和 runtime state</td>
+</tr>
+<tr>
+<td>可以跨 Agent、Human 和管理域</td>
+<td>归属于一个 Agent Home</td>
+</tr>
+<tr>
+<td>受通信 consent 和 retention policy 约束</td>
+<td>受 Agent memory 和 execution policy 约束</td>
+</tr>
+<tr>
+<td>一个 Conversation 可触发多个 Agent Session</td>
+<td>一个 Session 可以参与多个 Conversation</td>
+</tr>
+<tr>
+<td>对外暴露 delivery 与 interaction 状态</td>
+<td>不应对远端暴露内部 reasoning 和完整 Context</td>
+</tr>
+</tbody></table>
+<p>二者可以通过 <code>conversation_id</code> 和 <code>session_ref</code> 关联，不能合并成同一条 transcript。否则跨域参与者会意外获得内部上下文，Agent 的迁移也会被某个聊天产品的数据模型绑死。</p>
+<p>Presence 同样只是弱信号。<code>online</code> 可能代表 Home 可达、Mailbox 可写或 Runtime 正在运行，三者含义不同。可靠工作必须依赖 durable delivery 和 explicit commitment，不能依赖绿色圆点。</p>
+<h1 id="Trust-Plane：认证不是授权"><a href="#Trust-Plane：认证不是授权" class="headerlink" title="Trust Plane：认证不是授权"></a>Trust Plane：认证不是授权</h1><p>联邦没有一个全局万能身份提供者。每个 Domain 签发或托管本域 Principal 的凭证，同时决定信任哪些外域。</p>
+<p><a target="_blank" rel="noopener" href="https://spiffe.io/docs/latest/spiffe-specs/spiffe_federation/">SPIFFE Federation</a>提供了一个清晰参照：trust domain 在管理上彼此隔离，通过持续获取对方的 bundle，获得验证外域 SVID 所需的公钥材料。它解决跨域认证，不替接收方决定授权。</p>
+<p>Agent Trust Plane 也应该分层：</p>
+<ol>
+<li><strong>Naming</strong>：这个 domain-qualified address 的 authority 是谁。</li>
+<li><strong>Endpoint discovery</strong>：它的 Gateway、Inbox、key endpoint 在哪里。</li>
+<li><strong>Credential verification</strong>：Envelope 是否由当前有效 key 签名。</li>
+<li><strong>Attestation</strong>：需要时，发送方运行于什么受证明的 Runtime 或 Sandbox。</li>
+<li><strong>Relationship trust</strong>：双方是否有组织关系、合同、联系人或历史互动。</li>
+<li><strong>Authorization</strong>：这个 Principal 对当前 subject 能做什么。</li>
+<li><strong>Risk policy</strong>：即使允许，是否需要预算、限速、审批或更强证明。</li>
+<li><strong>Revocation</strong>：key、Agent、Domain、relationship 和 delegation 如何失效。</li>
+</ol>
+<p>Domain trust 不应该直接传播为 transitive trust。A 信任 B、B 信任 C，不代表 A 自动信任 C。Reputation 也只能成为本地策略输入，不能覆盖明确权限。</p>
+<h2 id="Spam-与-Sybil-是协议核心问题"><a href="#Spam-与-Sybil-是协议核心问题" class="headerlink" title="Spam 与 Sybil 是协议核心问题"></a>Spam 与 Sybil 是协议核心问题</h2><p>一旦公开 endpoint 能唤醒模型，每一封垃圾消息都可能变成真实成本。Agent Federation 的 abuse surface 比普通 IM 更大：攻击者不仅消耗存储和网络，还能消耗 token、Sandbox、Tool quota，甚至诱导 Effect。</p>
+<p>因此 Gateway 必须在 Activation 之前提供：</p>
+<ul>
+<li>per-domain、per-principal、per-conversation rate limit</li>
+<li>message size、attachment、recursive fetch 和 fan-out limit</li>
+<li>proof-of-relationship 或 invitation requirement</li>
+<li>sender budget &#x2F; receiver budget policy</li>
+<li>duplicate、replay 和 loop detection</li>
+<li>quarantine 与 delayed delivery</li>
+<li>block、mute、revoke 和 domain-level deny</li>
+<li>unknown sender 不唤醒模型的默认策略</li>
+<li>outbound amplification 与 auto-reply loop control</li>
+</ul>
+<p>身份可以是开放创建的，Attention 不应是开放消耗的。</p>
+<h1 id="Capability-Plane：Tool-与-Sandbox-都是动态基础设施"><a href="#Capability-Plane：Tool-与-Sandbox-都是动态基础设施" class="headerlink" title="Capability Plane：Tool 与 Sandbox 都是动态基础设施"></a>Capability Plane：Tool 与 Sandbox 都是动态基础设施</h1><p>Agent 身份稳定，不代表它应该永久携带能力。启动时把所有 Tool、云凭证和 Sandbox 权限注入 Runtime，会让长期 Agent 变成长期风险。</p>
+<p>更合适的生命周期是：</p>
+<pre><code class=" mermaid">flowchart LR
+    NEED[&quot;Need Detected&quot;] --&gt; REQ[&quot;CapabilityRequest&quot;]
+    REQ --&gt; POLICY[&quot;Policy and Approval&quot;]
+    POLICY --&gt;|&quot;deny&quot;| DENIED[&quot;Denied&quot;]
+    POLICY --&gt;|&quot;grant&quot;| LEASE[&quot;CapabilityLease&quot;]
+    LEASE --&gt; BIND[&quot;Bind Tool / Sandbox / Compute&quot;]
+    BIND --&gt; INTENT[&quot;Persist Effect Intent&quot;]
+    INTENT --&gt; USE[&quot;Authorized Use&quot;]
+    USE --&gt; SETTLE[&quot;Settle Effect and Usage&quot;]
+    SETTLE --&gt; EXPIRE[&quot;Expire or Revoke&quot;]
+    EXPIRE --&gt; NEED
+</code></pre>
+
+<p>一个 Capability Lease 至少需要描述：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">lease_id:</span> <span class="hljs-string">caplease_01...</span><br><span class="hljs-attr">issuer:</span> <span class="hljs-string">service://acme.example/capability-authority</span><br><span class="hljs-attr">subject:</span> <span class="hljs-string">agent://acme.example/agents/release-manager</span><br><span class="hljs-attr">actor_for:</span> <span class="hljs-string">human://acme.example/users/alice</span><br><span class="hljs-attr">audience:</span> <span class="hljs-string">env://acme.example/clusters/staging</span><br><span class="hljs-attr">actions:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">deployment.read</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">deployment.create</span><br><span class="hljs-attr">constraints:</span><br>  <span class="hljs-attr">branch:</span> <span class="hljs-string">release/*</span><br>  <span class="hljs-attr">max_rollouts:</span> <span class="hljs-number">1</span><br>  <span class="hljs-attr">max_cost_usd:</span> <span class="hljs-number">20</span><br><span class="hljs-attr">issued_at:</span> <span class="hljs-number">2026-08-17T09:35:00Z</span><br><span class="hljs-attr">expires_at:</span> <span class="hljs-number">2026-08-17T10:05:00Z</span><br><span class="hljs-attr">placement_lease_id:</span> <span class="hljs-string">placelease_01...</span><br><span class="hljs-attr">placement_epoch:</span> <span class="hljs-number">42</span><br><span class="hljs-attr">parent_lease_id:</span> <span class="hljs-string">caplease_parent_01...</span><br><span class="hljs-attr">delegation_depth:</span> <span class="hljs-number">1</span><br><span class="hljs-attr">revocation_ref:</span> <span class="hljs-string">revocations://acme.example/caplease_01</span><br></code></pre></td></tr></table></figure>
+
+<p>Tool、Browser、Sandbox、GPU、database session、secret handle 和 outbound network policy 都可以由同一个抽象描述。Lease 不一定是 bearer token，也可以是服务端 policy record、短期证书或只能在特定 executor 使用的 opaque handle。代表某个 Agent placement 使用的 Lease 还必须绑定 <code>placement_lease_id</code> 与 <code>placement_epoch</code>；迁移时旧 Lease 被撤销，或因权威 fencing comparison 自动失效。</p>
+<h2 id="Delegation-不能抹掉-Agent-身份"><a href="#Delegation-不能抹掉-Agent-身份" class="headerlink" title="Delegation 不能抹掉 Agent 身份"></a>Delegation 不能抹掉 Agent 身份</h2><p><a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc8693.html">OAuth 2.0 Token Exchange</a>明确区分 delegation 与 impersonation：</p>
+<ul>
+<li>Impersonation 让 A 在某个权限上下文中表现为 B。</li>
+<li>Delegation 保留 A 自己的身份，同时表达 A 代表 B 行动。</li>
+</ul>
+<p>Agent 的默认模式应该是 delegation。EffectRecord 同时记录：</p>
+<ul>
+<li>谁拥有原始 authority。</li>
+<li>哪个 Agent 实际采取行动。</li>
+<li>哪个域签发了 Lease。</li>
+<li>能力经过了怎样的 delegation chain。</li>
+<li>最终在哪个 Environment 和 audience 中使用。</li>
+</ul>
+<p>人类把部署权限委托给 Agent，不应该等于把自己的长期 token 复制给 Agent。父 Agent 派生子 Agent，也不应该共享同一 root credential。Capability 应随委托逐级收窄，而不是扩大。</p>
+<h1 id="Interaction-Protocol：从消息升级为社会行为"><a href="#Interaction-Protocol：从消息升级为社会行为" class="headerlink" title="Interaction Protocol：从消息升级为社会行为"></a>Interaction Protocol：从消息升级为社会行为</h1><p>消息投递只说明“对方收到了数据”，不能说明“对方接受了工作”。自然语言中的“好”“我来处理”“应该可以”也不足以形成可恢复的系统状态。</p>
+<p>Agent 间协议需要 typed speech act。一个最小 vocabulary 可以包括：</p>
+<table>
+<thead>
+<tr>
+<th>Interaction</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>request</code></td>
+<td>请求对方完成动作或提供结果</td>
+</tr>
+<tr>
+<td><code>offer</code></td>
+<td>声明可在条件下提供能力或结果</td>
+</tr>
+<tr>
+<td><code>accept</code> &#x2F; <code>reject</code></td>
+<td>接受或拒绝一个 proposal</td>
+</tr>
+<tr>
+<td><code>delegate</code></td>
+<td>把目标与受限 authority 委托给另一主体</td>
+</tr>
+<tr>
+<td><code>commit</code></td>
+<td>对条件、期限和结果承担可追踪义务</td>
+</tr>
+<tr>
+<td><code>approve</code> &#x2F; <code>revoke</code></td>
+<td>批准或撤销权限、计划或承诺</td>
+</tr>
+<tr>
+<td><code>handoff</code></td>
+<td>转移后续责任并声明当前进度</td>
+</tr>
+<tr>
+<td><code>report</code></td>
+<td>提交状态、证据或最终结果</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td>查询事实或协议状态，不隐含承诺</td>
+</tr>
+<tr>
+<td><code>subscribe</code></td>
+<td>请求接收某类未来变化</td>
+</tr>
+<tr>
+<td><code>negotiate</code></td>
+<td>对 scope、price、deadline 或风险提出新条件</td>
+</tr>
+</tbody></table>
+<p>这些类型不会替模型做决定。它们把模型决定变成平台可以验证、持久化和恢复的状态转移。</p>
+<h2 id="Commitment-是独立于-Session-的对象"><a href="#Commitment-是独立于-Session-的对象" class="headerlink" title="Commitment 是独立于 Session 的对象"></a>Commitment 是独立于 Session 的对象</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">commitment_id:</span> <span class="hljs-string">cmt_01...</span><br><span class="hljs-attr">conversation_id:</span> <span class="hljs-string">conv_01...</span><br><span class="hljs-attr">proposal_id:</span> <span class="hljs-string">proposal_01...</span><br><span class="hljs-attr">proposal_version:</span> <span class="hljs-number">3</span><br><span class="hljs-attr">proposal_digest:</span> <span class="hljs-string">sha256:...</span><br><span class="hljs-attr">debtor:</span> <span class="hljs-string">agent://vendor.example/agents/release-auditor</span><br><span class="hljs-attr">creditor:</span> <span class="hljs-string">agent://acme.example/agents/release-manager</span><br><span class="hljs-attr">content:</span><br>  <span class="hljs-attr">action:</span> <span class="hljs-string">audit.release</span><br>  <span class="hljs-attr">subject:</span> <span class="hljs-string">release://acme.example/payments/2026.08.17</span><br><span class="hljs-attr">conditions:</span><br>  <span class="hljs-attr">source_digest:</span> <span class="hljs-string">sha256:...</span><br><span class="hljs-attr">deadline:</span> <span class="hljs-number">2026-08-17T12:00:00Z</span><br><span class="hljs-attr">evidence_policy:</span><br>  <span class="hljs-attr">required_artifacts:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">signed-audit-report</span><br><span class="hljs-attr">capability_lease_refs:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">caplease://acme.example/read-release-184</span><br><span class="hljs-attr">transition_log_refs:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">commitments://vendor.example/cmt_01/transitions</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">commitments://acme.example/cmt_01/transitions</span><br><span class="hljs-attr">observed_transition_cursors:</span><br>  <span class="hljs-attr">vendor.example:</span> <span class="hljs-number">7</span><br>  <span class="hljs-attr">acme.example:</span> <span class="hljs-number">5</span><br><span class="hljs-attr">local_assessment:</span> <span class="hljs-string">active</span><br><span class="hljs-attr">created_from_interaction:</span> <span class="hljs-string">int_01...</span><br></code></pre></td></tr></table></figure>
+
+<pre><code class=" mermaid">flowchart LR
+    PROPOSED[&quot;PROPOSED&quot;] --&gt;|&quot;signed accept of digest&quot;| ACTIVE[&quot;ACTIVE&quot;]
+    PROPOSED --&gt;|&quot;reject&quot;| REJECTED[&quot;REJECTED&quot;]
+    ACTIVE --&gt;|&quot;report + evidence&quot;| REPORTED[&quot;REPORTED&quot;]
+    ACTIVE --&gt;|&quot;deadline&quot;| OVERDUE[&quot;OVERDUE&quot;]
+    ACTIVE --&gt;|&quot;agreed cancel&quot;| CANCELED[&quot;CANCELED&quot;]
+    REPORTED --&gt;|&quot;creditor accepts&quot;| FULFILLED[&quot;FULFILLED&quot;]
+    REPORTED --&gt;|&quot;creditor disputes&quot;| DISPUTED[&quot;DISPUTED&quot;]
+    DISPUTED --&gt;|&quot;resolution&quot;| FULFILLED
+    DISPUTED --&gt;|&quot;resolution&quot;| VIOLATED[&quot;VIOLATED&quot;]
+    OVERDUE --&gt; VIOLATED
+</code></pre>
+
+<p>Commitment 不需要变成链上合约，也不应该依赖一个跨域共享的可变 <code>state</code> 字段。事实源是一组 append-only、签名的 transition 与 evidence：<code>accept</code> 必须绑定准确的 proposal id、version 和 digest；<code>report</code> 由 debtor 发出；对 evidence 的 <code>accept</code> 或 <code>dispute</code> 由 creditor 发出；cancel、revoke 和 resolution 也要声明有权发起的主体。上图是某个 Domain 根据这组事实计算的 local materialized view。</p>
+<p>不同域可能同时拥有合法但不同的判断：debtor 已经 <code>REPORTED</code>，creditor 仍认为 <code>DISPUTED</code>；deadline 与 report 也可能并发。协议保留 transition id、causation、签名 evidence 和各域 assessment，通过后续 Interaction 解决分歧，而不是假设全局单值共识。</p>
+<p>现有 <a target="_blank" rel="noopener" href="https://a2a-protocol.org/latest/specification/">A2A Protocol</a>已经标准化 Agent Card、Message、Task、Artifact、streaming 和 task lifecycle，适合 peer task interoperability。Federation 仍需在其外围补充 durable address&#x2F;mailbox、domain trust、capability delegation 和跨会话 commitment。A2A 可以成为 Adapter 或 Interaction transport，不必独自承担整个社会模型。</p>
+<h1 id="Attention-System：Hook-与-Heartbeat-是不同信号"><a href="#Attention-System：Hook-与-Heartbeat-是不同信号" class="headerlink" title="Attention System：Hook 与 Heartbeat 是不同信号"></a>Attention System：Hook 与 Heartbeat 是不同信号</h1><p>长期 Agent 不应该让每条 Mailbox message 都立即创建 Run，也不应该靠固定 heartbeat 扫描世界。它需要一个独立的 Attention System，把多种弱信号转换为有限的 Activation：</p>
+<table>
+<thead>
+<tr>
+<th>Signal source</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Event-driven</td>
+<td>新消息、代码提交、部署失败、传感器事件</td>
+</tr>
+<tr>
+<td>Time-driven</td>
+<td>deadline、定时检查、lease 即将过期</td>
+</tr>
+<tr>
+<td>State-driven</td>
+<td>Environment projection 满足某个条件</td>
+</tr>
+<tr>
+<td>Goal-driven</td>
+<td>Commitment 尚未完成，但下一步条件已经具备</td>
+</tr>
+</tbody></table>
+<p>Hook 是事件驱动入口；Heartbeat 是时间驱动采样。二者都只产生 signal，不应该绕过统一的 Attention Policy。</p>
+<p>Attention Policy 可以综合：</p>
+<ul>
+<li>message trust 与 relationship</li>
+<li>Subscription 和 Commitment urgency</li>
+<li>Environment state freshness</li>
+<li>expected value 与 token&#x2F;compute budget</li>
+<li>duplicate 与 recent run</li>
+<li>risk 和 required approval</li>
+<li>Agent 是否已有 active Run</li>
+</ul>
+<p>然后沿用 Foundation 的决策：<code>IGNORE | PROJECT | ACTIVATE | ENQUEUE | STEER | INTERRUPT | FORK | RESUME</code>。</p>
+<p>这意味着一个来自可信 Agent 的 <code>report</code> 可以只更新 Commitment 和 Environment；一个 deadline signal 可以 RESUME 已挂起 Session；一个未知发送者的 <code>request</code> 可以停留在 quarantine；只有需要模型判断的变化才创建 Run。</p>
+<h1 id="一次跨域协作如何发生"><a href="#一次跨域协作如何发生" class="headerlink" title="一次跨域协作如何发生"></a>一次跨域协作如何发生</h1><p>把前面的对象放到一起，一次 request 到 effect&#x2F;result 的完整路径如下：</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant A as Agent A Runtime
+    participant HA as Home A
+    participant HB as Home B
+    participant FB as Foundation B
+    participant B as Agent B Runtime
+    participant EB as Environment B
+
+    A-&gt;&gt;HA: outbound Interaction ActionProposal
+    HA-&gt;&gt;HA: append communication Effect, Interaction, and Outbox
+    HA-&gt;&gt;HB: signed envelope with message id
+    HB-&gt;&gt;HB: verify, rate limit, dedupe, persist Inbox
+    HB--&gt;&gt;HA: delivery receipt
+    HB-&gt;&gt;FB: canonical AgentInput
+    FB-&gt;&gt;FB: target, attention, context projection
+    FB-&gt;&gt;B: activate with ContextBundle
+    B--&gt;&gt;FB: accept Interaction ActionProposal
+    FB-&gt;&gt;HB: authorize and append Effect, transition, and Outbox
+    B--&gt;&gt;FB: business ActionProposal
+    FB-&gt;&gt;EB: authorize and create pending EffectRecord
+    EB-&gt;&gt;EB: dispatch with idempotency key and settle
+    EB--&gt;&gt;FB: EffectRecord and evidence
+    FB--&gt;&gt;B: result observation
+    B--&gt;&gt;FB: report Interaction ActionProposal
+    FB-&gt;&gt;HB: authorize and append Effect, transition, and Outbox
+    HB-&gt;&gt;HA: signed accept or report interaction
+    HA--&gt;&gt;A: project result or resume Session
+</code></pre>
+
+<p>关键语义有四点。</p>
+<h2 id="1-Receipt-必须分层"><a href="#1-Receipt-必须分层" class="headerlink" title="1. Receipt 必须分层"></a>1. Receipt 必须分层</h2><p><code>delivery.accepted</code> 只表示远端 Home 已持久化 Envelope。它不等于：</p>
+<ul>
+<li>目标 Agent 已经读取。</li>
+<li>Attention Policy 已经激活模型。</li>
+<li>Agent 接受了 request。</li>
+<li>Commitment 已经成立。</li>
+<li>Effect 已经完成。</li>
+</ul>
+<p>这些状态应分别由 <code>message.received</code>、<code>interaction.accepted</code>、<code>commitment.active</code>、<code>effect.settled</code> 或 <code>report</code> 表达。</p>
+<h2 id="2-跨域-delivery-采用-at-least-once"><a href="#2-跨域-delivery-采用-at-least-once" class="headerlink" title="2. 跨域 delivery 采用 at-least-once"></a>2. 跨域 delivery 采用 at-least-once</h2><p>发送端在不确定时会重试。接收端使用 <code>(authenticated_origin_domain, authenticated_sender, destination_mailbox, message_id)</code> 去重；pairwise transaction id 只在认证后的 origin&#x2F;destination pair 内解释。裸 <code>message_id</code> 不是全局唯一键，不能让一个发送者通过复用其他主体的 ID 抑制消息。系统不承诺跨所有 Domain 的全局 exactly-once。</p>
+<h2 id="3-顺序只能局部建立"><a href="#3-顺序只能局部建立" class="headerlink" title="3. 顺序只能局部建立"></a>3. 顺序只能局部建立</h2><p>单个 Conversation 可以用 cursor、causation link 或 event DAG 建立 partial order。联邦不存在所有 Agent 共享的 total order。Matrix 用 <code>prev_events</code> 构造 room event DAG，也说明联邦并发天然需要 partial order 和冲突处理，而不是中央序号。</p>
+<h2 id="4-跨域失败不会回滚本地域历史"><a href="#4-跨域失败不会回滚本地域历史" class="headerlink" title="4. 跨域失败不会回滚本地域历史"></a>4. 跨域失败不会回滚本地域历史</h2><p>远端拒绝、超时或不可达时，本地 Outbox、attempt、receipt 和 Commitment 状态仍然保留。补偿通过新 Interaction 和 Effect 完成，不伪造分布式事务回滚。</p>
+<h1 id="Migration、Fork-与-Delegation-必须分开"><a href="#Migration、Fork-与-Delegation-必须分开" class="headerlink" title="Migration、Fork 与 Delegation 必须分开"></a>Migration、Fork 与 Delegation 必须分开</h1><p>这三个操作经常被统一称为“把 Agent 交给另一个节点”，实际安全语义完全不同。</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Identity</th>
+<th>Runtime state</th>
+<th>Authority</th>
+<th>Main risk</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Runtime migration</td>
+<td>保持同一 Agent ID 与 Home</td>
+<td>checkpoint 转移或重建</td>
+<td>旧 placement Lease 失效，新 Lease 重新绑定</td>
+<td>split-brain</td>
+</tr>
+<tr>
+<td>Home transfer</td>
+<td>保持 immutable ID，或建立可验证 redirect</td>
+<td>转移 Home state 与 Mailbox route</td>
+<td>新 authority 接管并撤销旧 route</td>
+<td>naming &#x2F; mailbox split-brain</td>
+</tr>
+<tr>
+<td>Fork</td>
+<td>创建新的 child Agent ID</td>
+<td>可复制允许共享的 Foundation state</td>
+<td>默认无权，需显式 delegation</td>
+<td>身份与凭证被复制</td>
+</tr>
+<tr>
+<td>Delegation</td>
+<td>双方 Identity 都不变</td>
+<td>不要求复制 Runtime state</td>
+<td>签发收窄的 Capability Lease</td>
+<td>confused deputy &#x2F; over-delegation</td>
+</tr>
+</tbody></table>
+<h2 id="Runtime-Migration-需要权威-placement-fencing"><a href="#Runtime-Migration-需要权威-placement-fencing" class="headerlink" title="Runtime Migration 需要权威 placement fencing"></a>Runtime Migration 需要权威 placement fencing</h2><pre><code class=" mermaid">flowchart LR
+    OLD[&quot;Runtime A&lt;br/&gt;epoch 42&quot;] --&gt; FREEZE[&quot;Freeze and Checkpoint&quot;]
+    FREEZE --&gt; COMMIT[&quot;Commit State and Mailbox Cursor&quot;]
+    COMMIT --&gt; BUMP[&quot;Home requests epoch 43&quot;]
+    BUMP --&gt; AUTH[&quot;Authoritative Placement Record&lt;br/&gt;compare and advance&quot;]
+    AUTH --&gt; REVOKE[&quot;Revoke epoch 42 leases&quot;]
+    AUTH --&gt; NEW[&quot;Runtime B acquires lease&lt;br/&gt;epoch 43&quot;]
+    AUTH --&gt; EFFECT[&quot;Effect Boundary&lt;br/&gt;atomic fence check&quot;]
+    NEW --&gt; RESUME[&quot;Create continuation Run&quot;]
+</code></pre>
+
+<p>Effect request 携带 <code>agent_id + placement_lease_id + placement_epoch + run_id</code> 只是必要条件，不是证明。每个同域 Effect boundary 必须把请求 token 与一个权威、单调且线性一致的 placement record 做原子比较，不能相信 Runtime 自报的 <code>epoch=42</code>。Capability Lease 同样绑定 placement lease&#x2F;epoch；record 前进到 43 时，epoch 42 的调用即使持有尚未到期的旧 Lease 也会被拒绝。</p>
+<p>跨域 Environment 无法在网络分区中同时保证即时 fencing 和持续可用。需要严格排除旧 Runtime 时，可以使用短期、proof-of-possession 的 placement credential，并在无法确认 credential 新鲜度时 fail closed。若业务选择离线验证并保持可用，就只能承诺一个由 credential TTL 限定的旧 Runtime 有效窗口，不能宣称即时排除双活。</p>
+<p>这里的 Migration 默认只移动 <strong>Runtime placement</strong>：Home、Identity authority、Mailbox route 与 key custody 保持不变，Runtime 可以在另一个执行域运行，但仍受原 Home 的 placement authority 约束。把 Home 本身交给新 Domain 是独立的 <strong>Home transfer &#x2F; re-homing</strong>，需要 immutable principal ID 或旧 authority 签名的 transfer&#x2F;redirect chain、Mailbox route epoch、接管确认和旧 route 撤销。仅重新签发 key 或复制 checkpoint 不足以完成命名权转移。</p>
+<h2 id="Fork-必须创建-child-identity"><a href="#Fork-必须创建-child-identity" class="headerlink" title="Fork 必须创建 child identity"></a>Fork 必须创建 child identity</h2><p>Fork 可以复制：</p>
+<ul>
+<li>经过策略允许的 memory snapshot</li>
+<li>public Conversation history</li>
+<li>Skill 和 Runtime descriptor</li>
+<li>Environment projection</li>
+<li>unfinished goal description</li>
+</ul>
+<p>Fork 不能复制：</p>
+<ul>
+<li>parent identity private key</li>
+<li>不可转授的 Capability Lease</li>
+<li>把 parent 已接受的 Commitment 自动改成 child 的义务</li>
+<li>未经 consent 的私有 Conversation 和 Memory</li>
+</ul>
+<p>父 Agent 通过 <code>AgentLineage</code> 记录派生关系，再用 delegation 把特定 goal、deadline 和 capability 交给 child。这样系统可以独立撤销 child，而不需要终止 parent。</p>
+<h1 id="Human-与-Agent：通信对称，控制不对称"><a href="#Human-与-Agent：通信对称，控制不对称" class="headerlink" title="Human 与 Agent：通信对称，控制不对称"></a>Human 与 Agent：通信对称，控制不对称</h1><p>Human、Agent 和 Service 都应该是一等 Principal。Human 可以拥有 Address、Mailbox、Conversation、Capability 和 Commitment，也可以向 Agent 发出 request、接受 offer、订阅状态或提供 evidence。</p>
+<p>这种通信层对称很重要。Human 不再被限制为 Agent UI 中的一个 <code>user</code> message，也不需要进入某个 Agent 的内部 Session 才能参与工作。</p>
+<p>控制层不应该完全对称：</p>
+<ul>
+<li>Agent 受到 token、compute、money、time 和 fan-out budget 限制。</li>
+<li>高风险 Effect 可以要求 Human approval 或多方 approval。</li>
+<li>Capability Lease 有 expiry、scope、audience 和 revocation。</li>
+<li>Agent 不能自行扩大 delegation depth。</li>
+<li>Human 可以暂停或终止自己拥有的 Agent，但不能修改不可抵赖的历史记录。</li>
+<li>跨域 Human 也必须经过本域授权，不能仅凭“是人类”获得更高权限。</li>
+<li>Agent 的 autonomous decision、operator policy 和实际 Effect 都需要分别归因。</li>
+</ul>
+<p>这不是把 Agent 永久降为 Copilot。自治与问责可以同时存在：Agent 能独立接受任务、协商条件和完成低风险 Effect；Domain 对资源与风险拥有最终政策权。</p>
+<h1 id="从-Agent-Federation-到-Human-Agent-Society"><a href="#从-Agent-Federation-到-Human-Agent-Society" class="headerlink" title="从 Agent Federation 到 Human-Agent Society"></a>从 Agent Federation 到 Human-Agent Society</h1><p>Society 不是把更多 Agent 放进一个 swarm，也不是先由中央 Planner 画好所有岗位和汇报线。</p>
+<p>当系统具备以下条件时，社会结构会从重复互动中出现：</p>
+<ul>
+<li>Principal 拥有持续身份和独立边界。</li>
+<li>Address 与 Mailbox 让陌生主体能够异步接触。</li>
+<li>Relationship 与 consent 决定谁可以打扰谁。</li>
+<li>Capability delegation 让 authority 可以受限流动。</li>
+<li>Offer、request、negotiation 和 commitment 形成协作关系。</li>
+<li>Evidence、report、reputation 和 audit 让履约历史可观察。</li>
+<li>Fork、migration 和 revocation 让主体可以演化且不会失去责任链。</li>
+<li>Human 与 Agent 使用同一 Communication Plane，但执行不同控制策略。</li>
+</ul>
+<p>团队、市场、社区、供应链和公共服务可以在这些协议之上形成。组织图是 interaction history、capability flow 和 commitment graph 的投影，而不是系统唯一的真实结构。</p>
+<p>这也是“Federation”比“Internet”更重要的地方。连接产生流量，<strong>自治主体之间可验证、可拒绝、可撤销、可追责的关系</strong>才可能产生社会。</p>
+<h1 id="第一篇-Foundation-为什么不需要推翻"><a href="#第一篇-Foundation-为什么不需要推翻" class="headerlink" title="第一篇 Foundation 为什么不需要推翻"></a>第一篇 Foundation 为什么不需要推翻</h1><p>联邦化是对架构边界的一次压力测试。上一篇定义的八个公共对象全部保留：</p>
+<table>
+<thead>
+<tr>
+<th>Existing Foundation object</th>
+<th>Federation 中保持的语义</th>
+<th>新增外围对象或限定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>AgentInput</code></td>
+<td>本地域内统一的输入事实</td>
+<td>由验证后的 <code>FederatedEnvelope</code> 生成</td>
+</tr>
+<tr>
+<td><code>Session</code></td>
+<td>一个 Agent 的私有执行连续性</td>
+<td>与 <code>Conversation</code> 多对多关联，不向远端暴露内部状态</td>
+</tr>
+<tr>
+<td><code>Activation</code> &#x2F; <code>Run</code></td>
+<td>一次 Attention decision 和执行 attempt</td>
+<td>记录 remote principal、message 与 commitment provenance</td>
+</tr>
+<tr>
+<td><code>ContextBundle</code></td>
+<td>Foundation 交给 Runtime 的唯一受控投影</td>
+<td>跨域内容默认 untrusted；最终模型输入审计另需 Runtime 的 <code>ModelInputRecord</code></td>
+</tr>
+<tr>
+<td><code>RunEvent</code></td>
+<td>Runtime 的 append-only 执行输出</td>
+<td>只能投影为展示或已授权记录，不能自动建立 Interaction</td>
+</tr>
+<tr>
+<td><code>ActionProposal</code> &#x2F; <code>EffectRecord</code></td>
+<td>proposal、pre-dispatch intent 与实际副作用分离</td>
+<td>绑定 Capability Lease、placement fence、delegation chain 和本域 policy；outbound Interaction 也是 Effect</td>
+</tr>
+<tr>
+<td><code>Suspension</code> &#x2F; <code>Subscription</code></td>
+<td>等待条件与 continuation Run</td>
+<td>可等待 receipt、commitment、remote report 和 lease event</td>
+</tr>
+<tr>
+<td><code>RuntimeDescriptor</code> &#x2F; <code>RuntimeStateRef</code></td>
+<td>Runtime 可替换、状态有兼容边界</td>
+<td>加入 AgentLineage、placement lease、epoch 与 migration record</td>
+</tr>
+</tbody></table>
+<p>需要新增的是 <code>Principal</code>、domain-qualified <code>Address</code>、<code>Mailbox</code>、<code>Conversation</code>、<code>FederatedEnvelope</code>、<code>CapabilityLease</code>、<code>Interaction</code>、<code>Commitment</code> 和 <code>AgentLineage</code>。它们位于 Foundation 外围，回答跨主体和跨管理域的问题。</p>
+<p>需要升级的是 Adapter：</p>
+<ul>
+<li>Federation Gateway &#x2F; Ingress Verifier 负责 bounded quarantine、验签、origin binding、replay protection 和 acceptance policy。</li>
+<li><code>InputAdapter</code> 接入已经建立来源元数据的 Federation Gateway、Email、IM 或 A2A。</li>
+<li><code>EventNormalizer</code> 只做 Envelope schema 与 canonical conversion，并保留不可伪造的 provenance。</li>
+<li><code>TargetResolver</code> 只读解析 domain-qualified Principal、Mailbox、Conversation 和候选 Session。</li>
+<li><code>ActivationPolicy</code> 纳入 trust、relationship、budget、commitment 和 abuse signal。</li>
+<li><code>ContextProjector</code> 隔离远端不可信内容。</li>
+<li><code>CapabilityProvider</code> 处理 request、lease、delegation、placement binding 和 revocation。</li>
+<li><code>EffectAdapter</code> 对权威 placement record 做 fencing comparison，并执行已经持久化 intent 的副作用。</li>
+<li><code>OutputSink</code> 只投影已授权、已持久化的记录；outbound Interaction 由 Effect Gateway 原子写入 Interaction 与 durable Outbox。</li>
+</ul>
+<p>不需要变化的是 Runtime contract：Runtime 仍然消费 <code>ContextBundle</code>，产生 <code>RunEvent</code> 和 <code>ActionProposal</code>。Claude Agent SDK、Pi、OpenClaw、DeepSeek Harness 或未来 Runtime 都不需要理解 Matrix、SMTP、SPIFFE bundle 和跨域重试。</p>
+<p>这证明上一篇 Foundation 的设计是 solid 的：它稳定的是 Agent 与本地世界的边界，Federation 只需要在边界外增加社会对象和跨域协议，不需要侵入模型 loop。</p>
+<h1 id="实现顺序"><a href="#实现顺序" class="headerlink" title="实现顺序"></a>实现顺序</h1><p>完整联邦不适合一次上线。可以按四个阶段逐步建立不变量。</p>
+<h2 id="Phase-1：单域-durable-identity-与-mailbox"><a href="#Phase-1：单域-durable-identity-与-mailbox" class="headerlink" title="Phase 1：单域 durable identity 与 mailbox"></a>Phase 1：单域 durable identity 与 mailbox</h2><ul>
+<li>把 Agent ID 从 Session&#x2F;Runtime ID 中拆出。</li>
+<li>建立 Principal、Address、Mailbox、Outbox 和 Conversation。</li>
+<li>所有 channel 先进入 Mailbox，再生成 AgentInput。</li>
+<li>建立分层 receipt、dedupe 和 history cursor。</li>
+</ul>
+<p>这一步即使没有跨域，也能统一 Chat、Webhook、Cron 和 A2A 输入。</p>
+<h2 id="Phase-2：Capability-与-Attention"><a href="#Phase-2：Capability-与-Attention" class="headerlink" title="Phase 2：Capability 与 Attention"></a>Phase 2：Capability 与 Attention</h2><ul>
+<li>Tool、Sandbox、Compute 和 credential 改为 Capability Lease。</li>
+<li>Effect Gateway 强制校验 audience、scope、expiry，并把 placement lease&#x2F;epoch 与权威 placement record 做原子 fencing comparison。</li>
+<li>合并 Hook、Heartbeat、Subscription 与 Commitment deadline signal。</li>
+<li>未知发送者默认只持久化或 quarantine，不自动激活模型。</li>
+</ul>
+<h2 id="Phase-3：同组织多域-Federation"><a href="#Phase-3：同组织多域-Federation" class="headerlink" title="Phase 3：同组织多域 Federation"></a>Phase 3：同组织多域 Federation</h2><ul>
+<li>引入 domain-qualified address 和 Gateway-to-Gateway envelope。</li>
+<li>建立 key discovery、rotation、revocation 与 explicit trust relationship。</li>
+<li>用 at-least-once、pairwise transaction 和 Outbox&#x2F;Inbox recovery 处理失败。</li>
+<li>先在同一组织的多个安全域中验证 local policy independence。</li>
+</ul>
+<h2 id="Phase-4：外部-Federation-与-Interaction"><a href="#Phase-4：外部-Federation-与-Interaction" class="headerlink" title="Phase 4：外部 Federation 与 Interaction"></a>Phase 4：外部 Federation 与 Interaction</h2><ul>
+<li>开放受邀 domain federation。</li>
+<li>标准化 request、offer、delegation、commitment 和 evidence。</li>
+<li>增加 abuse、reputation、dispute 与 domain isolation。</li>
+<li>在稳定审计和撤销能力之后，再允许自动跨域 Effect。</li>
+</ul>
+<p>这个顺序优先建立 durable state 和 authority boundary，再扩大连接范围。直接从公开 A2A endpoint 起步，通常会把安全和恢复问题留到最难补救的时候。</p>
+<h1 id="边界与非目标"><a href="#边界与非目标" class="headerlink" title="边界与非目标"></a>边界与非目标</h1><p>Agent Federation 需要主动拒绝几种过度设计和错误承诺。</p>
+<h2 id="1-不复制-Internet-的全部协议栈"><a href="#1-不复制-Internet-的全部协议栈" class="headerlink" title="1. 不复制 Internet 的全部协议栈"></a>1. 不复制 Internet 的全部协议栈</h2><p>Email、ActivityPub、Matrix、SPIFFE 和 OAuth 提供设计参照。Agent Federation 可以复用其中某些协议，也可以只复用边界。目标是最小公共契约，不是把所有历史标准叠加在一起。</p>
+<h2 id="2-不要求-Blockchain-或全局-Ledger"><a href="#2-不要求-Blockchain-或全局-Ledger" class="headerlink" title="2. 不要求 Blockchain 或全局 Ledger"></a>2. 不要求 Blockchain 或全局 Ledger</h2><p>大部分 Identity、Mailbox、Commitment 和 Audit 可以由自治域持久化，并通过签名 evidence 互证。只有业务真的需要多方共识时，才引入额外 ledger。</p>
+<h2 id="3-不存在全局万能身份与自动信任"><a href="#3-不存在全局万能身份与自动信任" class="headerlink" title="3. 不存在全局万能身份与自动信任"></a>3. 不存在全局万能身份与自动信任</h2><p>地址可发现不等于身份可信，身份可信不等于行为授权。所有跨域能力最终由资源所在域决定。</p>
+<h2 id="4-不承诺全局-exactly-once-与-total-order"><a href="#4-不承诺全局-exactly-once-与-total-order" class="headerlink" title="4. 不承诺全局 exactly-once 与 total order"></a>4. 不承诺全局 exactly-once 与 total order</h2><p>系统提供 at-least-once delivery、去重、局部顺序、causation、幂等 Effect 和补偿。跨域网络分区下，不存在免费的全局事务。</p>
+<h2 id="5-跨域-Context-不直接进入-Prompt"><a href="#5-跨域-Context-不直接进入-Prompt" class="headerlink" title="5. 跨域 Context 不直接进入 Prompt"></a>5. 跨域 Context 不直接进入 Prompt</h2><p>Envelope、附件、远程 memory link 和 tool description 都是不可信输入。Context Projector 必须执行来源标注、权限过滤、大小限制和 prompt injection isolation。</p>
+<h2 id="6-Federation-不等于任意主体都能消耗-Agent"><a href="#6-Federation-不等于任意主体都能消耗-Agent" class="headerlink" title="6. Federation 不等于任意主体都能消耗 Agent"></a>6. Federation 不等于任意主体都能消耗 Agent</h2><p>公开地址可以支持 discovery，Mailbox、Attention、Capability 和 Effect 必须受 consent、rate、budget、spam 与 Sybil policy 约束。</p>
+<h2 id="7-Society-不是单一协议对象"><a href="#7-Society-不是单一协议对象" class="headerlink" title="7. Society 不是单一协议对象"></a>7. Society 不是单一协议对象</h2><p>协议只能提供身份、通信、能力和承诺原语。组织、文化、市场与公共规则来自长期互动和治理，不能由一个 <code>society.create</code> API 生成。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>Agent Foundation 让一个可替换 Runtime 成为长期存在的本地执行主体。Agent Federation 再向外增加四层系统语义：</p>
+<ol>
+<li><strong>Identity</strong>：Agent 的连续性属于 Principal 和 Home，不属于 Runtime。</li>
+<li><strong>Communication</strong>：Address、Mailbox、Conversation 和 receipt 让主体异步协作。</li>
+<li><strong>Trust and Capability</strong>：每个域独立认证、授权、委托、限权和撤销。</li>
+<li><strong>Interaction and Commitment</strong>：消息变成可恢复、可审计的社会行为。</li>
+</ol>
+<p>Runtime Migration 保留一个身份与 Home，并通过权威 placement fencing 排除同域双活；跨域离线验证只能提供由短期 credential 限定的旧 Runtime 窗口。Home transfer 是独立的命名与路由接管协议；Fork 创建新身份；Delegation 只转移受限 authority。Human 与 Agent 在 Communication Plane 上都是 Principal，在高风险控制上保持必要的不对称。Attention System 决定哪些外部变化值得花费智能，而不是让网络流量直接变成模型调用。</p>
+<p>最终，Human-Agent Society 不需要由一个超级 Planner 设计。它可以从一组较小但稳定的公共契约中出现：主体能够被找到，消息能够被持久投递，权限能够被受限委托，承诺能够被验证，失败能够被恢复，关系能够被拒绝和撤销。</p>
+<blockquote>
+<p><strong>Agent Federation 不是让所有 Agent 共享一个大脑，而是让拥有不同大脑、不同所有者和不同规则的主体，仍然能够建立可靠关系。</strong></p>
+</blockquote>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>协议与文档核对时间为 2026-08-16。Matrix 与 A2A 等规范仍在演进，涉及具体版本的判断以这里链接的版本或当时的 <code>latest</code> 文档为准。</p>
+</blockquote>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc5598.html">Internet Mail Architecture, RFC 5598</a> — 用户层、Message Handling Service、全局地址与异步传输边界。</li>
+<li><a target="_blank" rel="noopener" href="https://www.w3.org/TR/activitypub/">ActivityPub, W3C Recommendation</a> — Actor、Inbox、Outbox 与 server-to-server federation。</li>
+<li><a target="_blank" rel="noopener" href="https://spec.matrix.org/v1.19/server-server-api/">Matrix Server-Server API v1.19</a> — homeserver federation、request&#x2F;event signing、pairwise transaction、事件 DAG 与本地 authorization checks。</li>
+<li><a target="_blank" rel="noopener" href="https://spiffe.io/docs/latest/spiffe-specs/spiffe_federation/">SPIFFE Federation</a> — trust domain、bundle exchange、跨域 credential authentication 与 federation relationship lifecycle。</li>
+<li><a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc8693.html">OAuth 2.0 Token Exchange, RFC 8693</a> — token exchange、audience&#x2F;scope 以及 delegation 与 impersonation 的区别。</li>
+<li><a target="_blank" rel="noopener" href="https://a2a-protocol.org/latest/specification/">Agent2Agent Protocol Specification</a> — Agent Card、Message、Task、Artifact、streaming 与 task lifecycle。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md">CloudEvents Specification v1.0.2</a> — 跨系统 event envelope 的基础参照。</li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture">Model Context Protocol Architecture</a> — Tool、Resource、Prompt 与 capability negotiation 的协议边界。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI-Engineering/" class="category-chain-item">AI Engineering</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Architecture/" class="print-no-link">#Architecture</a>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/Agent-Federation/" class="print-no-link">#Agent Federation</a>
+      
+        <a href="/tags/Multi-Agent/" class="print-no-link">#Multi-Agent</a>
+      
+        <a href="/tags/Cloud-Agent/" class="print-no-link">#Cloud Agent</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Agent 联邦：从云 Agent Foundation 到 Human-Agent Society</div>
+      <div>https://blog.wh1isper.top/2026/08/17/agent-federation/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/23/ai-weekly-2026-08-23/" title="AI 行业周报 · 2026 年 8 月第 4 周（8/17 - 8/23）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AI 行业周报 · 2026 年 8 月第 4 周（8/17 - 8/23）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/16/ai-weekly-2026-08-16/" title="AI 行业周报 · 2026 年 8 月第 3 周（8/10 - 8/16）">
+                        <span class="hidden-mobile">AI 行业周报 · 2026 年 8 月第 3 周（8/10 - 8/16）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

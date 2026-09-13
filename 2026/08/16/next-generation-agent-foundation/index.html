@@ -1,0 +1,1314 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="从 Claude Agent SDK、Pi、OpenClaw 与 DeepSeek Harness 的架构演进出发，讨论下一代云 Agent Foundation 应该标准化哪些外部边界，以及如何设计事件输入、激活、上下文投影、副作用和挂起恢复语义。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="下一代 Agent Foundation：标准化 Agent 与世界的边界">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/08/16/next-generation-agent-foundation/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="从 Claude Agent SDK、Pi、OpenClaw 与 DeepSeek Harness 的架构演进出发，讨论下一代云 Agent Foundation 应该标准化哪些外部边界，以及如何设计事件输入、激活、上下文投影、副作用和挂起恢复语义。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-15T16:30:00.000Z">
+<meta property="article:modified_time" content="2026-09-13T12:20:39.699Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="Architecture">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Cloud Agent">
+<meta property="article:tag" content="Agent Foundation">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>下一代 Agent Foundation：标准化 Agent 与世界的边界 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/08/16/next-generation-agent-foundation/">
+  <meta property="og:image" content="https://blog.wh1isper.top/img/post-bg-unix-linux.jpg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"下一代 Agent Foundation：标准化 Agent 与世界的边界","url":"https://blog.wh1isper.top/2026/08/16/next-generation-agent-foundation/","datePublished":"2026-08-15T16:30:00.000Z","dateModified":"2026-09-13T12:20:39.699Z","author":{"@type":"Person","name":"Wh1isper"},"publisher":{"@type":"Person","name":"Wh1isper"},"description":"从 Claude Agent SDK、Pi、OpenClaw 与 DeepSeek Harness 的架构演进出发，讨论下一代云 Agent Foundation 应该标准化哪些外部边界，以及如何设计事件输入、激活、上下文投影、副作用和挂起恢复语义。","image":"https://blog.wh1isper.top/img/post-bg-unix-linux.jpg"}</script>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/AI-Weekly/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>AI Weekly</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-unix-linux.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从可替换 Harness 到事件驱动的云 Agent Platform"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-16 00:30" pubdate>
+          2026年8月16日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          25k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          85 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从可替换 Harness 到事件驱动的云 Agent Platform</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>下一代 Agent Foundation 的重点不是继续拆解 Agent loop，而是让一个通用 Agent 能够稳定地接收外部状态变化、获得正确上下文、产生受控副作用，并在等待条件满足时重新运行。</p>
+</blockquote>
+<p>我在前面的<a href="../../../02/17/architecture-of-cloud-agent/">《聊聊云上 Agent 的架构设计》</a>、<a href="../../../05/20/proactive-agent-attention/">《构建潜意识：一种 Proactive Agent 构建方式》</a>和<a href="../../../06/20/environment-as-agentic-infrastructure/">《Environment as Agentic Infrastructure》</a>里，分别讨论过云上执行、主动唤醒和 Environment 独立化。这些问题最终指向同一个系统边界：</p>
+<p><strong>当 Agent 不再只是一个由用户临时启动的 CLI，而是云上长期存在的执行主体时，平台应该为它提供什么？</strong></p>
+<p>这个问题容易被回答成“再设计一个 Agent Harness”。新的框架会提供更多 middleware、hook、plugin 和可替换 loop。DeepSeek Harness 最近提出的 “Everything is a plugin” 已经把这条路线推到了很完整的位置。它证明 Agent runtime 的每一层都可以被组合和替换。</p>
+<p>云上平台面对的是另一层问题。企业很少因为缺少一种 loop 才无法接入 Agent。真正困难的是让 Agent 进入已有的事件流、权限体系和业务状态，并在进程退出、沙箱回收和外部状态变化之后继续工作。</p>
+<p>这篇文章讨论的不是另一个 Harness，而是 Harness 外围的 <strong>Agent Foundation</strong>。</p>
+<h1 id="Harness-的三次边界变化"><a href="#Harness-的三次边界变化" class="headerlink" title="Harness 的三次边界变化"></a>Harness 的三次边界变化</h1><p>先明确本文中的四个概念：</p>
+<ul>
+<li><strong>Agent Runtime</strong>：一次 Run 内负责模型驱动、上下文消费、工具选择和 within-run control 的部分。</li>
+<li><strong>Harness</strong>：承载、配置或替换 Agent Runtime 的具体实现。项目名称中的 Harness 可能覆盖更宽的 Session、Storage 和 UI 范围。</li>
+<li><strong>Foundation</strong>：位于 Agent Runtime 外部，负责 Input、Session&#x2F;Run、路由、调度、身份上下文、Effect 编排、挂起和恢复的持久系统。</li>
+<li><strong>Platform</strong>：在 Foundation 之上提供多租户、产品接口、计费、运营和用户体验的完整服务。</li>
+</ul>
+<p>过去几代 Agent 架构主要改变了 Harness 的交付和扩展方式。</p>
+<h2 id="第一代：把完整-Agent-封装在可执行程序里"><a href="#第一代：把完整-Agent-封装在可执行程序里" class="headerlink" title="第一代：把完整 Agent 封装在可执行程序里"></a>第一代：把完整 Agent 封装在可执行程序里</h2><p>Claude Agent SDK 是这类架构的典型代表。它对外表现为 Python 或 TypeScript SDK，内部并不是重新实现一套 Claude Code loop。当前 <a target="_blank" rel="noopener" href="https://github.com/anthropics/claude-agent-sdk-python">Python SDK</a> 会在发布包中携带平台相关的 Claude Code executable，默认通过 <code>SubprocessCLITransport</code> 启动子进程，并通过 stdin&#x2F;stdout 传递 <code>stream-json</code> 格式的双向 NDJSON 消息。</p>
+<p>这不是简单的“向 CLI 写入 prompt，再读取文本”。同一条通道还承载 control request、hook callback、permission callback 和进程内 MCP tool 调用。SDK 更接近 Claude Code runtime 的语言绑定：</p>
+<pre><code class=" mermaid">flowchart LR
+    APP[&quot;Application&quot;]
+    SDK[&quot;Claude Agent SDK&lt;br/&gt;process / callback adapter&quot;]
+    CLI[&quot;Claude Code Runtime&lt;br/&gt;agent loop / built-in tools&quot;]
+    OS[&quot;Native OS Environment&lt;br/&gt;cwd / filesystem / process&quot;]
+
+    APP --&gt; SDK
+    SDK &lt;--&gt;|&quot;NDJSON over stdio&quot;| CLI
+    CLI --&gt; OS
+</code></pre>
+
+<p>这种方案有明确优势：核心 Agent Runtime 复用同一份 Claude Code 实现，SDK 可以快速获得相同的工具、会话和 loop 能力。代价也很直接：</p>
+<ul>
+<li>部署物实际包含 native executable。</li>
+<li>SDK 与 CLI 的私有协议和版本需要协同演进。</li>
+<li>运行时仍然依赖进程、cwd、home directory 和本地文件布局。</li>
+<li>默认 transcript 语义仍来自 Claude Code 的本地 JSONL；外部 <code>SessionStore</code> 通过 mirror 和恢复时的本地物化完成适配。</li>
+<li>SDK 内进程工具与 CLI sandbox 不在同一个安全边界。</li>
+</ul>
+<p>这里需要修正一个容易出现的表述：它不是严格的 POSIX-only 架构，当前 SDK 也支持 Windows native executable。更准确的约束是 <strong>native process + OS execution environment</strong>。操作系统不是一个可选工具，而是 Harness 默认存在的世界。</p>
+<h2 id="第二代：把-Agent-loop-变成可以嵌入的代码"><a href="#第二代：把-Agent-loop-变成可以嵌入的代码" class="headerlink" title="第二代：把 Agent loop 变成可以嵌入的代码"></a>第二代：把 Agent loop 变成可以嵌入的代码</h2><p><a target="_blank" rel="noopener" href="https://github.com/earendil-works/pi">Pi</a> 代表另一种路线。它把模型协议、Agent core 和 Coding Agent host 分成几个层次：</p>
+<ul>
+<li><code>pi-ai</code> 统一不同模型供应商的消息和流式协议。</li>
+<li><code>pi-agent-core</code> 提供较小的状态化 Agent loop、工具调用和 steering&#x2F;follow-up queue。</li>
+<li><code>pi-coding-agent</code> 提供文件工具、JSONL session、compaction、Skills、Extensions、CLI&#x2F;TUI 和项目资源加载。</li>
+</ul>
+<p>Pi 的默认 Coding Agent 只启用 <code>read</code>、<code>bash</code>、<code>edit</code>、<code>write</code> 四个工具。它没有内建权限隔离，官方仓库也明确说明：默认工具和 Extension 继承启动 Pi 的用户与进程权限，需要容器、VM 或外部 sandbox 提供真正的隔离。</p>
+<p>Pi 最重要的设计不是“四个工具”，而是 <strong>保持 loop 很小，把策略留给 host</strong>。模型 provider、上下文转换、工具实现、compaction、资源加载和 UI 都可以在 loop 外变化。Agent 不再必须通过一个封闭 binary 才能存在。</p>
+<p>OpenClaw 的早期演进和 Pi 有很深的关系，但不能把当前 OpenClaw 简化为“Pi 的封装”。截至本文调研的版本，<a target="_blank" rel="noopener" href="https://docs.openclaw.ai/agent-runtime-architecture">OpenClaw 官方运行时文档</a>已经明确说明：外部 Agent framework package 不再存在于 core 中，原有 runtime 被内化为自己的 <code>@openclaw/agent-core</code>，<code>pi</code> 只作为 legacy runtime alias，保留的 Pi 依赖主要是 TUI 组件。</p>
+<p>当前 OpenClaw 更适合被理解为一个常驻 Agent host：</p>
+<ul>
+<li>Gateway 接收 channel、Webhook、Cron 和 UI 输入。</li>
+<li>Gateway 解析 Agent、Session、Workspace、Skills、Sandbox 和权限策略。</li>
+<li>Session lane 处理并发写入与 queue mode。</li>
+<li>内置或插件化 Harness 执行一次已经准备好的模型循环。</li>
+<li>Gateway 再把运行事件投影到原始 channel。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://docs.openclaw.ai/concepts/agent-loop">OpenClaw Agent Loop 文档</a>已经包含 <code>steer</code>、<code>followup</code>、<code>collect</code>、<code>interrupt</code> 等输入队列语义；<a target="_blank" rel="noopener" href="https://docs.openclaw.ai/automation/cron-jobs#webhooks">HTTP hook</a>也区分“向目标 Session 写入 system event 并触发 heartbeat”和“创建一次 synthetic Agent job”。这些能力已经开始接近 Agent Foundation。</p>
+<p>它的边界仍然来自 host：在标准 Gateway 部署形态下，Gateway 是常驻宿主，部分 system event queue 属于进程内状态；Sandbox 移动的是工具执行位置，不是 Gateway 和 Agent loop。代码级 Harness 降低了二次开发成本，却没有自动消除运行宿主、会话所有权和唤醒可靠性问题。</p>
+<h2 id="并行路线：把-Agent-loop-做成-Serverless-Worker"><a href="#并行路线：把-Agent-loop-做成-Serverless-Worker" class="headerlink" title="并行路线：把 Agent loop 做成 Serverless Worker"></a>并行路线：把 Agent loop 做成 Serverless Worker</h2><p>另一条路线不是继续改造本地 Coding Agent，而是把 loop、状态和执行环境拆开。Agent Worker 只在一次 Activation 到来时运行；消息、Session、checkpoint 和 Effect 写入外部存储；Shell 或 Browser 需要执行时，再连接独立 Sandbox&#x2F;Executor。Worker 结束后不保留进程内状态，下次从持久引用恢复。</p>
+<p>这种架构消除了“每个 Agent 必须先拥有一台长期运行的操作系统”的前提。OS 变成按需绑定的执行能力，Agent loop 可以在 Lambda、Container Worker 或普通无状态服务中运行。</p>
+<p>Serverless 解决的是调度和成本，不自动解决专用化。这里的“高度通用”也不是褒义词：一个只有通用 prompt、通用工具和通用 Session 的 Worker，不知道企业中的哪些状态变化值得处理，也不知道应该加载哪一份业务上下文。Skill 可以补充任务知识和工具使用方法，外部唤醒、状态路由、权限与 Effect 语义仍然缺少平台边界。</p>
+<p>因此，OS-first Agent 和 Serverless Agent 看起来是两种部署方式，最终遇到的是同一个问题：<strong>Agent 怎样进入一个具体软件系统的生命周期。</strong></p>
+<h2 id="第三代：把-Harness-内部全部变成-Plugin"><a href="#第三代：把-Harness-内部全部变成-Plugin" class="headerlink" title="第三代：把 Harness 内部全部变成 Plugin"></a>第三代：把 Harness 内部全部变成 Plugin</h2><p><a target="_blank" rel="noopener" href="https://deepseek.com/harness/en/">DeepSeek Harness</a> 把插件化推进到了新的程度。它基于 <a target="_blank" rel="noopener" href="https://github.com/cordiverse/cordis">Cordis</a> 构建，模型 adapter、工具 registry、Session log、Agent loop、Sandbox、Storage、Scheduler 和 UI 都由 Plugin 组合。官方的<a target="_blank" rel="noopener" href="https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md">架构文档</a>给出了三个重要机制：</p>
+<ol>
+<li>Plugin 向共享 Context 提供 Service、typed event 和 reversible effect。</li>
+<li>Service 的出现和消失会驱动依赖 Plugin 激活、卸载和重新加载。</li>
+<li>Durable Session Event、live Agent Event 和 capability event 分属不同事件域。</li>
+</ol>
+<p>DeepSeek Harness 还有一个非常重要的约束：<strong>Model-visible means logged</strong>。任何进入模型请求的信息都必须能够从 append-only Session log 重建。Resume、fork、replay、trajectory 和 context projection 都建立在同一条事件流上。</p>
+<p>它的 inbox 也区分不同输入行为：有些 message 会立即唤醒 driver，注入的 context 可以先停留在 inbox 中，等待另一个 message 触发下一次 step。这已经说明“输入”和“唤醒”不应该是同一件事。</p>
+<p>“Everything is a plugin”不是字面意义上的没有内核。Cordis、root context、loader、profile composer 和 launcher 仍然是特权底座。Cordis 的 isolation 主要表达 Service 可见性和事件路由隔离，也不等价于进程或安全隔离。DeepSeek Harness 当前仍处于 Developer Preview，官方明确提示 Plugin API 会发生兼容性破坏。</p>
+<p>这些限制不削弱它的价值。它证明了一件事：<strong>Agent runtime 可以通过 typed event、service seam 和生命周期所有权获得很强的可组合性。</strong></p>
+<p>它仍然没有替云上平台回答全部问题：外部业务事件应该怎样进入？如何绑定租户身份？应该唤醒哪个 Session？运行中到达的事件如何处理？等待条件如何跨进程持久化？外部副作用如何去重和审计？</p>
+<h1 id="专用-Agent-的差异不一定在-Loop"><a href="#专用-Agent-的差异不一定在-Loop" class="headerlink" title="专用 Agent 的差异不一定在 Loop"></a>专用 Agent 的差异不一定在 Loop</h1><p>过去构建专用 Agent，通常会修改以下内容：</p>
+<ul>
+<li>system prompt</li>
+<li>planning loop</li>
+<li>tool selection</li>
+<li>memory</li>
+<li>validation</li>
+<li>retry</li>
+<li>context filter</li>
+<li>human-in-the-loop</li>
+<li>workflow state machine</li>
+</ul>
+<p>这种方法隐含了一个判断：专用任务需要专用控制流。</p>
+<p>强模型和通用 Agent 改变了这个前提。通用 loop 加上 Skills、按需工具发现和代码执行，已经可以完成大量专用任务。Skill 提供领域知识、约束和操作方法；工具提供实际能力；模型根据当前状态选择执行路径。定制从不可见的程序控制流移动到了可以被读取、更新和组合的上下文中。</p>
+<p>这不是说专用 loop 没有价值。强合规流程、确定性审批和固定成本路径仍然适合显式 workflow。需要警惕的是把所有领域知识都提前固化成状态机。设计者对任务的理解会成为 Agent 的能力上限，任何流程变化都需要修改 Harness。</p>
+<p>在多数开放任务中，更实用的默认值是：</p>
+<blockquote>
+<p>保留一个能力较强、语义稳定的通用 Agent，把专用知识放进 Skill，把系统能力放进 Tool，把外部集成放进 Foundation。</p>
+</blockquote>
+<p>因此，完全插件化 Harness 的主要价值是可演进、可替换和可测试，而不是要求每个团队都重新设计 Agent 的每一个内部阶段。</p>
+<h1 id="FDE-真正在定制什么"><a href="#FDE-真正在定制什么" class="headerlink" title="FDE 真正在定制什么"></a>FDE 真正在定制什么</h1><p>企业接入 Agent 时需要大量 Forward Deployed Engineer（FDE）参与，不代表 Agent loop 不够灵活。实际工作通常集中在下面这条转换链：</p>
+<pre><code class=" mermaid">flowchart LR
+    STATE[&quot;Enterprise State&quot;]
+    OBS[&quot;Trusted Observation&quot;]
+    ACTION[&quot;Agent Action Proposal&quot;]
+    EFFECT[&quot;Authorized Enterprise Effect&quot;]
+
+    STATE --&gt; OBS --&gt; ACTION --&gt; EFFECT
+</code></pre>
+
+<p>展开以后包括：</p>
+<ol>
+<li>哪个外部状态变化与 Agent 有关。</li>
+<li>外部身份如何映射为租户、用户和权限主体。</li>
+<li>事件属于哪个项目、任务、Environment 或 Session。</li>
+<li>Agent 运行前应该看到哪些业务状态。</li>
+<li>哪些字段是可信事实，哪些内容只能作为不可信数据。</li>
+<li>Agent 已经运行时，新输入应该排队、合并、steer、interrupt 还是创建分支。</li>
+<li>Tool call 如何变成具有幂等、审批和审计语义的业务副作用。</li>
+<li>Agent 应该把结果发送回原 channel、业务系统、另一个 Agent，还是只更新 Environment。</li>
+<li>Agent 等待审批、部署或其他外部状态时，如何挂起并在未来恢复。</li>
+</ol>
+<p>这些工作很少需要修改 token loop。它们发生在 Agent 与软件系统的连接面。</p>
+<p>Skill 解决“遇到某类任务时如何完成”。Foundation 需要解决“什么时候开始、基于什么状态开始、结束后等待什么”。</p>
+<h1 id="Foundation-的三个稳定对象"><a href="#Foundation-的三个稳定对象" class="headerlink" title="Foundation 的三个稳定对象"></a>Foundation 的三个稳定对象</h1><p>下一代 Foundation 需要把 Agent Runtime、Environment 和 Foundation 本身分开。</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Owns</th>
+<th>Does not own</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Agent Runtime</td>
+<td>model call、reasoning policy、tool selection、within-run control</td>
+<td>企业状态、持久调度、外部事件真相</td>
+</tr>
+<tr>
+<td>Environment</td>
+<td>versioned domain state、resource permission enforcement、operation&#x2F;effect log、resource refs</td>
+<td>模型策略、prompt 编排</td>
+</tr>
+<tr>
+<td>Foundation</td>
+<td>input、routing、activation、Session&#x2F;Run、identity context、context projection、subscription、output</td>
+<td>具体模型如何推理、资源状态真相</td>
+</tr>
+</tbody></table>
+<p>Agent Runtime 应该可以是 Claude Agent SDK、OpenClaw Harness、Pi loop、DeepSeek Harness profile，或者一个更简单的自研 runtime。Foundation 不要求这些 Harness 共享内部 Plugin API，只要求它们服从少量外部运行契约。</p>
+<p>Environment 也不等于 Sandbox。Sandbox 是命令执行和资源隔离位置；Environment 是持久的世界状态和副作用边界。一个 Session 可以在 Sandbox 被销毁以后继续引用同一个 Environment。Session 默认仍绑定兼容的 <code>runtime_id</code>、<code>runtime_version</code> 和 <code>runtime_state_ref</code>；切换 Harness 需要 Foundation-level portable state，或者显式 migration&#x2F;replay adapter，通常应该表现为 fork 或 migration，而不是无条件 resume。</p>
+<p>Foundation 位于两者之间。它把外部输入转换为一次 Activation，把 Environment 投影为模型可用的 Context，并通过 Effect Gateway 把 Agent 的 Action Proposal 交给权限、审批和执行边界。Environment 记录实际 Effect，Foundation 维护 Run 生命周期和未来的唤醒条件。</p>
+<pre><code class=" mermaid">flowchart LR
+    EXT[&quot;External Systems&lt;br/&gt;Chat / Webhook / Queue / Cron / Agent&quot;]
+    ADAPTER[&quot;Input Adapters&quot;]
+    INPUT[&quot;Typed Input Plane&quot;]
+    LOG[(&quot;Durable Input Log&quot;)]
+    ROUTER[&quot;Target Resolver&lt;br/&gt;Activation Policy&quot;]
+    SCHED[&quot;Session / Run Scheduler&quot;]
+    CONTEXT[&quot;Context Projector&quot;]
+    RUNTIME[&quot;Replaceable Agent Runtime&quot;]
+    EFFECT[&quot;Effect Gateway&lt;br/&gt;policy / approval / adapter&quot;]
+    ENV[&quot;Environment&lt;br/&gt;state / permission / effect log&quot;]
+    EVENTS[(&quot;Run Event Log&quot;)]
+    OUTPUT[&quot;SSE / WebSocket / Callback / IM&quot;]
+
+    EXT --&gt; ADAPTER --&gt; INPUT --&gt; LOG --&gt; ROUTER --&gt; SCHED
+    SCHED --&gt; CONTEXT --&gt; RUNTIME
+    CONTEXT &lt;--&gt; ENV
+    RUNTIME --&gt;|&quot;Action Proposal&quot;| EFFECT --&gt; ENV
+    ENV --&gt;|&quot;Effect Result&quot;| EFFECT --&gt; RUNTIME
+    RUNTIME --&gt; EVENTS --&gt; OUTPUT
+    EFFECT --&gt; EVENTS
+    ENV --&gt;|&quot;state change&quot;| ADAPTER
+</code></pre>
+
+<h1 id="一个-Input-Plane，而不是一个-Chat-API"><a href="#一个-Input-Plane，而不是一个-Chat-API" class="headerlink" title="一个 Input Plane，而不是一个 Chat API"></a>一个 Input Plane，而不是一个 Chat API</h1><p>聊天接口是最自然的 Agent 产品入口，但不适合作为底层唯一语义。</p>
+<p>聊天消息通常隐含以下假设：</p>
+<ul>
+<li>发送者是人类。</li>
+<li>内容主要是自然语言。</li>
+<li>输入属于一个线性 Conversation。</li>
+<li>系统应该立即开始推理。</li>
+<li>系统最终应该返回一段面向人的回答。</li>
+</ul>
+<p>外部系统产生的输入不满足这些假设。PR 被批准、部署失败、审批完成、定时器到期和另一个 Agent 完成任务，都是状态事实。它们可能只需要被记录，可能更新 Context，可能恢复一个正在等待的 Session，也可能启动新的 Run。</p>
+<p>因此，统一入口应该是 <code>AgentInput</code>，而不是 <code>ChatMessage</code>。至少需要区分四种 kind：</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Meaning</th>
+<th>Default activation semantics</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>command</code></td>
+<td>用户或系统请求 Agent 执行工作</td>
+<td>通常触发 Run</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>外部世界已经发生的事实</td>
+<td>由 Subscription&#x2F;Policy 决定是否触发</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>可供后续推理使用的信息</td>
+<td>默认只记录，不主动唤醒</td>
+</tr>
+<tr>
+<td><code>control</code></td>
+<td>对已有 Run&#x2F;Session 的 approve、cancel、resume、steer</td>
+<td>定向改变运行状态</td>
+</tr>
+</tbody></table>
+<p>这和 DeepSeek Harness 中“会唤醒的 message”与“等待下一次请求的 injected context”是同一个方向，只是 Foundation 需要把它扩展为持久、跨进程和多租户的公共语义。</p>
+<h2 id="Input-Envelope"><a href="#Input-Envelope" class="headerlink" title="Input Envelope"></a>Input Envelope</h2><p>可以借鉴 <a target="_blank" rel="noopener" href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md">CloudEvents</a> 的设计。CloudEvents 用 <code>id</code>、<code>source</code>、<code>type</code>、<code>subject</code> 和 <code>time</code> 描述一个 occurrence 的上下文。Agent Foundation 还需要表达输入种类、因果关系和目标资源：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;schema_version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;agent-input/1&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;in_01...&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;source_event_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;github-delivery-01...&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;kind&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;event&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;github.pull_request.reviewed&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;github://acme/platform&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;subject&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;environment_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;env_01...&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;resource&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;pull-request/123&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;target&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;occurred_at&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2026-08-17T00:20:00+08:00&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;correlation_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;task_01...&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;causation_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;effect_01...&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;data_content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;application/json&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;state&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;approved&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>这个 Envelope 有几个约束：</p>
+<ol>
+<li><code>id</code> 是 Foundation 生成的 Input ID；<code>source_event_id</code> 是来源系统的事件身份。默认可以使用 <code>(tenant, source, source_event_id)</code> 去重，但具体规则由 Normalizer 声明。</li>
+<li><code>principal</code>、<code>tenant_id</code>、trust label 和 authorization claim 由 Ingress 根据签名、连接和平台身份生成，不能相信 payload 自己声明。</li>
+<li><code>idempotency_key</code> 可以来自协议 header 或 source event id，但需要与领域事件身份分开建模。</li>
+<li><code>subject</code> 描述业务实体；可选 <code>target</code> 描述 direct command&#x2F;control 的 <code>agent_id</code>、<code>session_id</code> 或 <code>run_id</code>。普通 domain event 通常没有 direct target。</li>
+<li>原始 <code>data</code> 不直接成为 user message。它首先是外部事实，是否进入模型由 Context Projector 决定。</li>
+<li>Producer 不应该在 payload 中决定 <code>bypassPermissions</code>、<code>steer</code> 或 <code>interrupt</code> 等可信执行策略。</li>
+</ol>
+<h2 id="输入应该发给谁"><a href="#输入应该发给谁" class="headerlink" title="输入应该发给谁"></a>输入应该发给谁</h2><p>“外部事件应该发给 Agent、Session 还是 Environment”不存在一个统一答案。不同 kind 具有不同寻址语义：</p>
+<ul>
+<li><code>command</code> 可以直接发给 Agent 或 Session，因为调用者明确请求它工作。</li>
+<li><code>event</code> 通常应该指向 Environment 中的 subject 或一个 topic，再由 Target Resolver 找到订阅它的 Agent&#x2F;Session。</li>
+<li><code>context</code> 可以绑定 subject 或 Session，但默认不触发 Run。</li>
+<li><code>control</code> 必须指向具体 Run 或 Session。</li>
+</ul>
+<p>让 GitHub、审批系统和数据库直接知道某个 Agent ID，会把业务系统与 Agent 部署结构绑定在一起。更稳定的方式是让 Producer 描述“发生了什么”，由 Foundation 决定“谁应该处理”。</p>
+<h1 id="Activation-是平台的核心状态机"><a href="#Activation-是平台的核心状态机" class="headerlink" title="Activation 是平台的核心状态机"></a>Activation 是平台的核心状态机</h1><p>Input 被接受不等于 Agent 立即运行。Foundation 需要先完成以下步骤：</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant P as Producer
+    participant I as Input Plane
+    participant L as Durable Log
+    participant R as Resolver and Policy
+    participant S as Session Scheduler
+    participant C as Context Projector
+    participant A as Agent Runtime
+    participant G as Effect Gateway
+    participant E as Environment
+
+    P-&gt;&gt;I: submit AgentInput
+    I-&gt;&gt;I: authenticate and normalize
+    I-&gt;&gt;L: persist and deduplicate
+    I--&gt;&gt;P: 202 Accepted with input_id
+    L-&gt;&gt;R: evaluate target and activation
+    R-&gt;&gt;S: activation decision
+    S-&gt;&gt;C: build ContextBundle
+    C-&gt;&gt;E: read authorized state and versions
+    E--&gt;&gt;C: observations and references
+    C-&gt;&gt;A: activate session run
+    A-&gt;&gt;G: ActionProposal
+    G-&gt;&gt;E: authorize and create operation
+    E-&gt;&gt;E: append pending EffectRecord
+    E-&gt;&gt;E: dispatch adapter with idempotency key
+    E-&gt;&gt;E: settle succeeded, failed, or unknown
+    E--&gt;&gt;G: EffectResult
+    G--&gt;&gt;A: result observation
+    A--&gt;&gt;S: RunEvents or Suspension
+</code></pre>
+
+<p>所有通过认证和 Schema 验证的 canonical Input 都先进入 Durable Input Log。Target Resolver 先只读解析候选 Agent、已有 Session、Subscription 和 subject binding；Activation Policy 再决定后续处置。只有 <code>ACTIVATE</code>、<code>ENQUEUE</code>、<code>RESUME</code> 或 <code>FORK</code> 确实需要执行连续性时，Scheduler 才在同一个可恢复状态转移中创建或绑定 Session：</p>
+<ul>
+<li><code>IGNORE</code>：不产生业务投影或 Run，Input 仍保留在审计日志中。</li>
+<li><code>PROJECT</code>：更新 Environment&#x2F;Context projection，不运行 Agent。</li>
+<li><code>ACTIVATE</code>：绑定已有 Session，或原子创建 Session 与第一个 Run。</li>
+<li><code>ENQUEUE</code>：把 Input 排入现有 Session lane，等待创建下一次 Run。</li>
+<li><code>STEER</code>：把高优先级 Input 送入支持在线 steering 的当前 Run。</li>
+<li><code>INTERRUPT</code>：通过 control policy 取消或抢占当前 Run。</li>
+<li><code>FORK</code>：从当前 portable state 或 runtime adapter 创建独立分支。</li>
+<li><code>RESUME</code>：满足 Suspension 后创建 continuation Run，并记录 <code>resumed_from_run_id</code>。</li>
+</ul>
+<p>这些动作需要结合当前 Session 状态：</p>
+<pre><code class=" mermaid">stateDiagram-v2
+    [*] --&gt; Idle
+    Idle --&gt; Active: ACTIVATE or RESUME
+    Active --&gt; Active: STEER current run
+    Active --&gt; Active: ENQUEUE next activation
+    Active --&gt; Active: settle and dequeue
+    Active --&gt; Suspended: SUSPEND
+    Active --&gt; Idle: terminal and no pending input
+    Suspended --&gt; Active: match creates continuation run
+</code></pre>
+
+<p>这里描述的是 Session 的激活状态，不是单个 Run 的终态。Pending Input Queue 是 Session 的附属集合，不是与 <code>Active</code> 互斥的状态。每个 Run 仍然独立记录 <code>completed</code>、<code>failed</code>、<code>cancelled</code> 或 <code>suspended</code>；Session 在 Run 结束后可以回到 <code>Idle</code>，也可以立即消费队列并创建下一次 Run。本文把 Run 定义为一次 Activation attempt，因此 <code>RESUME</code> 创建关联的 continuation Run，而不是把旧 Run 原地改回 <code>running</code>。</p>
+<p>同一个事件在不同状态下可能产生不同决策。审批完成时，等待审批的 Session 应该 <code>RESUME</code>；没有相关任务时只需要 <code>PROJECT</code>；存在正在生成错误方案的 Run 时可能需要 <code>STEER</code> 或 <code>INTERRUPT</code>。</p>
+<p>这也是为什么 Webhook 和 WebSocket 不能成为领域语义：</p>
+<ul>
+<li>Webhook、Queue 和 Cron 负责把输入送进平台。</li>
+<li>SSE、WebSocket、Callback 和 IM 负责把 Run Event 投影给消费者。</li>
+<li>Foundation 内部依赖持久 Input&#x2F;Run Event Log，而不是依赖连接是否仍然存在。</li>
+</ul>
+<p>提交接口可以立即返回 <code>202 Accepted</code>。一个 Input 可能不激活任何 Run，也可能命中多个 Subscription，因此不能假设提交时存在唯一 <code>run_id</code>。<code>GET /v1/inputs/&#123;input_id&#125;</code> 应返回 disposition、<code>activation_refs</code> 和 <code>run_refs[]</code>；消费者再按具体 <code>run_id</code> 与 cursor 订阅或回放事件。连接断开不应该让运行轨迹消失。</p>
+<h1 id="Context-Projector-是最重要的企业扩展点"><a href="#Context-Projector-是最重要的企业扩展点" class="headerlink" title="Context Projector 是最重要的企业扩展点"></a>Context Projector 是最重要的企业扩展点</h1><p>Tool 和 Skill 很容易被识别为 Agent 扩展点，Context Projector 往往被藏在“组装 prompt”的代码里。对于企业系统，它通常比自定义 loop 更重要。</p>
+<p>外部事件不能直接追加成一条 user message，原因包括：</p>
+<ul>
+<li>payload 可能包含 prompt injection。</li>
+<li>同一事件对不同 Agent 的相关字段不同。</li>
+<li>Agent 需要的是实体当前状态，不只是事件发生时的 delta。</li>
+<li>数据访问范围依赖租户、角色和任务阶段。</li>
+<li>大对象需要按 token budget 过滤和压缩。</li>
+<li>模型需要区分 instruction、trusted fact、untrusted content 和 historical evidence。</li>
+</ul>
+<p>Context Projector 的输入应该是 Input ref、Session、Agent Definition、Environment version 和权限主体。输出是一个可重建的 <code>ContextBundle</code>：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs text">ContextBundle<br>- activation_input_ref<br>- observations[]<br>  - source_ref<br>  - state_version<br>  - provenance<br>  - trust_class<br>  - content_type<br>  - projected_content<br>- memory_refs[]<br>- environment_version<br>- capability_manifest<br>- context_budget<br>- projector_version<br></code></pre></td></tr></table></figure>
+
+<p>在 Foundation 边界内应该继承 DeepSeek Harness 的约束：<strong>任何由 Foundation 投影给 Runtime 的外部事实都必须被记录并可以重建。</strong> 这不要求保存不可见的模型内部思考，但必须知道 <code>ContextBundle</code> 包含哪些事实、来自什么版本、经过哪个 Projector。</p>
+<p>这不等于 Foundation 天然知道最终 model-visible input。Claude Agent SDK、OpenClaw 或其他 Runtime 还可能加入 system prompt、Tool schema、内建 Resource、compaction 结果和 provider-specific transformation。需要对最终模型请求做严格 replay 或审计时，Runtime contract 还必须产出持久的 <code>ModelInputRecord</code> 或 content hash，记录最终 message、Tool schema、prompt&#x2F;template version、Runtime artifact version 和转换 provenance。否则平台只能重建 Foundation 输入，不能声称重建了 opaque Runtime 实际发送给模型的全部内容。</p>
+<p>Context Projector 也是我之前讨论的 Display Layer 与 Business Layer 的进一步演化：</p>
+<ul>
+<li>Display&#x2F;Audit Layer 保存原始输入、外部事件和 Run Event。</li>
+<li>Business&#x2F;Model Layer 保存经过权限、相关性和 token budget 处理的 Context projection。</li>
+</ul>
+<p>同一份原始事实可以产生不同投影，而审计记录保持不变。</p>
+<h1 id="Effect-是-Tool-Call-之外的持久语义"><a href="#Effect-是-Tool-Call-之外的持久语义" class="headerlink" title="Effect 是 Tool Call 之外的持久语义"></a>Effect 是 Tool Call 之外的持久语义</h1><p>Tool Call 描述模型想调用哪个能力。Effect 描述外部世界实际发生了什么。</p>
+<p>对于读取文件，这两者可能看起来相同。对于创建 Issue、修改数据库、发送消息、部署和付款，它们完全不同。平台需要知道：</p>
+<ul>
+<li>操作是否通过授权。</li>
+<li>是否需要人工审批。</li>
+<li>是否已经发起。</li>
+<li>超时后外部系统是否可能已经成功。</li>
+<li>重试是否会重复产生副作用。</li>
+<li>如何确认、补偿或继续。</li>
+</ul>
+<p>一致的执行路径应该是：Agent Runtime 产生 <code>ActionProposal</code>；Foundation 中的 Effect Gateway 绑定 principal、平台策略和审批状态；Environment <strong>先</strong>在 operation&#x2F;effect log 中持久化带 <code>operation_id</code>、<code>idempotency_key</code>、授权结果和 <code>pending</code> 状态的 Effect intent，<strong>再</strong>在资源边界执行或委派 Adapter；调用结束后把记录 settle 为 <code>succeeded</code>、<code>failed</code> 或 <code>unknown</code>。Effect Result 再作为 Observation 返回 Runtime，同时投影为 Run Event。</p>
+<p>持久化 intent 与外部调用不能组成跨系统原子事务，但顺序不能颠倒。进程在 dispatch 前崩溃时，恢复逻辑看到 <code>pending</code> 并可以安全决定是否发起；在外部系统成功而结果回写前崩溃时，恢复逻辑仍然拥有 operation record，可以先按 idempotency key 查询，再重试、确认或补偿。没有 pre-dispatch record，就无法区分“从未执行”与“可能已经执行”。</p>
+<p>因此，<code>EffectRecord</code> 的最终所有者应该是 Environment：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs text">EffectRecord<br>- effect_id<br>- operation_id<br>- run_id<br>- actor_id<br>- target<br>- action<br>- idempotency_key<br>- authorization_decision<br>- status: pending | dispatching | succeeded | failed | unknown<br>- attempt<br>- result_ref<br>- created_at<br>- dispatched_at<br>- settled_at<br></code></pre></td></tr></table></figure>
+
+<p>可靠性目标不应该是虚构的全局 exactly-once。更现实的组合是：</p>
+<ul>
+<li>Input 采用 at-least-once delivery 和 deduplication。</li>
+<li>需要顺序的事件按 subject 或 Session 建立局部顺序。</li>
+<li>外部写操作使用 idempotency key。</li>
+<li>不可确认的操作先查询当前状态，再决定重试或补偿。</li>
+<li>Effect result 重新变成 Environment state change 或 AgentInput。</li>
+</ul>
+<p>这与传统 Durable Execution 一致，但 Agent 多了一层语义恢复：模型可以观察“不确定但可能已经成功”的 Effect，再决定确认状态、补偿或改变计划。</p>
+<h1 id="Suspension-与-Subscription-应该成为一等能力"><a href="#Suspension-与-Subscription-应该成为一等能力" class="headerlink" title="Suspension 与 Subscription 应该成为一等能力"></a>Suspension 与 Subscription 应该成为一等能力</h1><p>传统 Agent loop 在完成当前消息后只能等待下一条消息。长期工作的 Agent 需要在产生 Action 后声明等待条件，并由未来事件创建 continuation Run：</p>
+<pre><code class=" mermaid">flowchart LR
+    MSG[&quot;Message&quot;] --&gt; RUN[&quot;Run&quot;] --&gt; FINISH[&quot;Finish&quot;] --&gt; WAIT[&quot;Wait for next message&quot;]
+
+    INPUT[&quot;AgentInput&quot;] --&gt; ACTIVATE[&quot;Activate&quot;] --&gt; OBSERVE[&quot;Observe&quot;] --&gt; ACT[&quot;Act&quot;] --&gt; SUSPEND[&quot;Suspend&quot;]
+    EVENT[&quot;Matching Input&quot;] --&gt; RESUME[&quot;Create continuation Run&quot;] --&gt; OBSERVE
+</code></pre>
+
+<p>Agent 不应该通过无限轮询等待审批、PR review、部署结果或某个时间点。Run 可以返回一个结构化 Suspension：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">session_id:</span> <span class="hljs-string">ses_01...</span><br><span class="hljs-attr">run_id:</span> <span class="hljs-string">run_01...</span><br><span class="hljs-attr">reason:</span> <span class="hljs-string">waiting_for_release_approval</span><br><span class="hljs-attr">runtime_id:</span> <span class="hljs-string">openclaw</span><br><span class="hljs-attr">runtime_version:</span> <span class="hljs-number">2026.8</span><span class="hljs-number">.16</span><br><span class="hljs-attr">runtime_state_ref:</span> <span class="hljs-string">runtime-state://state_01...</span><br><span class="hljs-attr">checkpoint_ref:</span> <span class="hljs-string">ckpt_01...</span><br><span class="hljs-attr">input_log_cursor:</span> <span class="hljs-number">18421</span><br><span class="hljs-attr">subscriptions:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">release.approval.completed</span><br>    <span class="hljs-attr">subject:</span> <span class="hljs-string">release/2026.08.17</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">timer.expired</span><br>    <span class="hljs-attr">subject:</span> <span class="hljs-string">deadline/2026-08-17T10:00:00+08:00</span><br><span class="hljs-attr">resume_policy:</span> <span class="hljs-string">first_match</span><br></code></pre></td></tr></table></figure>
+
+<p>Foundation 持久化 Subscription。匹配的 <code>AgentInput</code> 到达后，Activation Policy 产生 <code>RESUME</code>，Context Projector 加载最新 Environment state，并创建 continuation Run。新的 Worker 可以在新进程中使用同一兼容 Runtime 继续执行；切换 Harness 只有在状态已经投影为 portable Foundation state，或存在明确 migration&#x2F;replay adapter 时才成立。</p>
+<p>这里必须解决 durable wait 的 lost wake-up：</p>
+<ol>
+<li><code>run.suspended</code>、<code>checkpoint_ref</code>、Subscription 和 <code>input_log_cursor</code> 必须在同一个 durable commit 中建立。</li>
+<li>Subscription 安装后需要重放 cursor 之后已经进入 Input Log 的匹配项，避免事件恰好在挂起提交期间到达。</li>
+<li>Subscription 消费需要 dedupe、lease、<code>once</code>&#x2F;repeat、expiry 和 retry 语义。</li>
+<li>恢复成功后，Input consumption 与 continuation Run 创建需要形成同一个可恢复状态转移。</li>
+</ol>
+<p>这些约束是 Foundation 与普通 Webhook glue code 的主要区别。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.temporal.io/develop/python/message-passing">Temporal 的 Workflow message passing</a>提供了有价值的参照：Signal、Update 和 Query 让外部系统与 durable computation 交互。Agent Foundation 还需要补充模型上下文投影、Effect provenance 和动态等待条件。</p>
+<p>我之前在 Singleton Agency 中定义的 <code>message_observed</code>、<code>run_output_observed</code>、<code>memory_session_completed</code> 和 <code>heartbeat</code>，本质上都是一种应用级 <code>AgentInput</code>。当 Foundation 提供持久 Input Plane 和 Subscription 后，Proactive Agent 不再需要每个产品重新实现一套 fire queue。</p>
+<h1 id="哪些-Plugin-Point-值得标准化"><a href="#哪些-Plugin-Point-值得标准化" class="headerlink" title="哪些 Plugin Point 值得标准化"></a>哪些 Plugin Point 值得标准化</h1><p>平台需要可扩展，不代表所有东西都应该成为公共 Plugin API。</p>
+<p>身份、租户隔离、持久事件日志、Session writer lease、Run 状态机、Effect provenance 和 secret reference 属于平台不变量。底层存储实现可以替换，语义不能由任意 Plugin 改写。否则恢复、审计和互操作没有稳定基础。</p>
+<p>真正具有跨业务复用价值的扩展点可以收敛为八类：</p>
+<table>
+<thead>
+<tr>
+<th>Extension Point</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>InputAdapter</code></td>
+<td>接收 Webhook、Queue、IM、Cron、Agent-to-Agent 等输入，并建立经过认证的 source metadata</td>
+</tr>
+<tr>
+<td><code>EventNormalizer</code></td>
+<td>校验 schema，把已绑定来源的输入转换为 canonical <code>AgentInput</code></td>
+</tr>
+<tr>
+<td><code>TargetResolver</code></td>
+<td>根据 subject、binding、subscription 只读解析候选 Agent&#x2F;Session</td>
+</tr>
+<tr>
+<td><code>ActivationPolicy</code></td>
+<td>决定 ignore、project、activate、enqueue、steer、interrupt、fork 或 resume</td>
+</tr>
+<tr>
+<td><code>ContextProjector</code></td>
+<td>把 Input 与 Environment state 转换为带来源的 ContextBundle</td>
+</tr>
+<tr>
+<td><code>CapabilityProvider</code></td>
+<td>提供 Skill、Tool 和 Environment projection</td>
+</tr>
+<tr>
+<td><code>EffectAdapter</code></td>
+<td>把经过授权的 Action Proposal 映射为业务副作用</td>
+</tr>
+<tr>
+<td><code>OutputSink</code></td>
+<td>把已经授权、持久化的记录投影到 Callback、IM 或其他外部系统</td>
+</tr>
+</tbody></table>
+<p>企业定制可以进一步形成一种可分发的 <code>Integration Pack</code>，包含 Sources、Normalizers、Projections、Capabilities、Policies、Effect Adapters 和 Output Sinks。</p>
+<p>Skill 是其中面向模型的知识组件，Integration Pack 是面向系统的集成组件。FDE 的工作从 fork Agent 源码，转变为实现这些边界。</p>
+<h1 id="Foundation-如何自然扩展为-Agent-Federation"><a href="#Foundation-如何自然扩展为-Agent-Federation" class="headerlink" title="Foundation 如何自然扩展为 Agent Federation"></a>Foundation 如何自然扩展为 Agent Federation</h1><p>到这里为止，Foundation 默认运行在一个管理域内：平台知道 Agent 属于谁、Input 来自哪里、Environment 由谁管理。下一步不是把所有 Agent 接进一张由中央 Planner 控制的全局图，而是允许不同管理域中的 Agent 在保留本地身份、权限和失败边界的前提下协作。</p>
+<p>这更接近 <strong>Agent Federation</strong>，而不是泛化的“Agent Internet”。Internet 描述连接和传输；Federation 描述多个自治域如何通过公共契约互认身份、投递消息并各自执行策略。</p>
+<p>Foundation 不需要为此推翻重来。输入侧的跨域协议位于 <code>AgentInput</code> 之前；输出侧的跨域 Interaction 必须在 <code>ActionProposal</code> 经过授权、成为持久化 <code>EffectRecord</code> 与 Interaction record 之后：</p>
+<pre><code class=" mermaid">flowchart LR
+    subgraph DA[&quot;Federation Domain A&quot;]
+        AA[&quot;Agent Principal A&quot;] --&gt; FA[&quot;Foundation A&quot;] --&gt; RA[&quot;Runtime A&quot;]
+        FA --&gt; EA[&quot;Authorized Interaction Effect&quot;] --&gt; OA[&quot;Durable Outbox&quot;] --&gt; GA[&quot;Federation Gateway A&quot;]
+        GA --&gt; IA[&quot;Durable Inbox&quot;] --&gt; FA
+    end
+
+    subgraph DB[&quot;Federation Domain B&quot;]
+        GB[&quot;Federation Gateway B&quot;] --&gt; IB[&quot;Durable Inbox&quot;] --&gt; FB[&quot;Foundation B&quot;] --&gt; RB[&quot;Runtime B&quot;]
+        FB --&gt; EB[&quot;Authorized Interaction Effect&quot;] --&gt; OB[&quot;Durable Outbox&quot;] --&gt; GB
+        PB[&quot;Local Policy / Trust / Audit&quot;] --&gt; GB
+    end
+
+    GA --&gt;|&quot;signed envelope&lt;br/&gt;at-least-once&quot;| GB
+    GB --&gt;|&quot;signed receipt / result / reply&quot;| GA
+</code></pre>
+
+<p>联邦化需要增加几类外围对象：</p>
+<ul>
+<li><code>Principal</code> 与 domain-qualified <code>Address</code>：Human、Agent 和 Service 都能成为可寻址主体；Agent identity 不再等同于某个 Runtime 进程。</li>
+<li><code>Mailbox</code>、<code>Outbox</code> 与 <code>Conversation</code>：跨域原始消息先进入有容量和保留策略的 bounded ingress&#x2F;quarantine；通过来源绑定、验签和 abuse&#x2F;consent policy 后，才可靠进入目标 Mailbox。Conversation 表达参与者关系，Session 仍表达单个 Agent 的执行连续性。</li>
+<li><code>FederatedEnvelope</code>：保存发送域、签名、key id、body digest、有效期和投递 provenance。通过验签只代表消息来自谁，不代表本地域允许它做什么。</li>
+<li><code>CapabilityRequest</code>、<code>CapabilityLease</code> 与 delegation chain：Tool、Sandbox、Compute 和 credential handle 成为可申请、限时、限作用域、可撤销的基础设施，不再在 Agent 启动时永久注入。</li>
+<li><code>Interaction</code> 与 <code>Commitment</code>：<code>request</code>、<code>offer</code>、<code>accept</code>、<code>delegate</code>、<code>commit</code>、<code>revoke</code>、<code>report</code> 等社会行为拥有结构化状态，不能只依赖自然语言对话推断责任。</li>
+<li><code>AgentLineage</code> 与 placement lease：Runtime Migration 保留同一 Identity 与 Home；同域 Effect boundary 通过权威 placement record、lease&#x2F;epoch 和原子 fencing comparison 排除旧 Runtime，跨域离线验证则只能提供有界 stale window。Fork 创建新的 child identity，只能通过显式 delegation 获得能力。</li>
+</ul>
+<p>原有八个公共对象仍然成立。远端 Envelope 被本地域接收、验证和授权后，才归一化为 <code>AgentInput</code>；Attention Policy 仍通过 <code>Activation</code> 创建 <code>Run</code>；Foundation 仍只通过 <code>ContextBundle</code> 向 Runtime 提交受控外部投影；行为仍先成为 <code>ActionProposal</code>，Environment 再先持久化 Effect intent、执行并 settle <code>EffectRecord</code>；等待仍使用 <code>Suspension</code> 与 <code>Subscription</code>；执行实现仍通过 <code>RuntimeDescriptor</code> 和 <code>RuntimeStateRef</code> 被替换。最终 model-visible input 如需完整审计，由 Runtime 额外返回 <code>ModelInputRecord</code>。</p>
+<p>需要升级的是边缘 Adapter，而不是 Runtime contract：Federation Gateway 负责 bounded ingress、cryptographic verification、origin binding、replay protection 和 acceptance policy；<code>EventNormalizer</code> 只负责 schema 与 canonical conversion；<code>TargetResolver</code> 只读解析域限定地址、Mailbox 和候选 Session；<code>CapabilityProvider</code> 能签发 Lease。Agent 主动发送的跨域 Interaction 仍然是结构化 <code>ActionProposal</code>，必须经过 Effect Gateway 的数据出境、权限和审批策略，再原子写入 Interaction record 与 durable Outbox。<code>OutputSink</code> 只投影已经授权并持久化的 Run Event、EffectRecord、receipt 或 Interaction，不能把自由文本输出升级为签名社会行为。跨域 Context 也不会直接进入 Prompt，它必须先成为本地域可审计的输入，再经过 Context Projector。</p>
+<p>这种兼容性正是 Foundation 边界是否稳固的检验。Identity、Mailbox、Trust 和 Commitment 可以在它外围继续生长，而 Run、Context、Effect 与 Suspension 的语义无需改变。下一篇<a href="../../17/agent-federation/">《Agent 联邦：从云 Agent Foundation 到 Human-Agent Society》</a>会完整展开这套多域架构。</p>
+<h1 id="MCP-与-ACP-的位置"><a href="#MCP-与-ACP-的位置" class="headerlink" title="MCP 与 ACP 的位置"></a>MCP 与 ACP 的位置</h1><p>现有协议覆盖了 Foundation 的部分边界，但没有定义完整的激活语义。</p>
+<p><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture">MCP</a>连接 Host、Client 与 Server，标准化 Tool、Resource、Prompt 和 capability negotiation。它适合让 Agent 发现和调用能力，不负责定义外部领域事件应该唤醒哪个 Session，也不负责 Session 挂起、Effect 幂等和 Run 状态机。</p>
+<p><a target="_blank" rel="noopener" href="https://agentclientprotocol.com/protocol/v1/overview">ACP</a>连接 Client 与 Agent，标准化 Session、Prompt、Update、Permission，以及可选的 File&#x2F;Terminal capability。它解决的是编辑器或其他 Client 如何进入 Agent 交互，不是通用 Environment Event Protocol。</p>
+<p><a target="_blank" rel="noopener" href="https://a2a-protocol.org/latest/specification/">A2A</a> 也不需要成为 Runtime 内部的特殊通路。进入本地 Foundation 以后，另一个 Agent 仍然是具有明确 principal 的 Producer，提交带 <code>correlation_id</code>、<code>causation_id</code> 和 subject 的 <code>command</code> 或 <code>event</code>。跨管理域时，前面还需要 Federation Gateway 完成寻址、验签、信任判断、Mailbox 投递和 delegation 校验。是否接受请求、是否创建子 Session，仍由本地 Target Resolver 与 Activation Policy 决定。</p>
+<p>Foundation 与这些协议是组合关系：MCP 提供能力面，ACP 提供 Client-Agent 交互面，A2A 可以提供 peer task 交互面，Input&#x2F;Activation&#x2F;Effect contract 提供长期运行的系统面，Federation 则提供跨自治域的通信与信任面。</p>
+<h1 id="最小公共契约"><a href="#最小公共契约" class="headerlink" title="最小公共契约"></a>最小公共契约</h1><p>如果要为下一代 Foundation 定义一套 API，我倾向于先稳定八个对象：</p>
+<ol>
+<li><code>AgentInput</code></li>
+<li><code>Session</code></li>
+<li><code>Activation</code> &#x2F; <code>Run</code></li>
+<li><code>ContextBundle</code></li>
+<li><code>RunEvent</code></li>
+<li><code>ActionProposal</code> &#x2F; <code>EffectRecord</code></li>
+<li><code>Suspension</code> &#x2F; <code>Subscription</code></li>
+<li><code>RuntimeDescriptor</code> &#x2F; <code>RuntimeStateRef</code></li>
+</ol>
+<p>不需要优先标准化：</p>
+<ul>
+<li>模型 loop 的内部 middleware 顺序。</li>
+<li>planning 是否显式存在。</li>
+<li>subagent 如何实现。</li>
+<li>compaction 使用摘要还是 message tree。</li>
+<li>Tool 是 native call、proxy call 还是 programmatic call。</li>
+<li>UI 如何渲染 reasoning 和 tool event。</li>
+</ul>
+<p>这些内容适合由 Claude Agent SDK、OpenClaw、Pi 和 DeepSeek Harness 各自演进。Foundation 只需要一个较粗粒度、能力可协商的 Runtime contract：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">describe() -&gt; RuntimeDescriptor<br>activate(session_ref, runtime_state_ref, context_bundle, run_policy) -&gt; RunEvent stream<br>steer?(run_id, input_ref)<br>cancel?(run_id)<br>fork?(session_ref, runtime_state_ref) -&gt; RuntimeStateRef<br></code></pre></td></tr></table></figure>
+
+<p><code>RuntimeDescriptor</code> 至少声明 <code>supports_steer</code>、<code>supports_interrupt</code>、<code>supports_native_resume</code>、<code>supports_fork</code> 和 <code>supports_checkpoint</code>。不支持在线 steering 时，Foundation 把 <code>STEER</code> 降级为 <code>ENQUEUE</code>；不支持 portable checkpoint 时，Session 继续绑定原 Runtime 的 resume adapter。</p>
+<p>Suspension 不再是 Foundation 主动调用 Runtime 的 <code>suspend()</code>。Runtime 通过 terminal <code>run.suspended</code> event 返回 <code>Suspension</code> 和 <code>RuntimeStateRef</code>，Foundation 再按前述原子性要求持久化 Run、checkpoint、Subscription 与 cursor。</p>
+<p>公共 HTTP API 也可以保持简单：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">POST /v1/inputs<br>GET  /v1/inputs/&#123;input_id&#125;<br>GET  /v1/runs/&#123;run_id&#125;<br>GET  /v1/runs/&#123;run_id&#125;/events?after=&#123;cursor&#125;<br>POST /v1/runs/&#123;run_id&#125;/controls<br></code></pre></td></tr></table></figure>
+
+<p>Webhook 和 Chat API 最终都可以落到 <code>POST /v1/inputs</code>，但它们生成不同 kind、source、subject 和 trust context。<code>POST /v1/runs/&#123;run_id&#125;/controls</code> 只是 <code>kind=control</code> 的便捷 Adapter，最终仍归一化为 <code>AgentInput</code>，避免形成第二套状态模型。统一的是提交与持久化语义，不是把所有输入伪装成聊天文本。</p>
+<h1 id="边界与约束"><a href="#边界与约束" class="headerlink" title="边界与约束"></a>边界与约束</h1><p>这套 Foundation 不解决所有问题。它需要明确以下边界：</p>
+<h2 id="1-Foundation-不保证任意副作用-exactly-once"><a href="#1-Foundation-不保证任意副作用-exactly-once" class="headerlink" title="1. Foundation 不保证任意副作用 exactly-once"></a>1. Foundation 不保证任意副作用 exactly-once</h2><p>平台只能提供 deduplication、幂等键、状态确认和补偿记录。外部系统不支持幂等时，业务语义仍然需要 Adapter 处理。</p>
+<h2 id="2-不是所有事件都应该唤醒-Agent"><a href="#2-不是所有事件都应该唤醒-Agent" class="headerlink" title="2. 不是所有事件都应该唤醒 Agent"></a>2. 不是所有事件都应该唤醒 Agent</h2><p>大部分事件可能只更新 Environment projection。Activation Policy 应根据相关性、预算、风险和 Subscription 决定是否运行模型。</p>
+<h2 id="3-输入持久化不等于进入-Prompt"><a href="#3-输入持久化不等于进入-Prompt" class="headerlink" title="3. 输入持久化不等于进入 Prompt"></a>3. 输入持久化不等于进入 Prompt</h2><p>Input Log 是事实记录，ContextBundle 才是模型输入。二者之间必须有显式权限和投影边界。</p>
+<h2 id="4-Agent-Runtime-可以依赖-OS，Foundation-不应该依赖"><a href="#4-Agent-Runtime-可以依赖-OS，Foundation-不应该依赖" class="headerlink" title="4. Agent Runtime 可以依赖 OS，Foundation 不应该依赖"></a>4. Agent Runtime 可以依赖 OS，Foundation 不应该依赖</h2><p>Coding Agent 仍然适合 POSIX-like workspace 和 Shell。Foundation 必须允许 API Environment、Data Environment、Browser Environment 和无 Shell 的业务系统存在。Sandbox&#x2F;Executor 是可绑定能力，不是 Agent Session 的唯一状态容器。</p>
+<h2 id="5-Plugin-API-不等于开放所有内部状态"><a href="#5-Plugin-API-不等于开放所有内部状态" class="headerlink" title="5. Plugin API 不等于开放所有内部状态"></a>5. Plugin API 不等于开放所有内部状态</h2><p>公共契约应该小而稳定。内部 Plugin 可以丰富，跨版本平台 API 不能跟着每一种 prompt、tool 或 loop 细节变化。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>Claude Agent SDK 把成熟 Agent 封装成可编排的 native subprocess；Pi 把 loop 降为可嵌入代码；OpenClaw 把代码级 runtime 放进常驻 Gateway、Session、Channel 和 Sandbox 系统；DeepSeek Harness 又用 Service、Event 和 reversible effect 把整个 Harness 变成可组合 Plugin tree。</p>
+<p>这条演进说明 Harness 已经越来越灵活。下一阶段的主要瓶颈不再是“能不能修改 Agent loop”，而是“Agent 能不能作为一个长期存在的执行主体进入外部世界”。</p>
+<p>通用 Agent、Skill 和 Tool 解决智能与能力。Foundation 需要提供剩下的系统语义：</p>
+<ul>
+<li>外部状态以什么形式进入。</li>
+<li>哪个 Agent&#x2F;Session 应该被激活。</li>
+<li>模型实际看到哪一份带来源的 Context。</li>
+<li>Action 如何成为受授权、可审计的 Effect。</li>
+<li>Agent 如何挂起并被未来事件恢复。</li>
+<li>运行轨迹如何脱离具体连接被持久化和回放。</li>
+</ul>
+<p>因此，下一代 Agent Foundation 不应该首先被定义成一个更复杂的 Agent framework。它应该被定义成：</p>
+<blockquote>
+<p><strong>一个围绕可替换通用 Agent Runtime 的持久事件、上下文和副作用系统。它把外部状态变化转换为受权限约束的 Observation，把 Agent Action 转换为可恢复的 Effect，并通过 Subscription 让 Agent 在正确的时间重新运行。</strong></p>
+</blockquote>
+<p>Agent 的“大脑”可以继续快速变化。平台真正需要稳定的是 Agent 与世界之间的边界。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>项目实现与文档核对时间为 2026-08-16。Claude Agent SDK、Pi、OpenClaw 和 DeepSeek Harness 都在快速演进，涉及当前实现的判断以这里记录的 commit 为准。</p>
+</blockquote>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/anthropics/claude-agent-sdk-python/tree/d416278da98d61261fab0305036eacf19aa83ebc">Anthropic Claude Agent SDK for Python</a> — bundled CLI、subprocess transport、hooks、MCP 与 SessionStore 实现。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/earendil-works/pi/tree/d3ab2af969d64997338253c9151190aa1bc33580">Pi Agent Harness</a> — Agent core、Coding Agent host、Skills、Extensions 与安全边界。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.openclaw.ai/agent-runtime-architecture">OpenClaw Agent Runtime Architecture</a> — 当前 runtime ownership、<code>@openclaw/agent-core</code> 与 Harness selection；源码核对 commit 为 <a target="_blank" rel="noopener" href="https://github.com/openclaw/openclaw/tree/01a23bc8b9c65f7d63843ea12d55d8890ccb14b5"><code>01a23bc</code></a>。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.openclaw.ai/concepts/agent-loop">OpenClaw Agent Loop</a> — Session queue、hooks、streaming 与运行事件。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.openclaw.ai/automation/cron-jobs#webhooks">OpenClaw Webhooks</a> — <code>/hooks/wake</code> 与 <code>/hooks/agent</code> 输入语义。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.openclaw.ai/plugins/sdk-agent-harness">OpenClaw Agent Harness Plugins</a> — 可替换 Harness 的 host&#x2F;runtime 边界。</li>
+<li><a target="_blank" rel="noopener" href="https://deepseek.com/harness/en/">DeepSeek Harness</a> — Everything is a plugin 与 runtime modes。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/deepseek-ai/deepseek-harness/blob/47f943859bef60e4160492346772ded9b24f765a/docs/architecture.md">DeepSeek Harness Architecture</a> — Cordis、Session Event、Agent Event、inbox 和 capability seam。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cordiverse/cordis/tree/8cc9e33fab69e2d0476d126baaf2acb24e6a6ab4">Cordis</a> — Service、typed event、Fiber 与 reversible effect。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md">CloudEvents Specification v1.0.2</a> — vendor-neutral event envelope。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.temporal.io/develop/python/message-passing">Temporal Workflow Message Passing</a> — Signal、Update、Query 与 durable workflow interaction。</li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/learn/architecture">Model Context Protocol Architecture</a> — Host、Client、Server 与 capability negotiation 边界。</li>
+<li><a target="_blank" rel="noopener" href="https://agentclientprotocol.com/protocol/v1/overview">Agent Client Protocol Overview</a> — Client-Agent Session、prompt、update、permission 与 file&#x2F;terminal capability。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI-Engineering/" class="category-chain-item">AI Engineering</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Architecture/" class="print-no-link">#Architecture</a>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/Cloud-Agent/" class="print-no-link">#Cloud Agent</a>
+      
+        <a href="/tags/Agent-Foundation/" class="print-no-link">#Agent Foundation</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>下一代 Agent Foundation：标准化 Agent 与世界的边界</div>
+      <div>https://blog.wh1isper.top/2026/08/16/next-generation-agent-foundation/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/16/ai-weekly-2026-08-16/" title="AI 行业周报 · 2026 年 8 月第 3 周（8/10 - 8/16）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AI 行业周报 · 2026 年 8 月第 3 周（8/10 - 8/16）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/09/ai-weekly-2026-08-09/" title="AI 行业周报 · 2026 年 8 月第 2 周（8/3 - 8/9）">
+                        <span class="hidden-mobile">AI 行业周报 · 2026 年 8 月第 2 周（8/3 - 8/9）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
