@@ -1,0 +1,842 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="从《实践论》关于感性认识与理性认识的讨论出发，理解软件开发中的抽象过程。自然语言表达、架构设计和代码实现都依赖于对实际问题的认识，AI 的作用在于帮助人通过实践形成和修正这种认识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 编程中，人的理解从哪里来">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/10/07/ai-coding-understanding-through-practice/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="从《实践论》关于感性认识与理性认识的讨论出发，理解软件开发中的抽象过程。自然语言表达、架构设计和代码实现都依赖于对实际问题的认识，AI 的作用在于帮助人通过实践形成和修正这种认识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-10-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-07T02:54:15.974Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="软件工程">
+<meta property="article:tag" content="架构设计">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>AI 编程中，人的理解从哪里来 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <meta property="og:image" content="https://blog.wh1isper.top/img/post-bg-coffee.jpeg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI 编程中，人的理解从哪里来","url":"https://blog.wh1isper.top/2026/10/07/ai-coding-understanding-through-practice/","datePublished":"2026-10-06T16:00:00.000Z","dateModified":"2026-10-07T02:54:15.974Z","author":{"@type":"Person","name":"Wh1isper"},"publisher":{"@type":"Person","name":"Wh1isper"},"description":"从《实践论》关于感性认识与理性认识的讨论出发，理解软件开发中的抽象过程。自然语言表达、架构设计和代码实现都依赖于对实际问题的认识，AI 的作用在于帮助人通过实践形成和修正这种认识。","image":"https://blog.wh1isper.top/img/post-bg-coffee.jpeg"}</script>
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/10/07/ai-coding-understanding-through-practice/">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/AI-Weekly/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>AI Weekly</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-coffee.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从实际需求形成抽象认识，再用语言、架构和代码表达"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-10-07 00:00" pubdate>
+          2026年10月7日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从实际需求形成抽象认识，再用语言、架构和代码表达</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在<a href="/2026/02/02/AI-Assisted-Development-Consistency/" title="AI 辅助开发下，如何保持项目一致性">《AI 辅助开发下，如何保持项目一致性》</a>中，我强调过理解和架构的重要性。在<a href="/2026/03/13/ai-coding-is-a-framework/" title="AI Coding is a framework, and...">《AI Coding is a framework, and...》</a>中，我讨论了自然语言描述中的歧义，以及 AI 编程对规约和判断能力的要求。</p>
+<p>继续思考这个问题，我觉得还需要说明，架构、规约和代码之前的认识过程是什么。</p>
+<p>我们需要先理解实际需求，辨认其中的事物、关系和约束，形成抽象认识，才能决定怎样描述它、怎样设计系统、怎样实现。自然语言表达、架构设计和代码实现，都依赖于这个认识过程。正确的表达和设计，首先要求我们对问题形成恰当的抽象。</p>
+<p>所以，我关心的并不只是怎样让 AI 更准确地执行指令，而是怎样利用 AI，让人更快地理解正在处理的事情。</p>
+<h2 id="从具体事物到抽象认识"><a href="#从具体事物到抽象认识" class="headerlink" title="从具体事物到抽象认识"></a>从具体事物到抽象认识</h2><p>人认识物理世界，并不是把接触到的每一个现象分别记住。我们会从具体经验中分辨事物的性质，理解事物之间的关系，形成概念，并据此解释和处理尚未遇到的情况。</p>
+<p>毛泽东在<a target="_blank" rel="noopener" href="https://news.12371.cn/2017/08/29/ARTI1504001411770206.shtml">《实践论》</a>中区分了感性认识与理性认识。感性认识来自对具体事物的接触，首先表现为对现象、局部和外部联系的感受。理性认识则需要对这些材料进行思考，形成概念、判断和推理，进而认识事物的内部联系。两者不是相互独立的知识，而是同一个认识过程中的不同阶段。</p>
+<p>我认为，这也是理解软件开发的一个重要出发点。</p>
+<p>软件所处理的对象可能是物理过程，也可能是人的活动、组织中的规则，或者已有计算系统的行为。无论对象是什么，我们都需要从具体情况中形成能够用于设计的认识。</p>
+<p>用户提出的要求、日常操作的顺序、发生过的问题，提供了最初的材料。知道这些情况，还不等于理解了需求。我们需要进一步判断，哪些情况属于同一个概念，哪些关系必须保留，哪些差异会影响结果，哪些细节与当前问题无关。</p>
+<p>这个过程就是抽象。抽象不是先选一个设计模式，也不是给已有代码增加几层接口，而是对实际问题中的事物及其关系作出判断。</p>
+<p>例如，一项工作可能需要多次尝试才能完成。“要完成的工作”和“某一次尝试”是否应该是两个概念，取决于实际活动中它们是否有不同的状态、记录和处理规则。它们被写成两个类，是后面的实现决定；认识到它们不是同一件事，才是更早发生的抽象判断。</p>
+<p>同样，把两个名称不同的业务过程归入同一个概念，也需要理解它们是否具有相同的关系和约束。名称不同不一定意味着本质不同，操作看起来相似也不一定意味着可以使用同一个抽象。</p>
+<p>正确的抽象，应当在当前问题所需的范围内反映这些关系。它的依据是实际事物，而不是概念本身是否常见、形式是否整齐。</p>
+<h2 id="表达、架构和代码，是认识的不同表现"><a href="#表达、架构和代码，是认识的不同表现" class="headerlink" title="表达、架构和代码，是认识的不同表现"></a>表达、架构和代码，是认识的不同表现</h2><p>我们通常把需求描述、架构设计和编码分成几项工作。这样的分工有实际意义，但容易让人忽略它们共同依赖的东西。</p>
+<p>用自然语言说明一项业务，需要知道其中有哪些对象、关系和规则。设计模块和接口，需要知道这些关系应该由谁负责、哪些约束必须共同维护。编写程序，则需要把这些判断落实为数据、状态和操作。</p>
+<p>它们的形式不同，但都在表达我们对问题的认识。认识中的错误，也可能同时出现在文档、架构和代码里。三者保持一致，只能说明它们采用了同一种理解，不能说明这种理解符合实际。</p>
+<p>这也是我所说的“当你能正确表达自己想要什么时，已经很接近设计好架构”的含义。这里的正确表达，不是写出一篇流畅的需求说明，而是能够说明系统中的概念是什么，它们为什么这样划分，彼此有什么关系，哪些条件下应该发生什么行为。</p>
+<p>到了这一步，架构中许多重要的决定已经有了依据。后续仍然需要技术选择和实现工作，但不能把前面的认识过程当作单纯的写作准备。</p>
+<p>Dijkstra 在 <a target="_blank" rel="noopener" href="https://www.cs.utexas.edu/~EWD/transcriptions/EWD06xx/EWD667.html">On the foolishness of “natural language programming”</a> 中反对把形式化语言视为编程困难的主要来源。他强调，形式化符号本身能够帮助人进行精确思考，改用自然语言并不必然减少人的工作。</p>
+<p>我与这个判断相近的地方是：换一种表达方式，并没有免除理解问题的工作。我的关注点则更靠前。无论最后使用自然语言还是编程语言，我们都需要先辨认实际问题，形成可以被表达的抽象认识。</p>
+<p>这种认识也不是必须在写作和编码之前一次完成。尝试描述一件事情，会暴露概念之间的矛盾；尝试实现，也会使原先没有注意到的关系变得明确。表达和实现既是当前认识的结果，也可以继续参与认识的形成。</p>
+<h2 id="实践的意义，在于形成和修正抽象"><a href="#实践的意义，在于形成和修正抽象" class="headerlink" title="实践的意义，在于形成和修正抽象"></a>实践的意义，在于形成和修正抽象</h2><p>这正是《实践论》对这个问题的重要性。它不只是告诉我们，设计完以后应该进行测试。它还讨论了设计所依赖的认识如何产生：人在实践中接触具体事物，通过思考形成抽象，再用这种认识指导实践。</p>
+<p>如果只强调最后的检验，就会把抽象的形成当作一项已经完成的工作，仿佛我们一开始就知道应该有哪些概念，只需要验证代码有没有写对。实际开发中，更困难的情况往往是，我们还不知道应该怎样理解这个问题。</p>
+<p>最初的设计包含了已有经验，也包含了对当前问题的推测。在实现和使用过程中，我们会发现，有些原先认为相同的情况需要不同处理，有些被划为不同模块的行为却必须共同变化，还有一些复杂规则实际上来自同一个约束。</p>
+<p>这些结果要求我们重新判断概念及其关系。这个判断发生变化，才意味着理解得到了修正。仅仅在每一种新情况出现时增加一段处理代码，并不意味着已经获得了更准确的认识。</p>
+<p>在<a target="_blank" rel="noopener" href="http://dangjian.people.com.cn/n/2015/0316/c117092-26697670.html">《人的正确思想是从哪里来的？》</a>中，毛泽东也指出，由经验形成的思想、计划和办法，仍然需要回到实践中检验；正确认识往往需要经过实践与认识之间的多次反复。</p>
+<p>放到软件开发中，我更愿意把这个过程理解为：我们不是拿着一个始终正确的抽象去完成实现，而是在实际工作中逐渐认识到，应该怎样抽象这个问题。</p>
+<p>这并不要求所有经验都由自己重新获得。文档、已有系统和其他人的实践，可以帮助我们形成初步认识。但把已有概念用于当前问题时，仍然需要理解它所描述的关系，以及这些关系在这里是否成立。</p>
+<h2 id="为什么我说一件事情要做三遍"><a href="#为什么我说一件事情要做三遍" class="headerlink" title="为什么我说一件事情要做三遍"></a>为什么我说一件事情要做三遍</h2><p>我经常说，当你把一件事情做三遍，基本上就理解了它，也能够把它做对。</p>
+<p>这里重要的不是三这个数字，而是反复实践中认识的变化。</p>
+<p>第一次做的时候，我通常只能按照已有经验和眼前的要求理解问题。哪些东西应该放在一起，哪些关系值得单独表达，很多判断并没有充分依据。实现使这些判断产生了具体结果，也让我获得了仅靠设想没有获得的认识。</p>
+<p>再做一次时，我已经知道第一遍的哪些概念不合适。有些复杂性来自实际需求，有些则是自己理解错误造成的。此时重新设计，能够更明确地区分二者，不必继续沿用最初的划分。</p>
+<p>继续做下去，才可能形成相对稳定的抽象，知道哪些关系是必要的，哪些结构可以去掉，以及每项设计决定所依赖的条件。</p>
+<p>因此，重做的价值不在于得到更多版本，而在于每一遍都改变了对事情的理解。只是更换措辞、重新生成代码，而没有重新认识问题，并不能获得同样的结果。</p>
+<p>这也解释了为什么有经验的人能够更快地完成设计。对他而言，其中一些认识过程已经在过去的实践中发生过。但面对不同的条件，这些认识仍然需要调整，不能因为过去做成过，就默认现在的问题与过去相同。</p>
+<h2 id="AI-应当帮助我们更快地完成这个认识过程"><a href="#AI-应当帮助我们更快地完成这个认识过程" class="headerlink" title="AI 应当帮助我们更快地完成这个认识过程"></a>AI 应当帮助我们更快地完成这个认识过程</h2><p>如果把 AI 的作用限定为执行已经完整确定的设计，就只使用了它在实现阶段的能力。对我而言，更值得利用的是，它可以帮助我们把尚不成熟的认识具体实现出来，让我们有机会检查这种理解是否成立。</p>
+<p>我们可以让 AI 帮助构造实现，观察实际行为，比较不同划分所带来的结果。这里要验证的，不只是程序是否符合描述，还有描述所依据的概念和关系是否符合实际需求。</p>
+<p>AI 也可以提出新的概念和方案，但接受一个方案之前，我们仍然需要理解它解释了什么、忽略了什么。不能因为代码能够运行，就把 AI 给出的划分直接当成自己已经掌握的认识。</p>
+<p>人参与这个过程，不以亲手输入每一行代码为条件。更重要的是，能否从结果中认识到原先的判断哪里不充分，并据此形成新的判断。AI 可以承担一部分实现工作，却不能使人自动获得对实现对象的理解。</p>
+<p>当认识发生变化以后，再利用 AI 进行整体重构，就有了明确的依据。我们已经能够说明原先的抽象有什么问题，新的概念怎样组织，系统应当保留哪些关系。重构是在代码中重新表达这些认识，而不只是整理旧代码。</p>
+<p>我所期待的优雅，也来自这里：对事情理解得更准确，必要的关系得到明确表达，不必要的区分和重复得以去除。它不是在不充分的理解上增加更多设计技巧。</p>
+<p>所以，AI 编程中值得追求的，不只是更快地把想法变成代码，而是更快地从实际问题中形成正确的抽象认识。自然语言描述、架构和实现，都是这个认识过程的具体表现。利用 AI 做实现和验证，再按照新的理解重构，最终服务的仍然是人对事物的理解。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" class="print-no-link">#软件工程</a>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="print-no-link">#架构设计</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI 编程中，人的理解从哪里来</div>
+      <div>https://blog.wh1isper.top/2026/10/07/ai-coding-understanding-through-practice/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年10月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/10/07/own-your-agent-infrastructure/" title="组织应该拥有自己的 Agent 基础设施">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">组织应该拥有自己的 Agent 基础设施</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/10/04/ai-weekly-2026-10-04/" title="AI 行业周报 · 2026 年 10 月第 1 周（9/28 - 10/04）">
+                        <span class="hidden-mobile">AI 行业周报 · 2026 年 10 月第 1 周（9/28 - 10/04）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,857 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="从 Personal Agent 的长期运行与自主控制出发，讨论共同上下文中的组织协作、Self-host 与 Managed Agent 的关系，以及 Agent Foundation 从 Harness 到托管服务全面开源的选择。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组织应该拥有自己的 Agent 基础设施">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/10/07/own-your-agent-infrastructure/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="从 Personal Agent 的长期运行与自主控制出发，讨论共同上下文中的组织协作、Self-host 与 Managed Agent 的关系，以及 Agent Foundation 从 Harness 到托管服务全面开源的选择。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-10-07T02:45:00.000Z">
+<meta property="article:modified_time" content="2026-10-07T02:54:15.974Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="开源">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="AI Native">
+<meta property="article:tag" content="组织思考">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>组织应该拥有自己的 Agent 基础设施 - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <meta property="og:image" content="https://blog.wh1isper.top/img/post-bg-coffee.jpeg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"组织应该拥有自己的 Agent 基础设施","url":"https://blog.wh1isper.top/2026/10/07/own-your-agent-infrastructure/","datePublished":"2026-10-07T02:45:00.000Z","dateModified":"2026-10-07T02:54:15.974Z","author":{"@type":"Person","name":"Wh1isper"},"publisher":{"@type":"Person","name":"Wh1isper"},"description":"从 Personal Agent 的长期运行与自主控制出发，讨论共同上下文中的组织协作、Self-host 与 Managed Agent 的关系，以及 Agent Foundation 从 Harness 到托管服务全面开源的选择。","image":"https://blog.wh1isper.top/img/post-bg-coffee.jpeg"}</script>
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/10/07/own-your-agent-infrastructure/">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/AI-Weekly/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>AI Weekly</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-coffee.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从 Personal Agent 到共同上下文，以及我们为什么全栈开源 Agent Foundation"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-10-07 10:45" pubdate>
+          2026年10月7日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从 Personal Agent 到共同上下文，以及我们为什么全栈开源 Agent Foundation</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>我越来越倾向于一个判断：未来，一个团队、组织，甚至兴趣小组，自行部署和定制自己的 Agent，会是一件很正常的事。</p>
+<p>原因不只是担心数据交给厂商。当 Agent 开始长期参与工作，它的记忆、工具、执行规则和运行方式，也会逐渐成为这个群体工作方式的一部分。人们会希望使用它，也会希望改变它。</p>
+<p>这也是我们选择把 <a target="_blank" rel="noopener" href="https://github.com/converge-ai-labs/agent-foundation/">Agent Foundation</a> 从 Harness 到 Managed Agent Service 全面开源的出发点：<strong>组织应该能够持续塑造自己的工作方式，Agent 基础设施不应成为新的限制。</strong></p>
+<span id="more"></span>
+
+<h2 id="Personal-Agent-带来的第三个问题"><a href="#Personal-Agent-带来的第三个问题" class="headerlink" title="Personal Agent 带来的第三个问题"></a>Personal Agent 带来的第三个问题</h2><p>我理解的 Personal Agent，是围绕一个人长期积累上下文、执行任务并跟进事务的系统。这里的 Personal 强调持续服务关系，而不只是一个带有人设的聊天窗口。</p>
+<p>要实现这样的系统，至少有两类直接的复杂度。</p>
+<p>一类是运行能力：记忆如何维护，任务如何长时间执行，进程中断后怎样恢复，等待用户确认时如何保留工作状态。</p>
+<p>另一类是安全边界：Agent 可以读取哪些数据，使用谁的身份，执行哪些操作，什么时候必须停下来请求授权。</p>
+<p>我更想讨论第三类问题：<strong>谁掌控这套系统。</strong></p>
+<p>即使一个托管产品足够可靠，也有合理的安全机制，用户仍然可能希望自己保存长期记忆、接入内部工具、修改执行行为，或者把服务迁移到现有基础设施上。可靠性和安全性不能代替这种控制权。</p>
+<p>对个人来说，这可能只是偏好。对一个有共同资料、共同事务和自身规则的群体来说，它会影响长期协作。过去做过什么决定、为什么这样做、哪些尝试失败过，这些内容不应该只能存在于某个成员的私人助手里，也不应该只能按照某个厂商预先定义的方式使用。</p>
+<h2 id="我期待的扁平，是上下文中的扁平"><a href="#我期待的扁平，是上下文中的扁平" class="headerlink" title="我期待的扁平，是上下文中的扁平"></a>我期待的扁平，是上下文中的扁平</h2><p>在之前的 <a href="/2026/02/08/AI-Native-Organization-Thoughts/" title="AI Native 组织思考">《AI Native 组织思考》</a> 中，我把未来组织想象成一个“超级兴趣小组”：人们因为共同目标聚在一起，通过探索和交流，把个体认知汇入集体工作。</p>
+<p>后来在 <a href="/2026/03/16/some-thoughts/" title="零散的想法，无AI">《零散的想法，无AI》</a> 中，我又把这个问题表述为：当人能够借助 AI 更快地构建和改进工具，组织需要关注的，就不只是如何分配生产任务，还有如何组织集体智商、减少沟通损失。这里讨论的 Agent 基础设施，是对这个想法的一次工程回应。</p>
+<p>这里的扁平，不是组织图上少画几层。</p>
+<p>一个团队即使没有很多职级，只要每个人仍然只掌握一小块背景、只负责一个固定环节，跨越边界就必须等待别人转述和交接，它的协作方式仍然可能很僵硬。</p>
+<p>我期待的是另一种状态：人们能够在授权范围内理解共同目标、过去的决定和当前进展，再根据自己的能力、特长和兴趣参与具体问题。Agent 帮助人跨越一部分执行门槛，工作结果则能够回到共同的工作进程中。</p>
+<p>例如，设想一个开源社区准备发布新版本。有人擅长理解用户反馈，有人擅长实现，有人擅长测试和文档。他们不必都从同一份聊天记录里重新拼凑背景：相关 issue、设计决定、已知风险和未完成事项可以形成可追溯的共同资料，各自的 Agent 在权限范围内使用这些资料，贡献者再把结果补回去。</p>
+<p>这里需要区分两种尺度的上下文。在 <a href="/2025/09/02/context-is-memory/" title="LLM只是计算，Context才是内存">《LLM只是计算，Context才是内存》</a> 中，我用内存和外部存储的类比，讨论了模型实际参与推理的上下文与外部资料的区别。组织层面的共同上下文，则是能够持续维护、按需获取的工作背景；每次执行只取用其中与任务相关、且有权访问的部分。</p>
+<p>所以，共同上下文不是把所有信息塞进同一个模型窗口，也不是取消私人空间。它意味着完成工作所需的背景能够被找到、理解和更新，而不必始终依赖某个人充当信息中转站。</p>
+<p>我认为，Agent 有机会削弱固定岗位对信息和执行能力的限制，让分工更多围绕问题形成。专业能力、决策责任和冲突协调仍然存在；改变的是人参与工作的边界。</p>
+<p>这是一种值得探索的组织方向，而不是技术已经证明的必然结果。即使科层结构没有消失，让人更容易理解问题、跨越边界并做出贡献，本身也值得投入。</p>
+<h2 id="Self-host-与-Managed-Agent-并不矛盾"><a href="#Self-host-与-Managed-Agent-并不矛盾" class="headerlink" title="Self-host 与 Managed Agent 并不矛盾"></a>Self-host 与 Managed Agent 并不矛盾</h2><p>在 <a href="/2026/02/17/architecture-of-cloud-agent/" title="聊聊云上Agent的架构设计">《聊聊云上Agent的架构设计》</a> 中，我沿着 Chatbot 到执行系统的演进，讨论了消息、环境和运行状态的区别。Agent 开始操作文件、调用外部服务之后，保存聊天记录并不足以恢复一次工作。</p>
+<p>如果一个组织决定自己掌控 Agent，接下来就要面对这些实际的运行工作：接收任务、保存状态、分配执行资源、处理等待和中断，以及让成员知道任务究竟进行到了哪里。这些工程问题不应该由每个业务应用重复解决。</p>
+<p>我认可 <a target="_blank" rel="noopener" href="https://developers.openai.com/api/docs/guides/agents">OpenAI Agents API</a> 和 <a target="_blank" rel="noopener" href="https://platform.claude.com/docs/en/managed-agents/overview">Claude Managed Agents</a> 所代表的产品方向。它们把长期会话、执行环境和运行状态做成服务，应用开发者不必每次从一次模型调用开始，重新搭建整套 Agent 生命周期。</p>
+<p>这个需求是合理的。值得讨论的是：<strong>这些托管能力必须由外部厂商掌控吗？</strong></p>
+<p>一个组织完全可以自行部署服务，由内部平台负责执行、持久化、权限和恢复，再让成员与业务应用使用托管好的 Agent。对使用者来说，它是 Managed Agent；对组织来说，它是 Self-hosted Infrastructure。</p>
+<p>大多数成员不需要成为 Agent 运维工程师。组织需要有能力维护自己的服务，成员需要方便地使用它。这两件事可以同时成立。</p>
+<p>同样，自行部署也不等于拒绝所有外部服务。组织可以继续选择云模型、外部沙箱或搜索服务，关键在于知道哪些数据会离开自身边界，以及哪些组件可以替换。把 Agent 服务部署在内网，却把工作材料发送给外部模型，显然不等于“数据不出内网”。</p>
+<h2 id="要看清可以定制的是哪一层"><a href="#要看清可以定制的是哪一层" class="headerlink" title="要看清可以定制的是哪一层"></a>要看清可以定制的是哪一层</h2><p>讨论厂商锁定时，不能把模型、Harness、沙箱和托管服务混成一件事。</p>
+<p>这里的 Harness，可以理解为组织模型调用、工具执行、上下文处理及一次运行过程的执行层；Service 则进一步负责把它变成可持续使用的服务，管理资源、任务状态、调度和恢复。</p>
+<p><a target="_blank" rel="noopener" href="https://developers.openai.com/api/docs/guides/agents">OpenAI 的文档</a>区分了由平台托管 Harness 的 Agents API，以及在自己应用中运行的 Agents SDK。OpenAI 和 <a target="_blank" rel="noopener" href="https://platform.claude.com/docs/en/managed-agents/overview">Claude Managed Agents</a> 也都提供自托管沙箱选项。因此，使用这些服务，不意味着每一层执行环境都必须由模型厂商提供。</p>
+<p>不过，沙箱放在哪里，与谁掌控 Harness、会话状态和托管服务，是不同的问题。可以接入自己的执行环境，并不自动意味着可以修改整套系统。</p>
+<p>我更关心的定制边界是：当默认行为不适合组织时，能否继续往下改？是只能调整提示词和工具配置，还是能够修改执行策略、接入现有权限体系、调整状态管理，并维护自己的服务版本？</p>
+<p>封闭的托管产品可以有真实价值：减少维护工作，提供集成好的运行环境，让团队更快交付产品。我们没有必要否认这些优势。</p>
+<p>我们想提供的是另一种选择：<strong>需要托管能力的人，不必因此放弃深入修改系统的可能；需要自主控制的人，也不必从零重新拼装所有基础能力。</strong></p>
+<h2 id="定制成本下降后，基础设施应该更容易修改"><a href="#定制成本下降后，基础设施应该更容易修改" class="headerlink" title="定制成本下降后，基础设施应该更容易修改"></a>定制成本下降后，基础设施应该更容易修改</h2><p>我选择这条路线，还基于一个判断：随着 Coding Agent 继续降低定制软件的成本，个人和组织会更愿意修改工具，让工具适应自己的工作，而不是始终反过来适应工具。</p>
+<p>这也延续了 <a href="/2026/03/13/ai-coding-is-a-framework/" title="AI Coding is a framework, and...">《AI Coding is a framework, and...》</a> 中的一个提醒：实现门槛降低，不意味着复杂度消失，需求是否清楚、输出是否正确，仍然需要判断。</p>
+<p>因此，这里的成本下降，不意味着软件已经不需要维护。需求判断、验证、升级和故障处理仍然需要投入。我的判断是，当实现改动变得更容易时，过去因为成本过高而被放弃的定制需求，会更值得尝试。</p>
+<p>例如，一个研究小组可能希望按自己的资料分类维护记忆；一个开发团队可能希望把人工确认接入既有发布流程；一个社区可能希望让 Agent 遵守自己的贡献规则。这些需求未必足够普遍，不一定会进入某个通用产品的路线图，但它们对使用者可能很重要。</p>
+<p>因此，我希望 Managed Agent 服务是 hackable 的。这里指的是开发者能够理解、修改、扩展和替换系统，而不只是拥有几个配置开关。</p>
+<p>开源不会自动消除维护成本，也不会自动带来良好的可定制性。清晰的边界、可理解的实现和能够验证的行为仍然重要。它提供的是一个前提：当使用者需要继续深入时，不会因为拿不到实现而被迫停下来。</p>
+<h2 id="为什么-Agent-Foundation-从-Harness-到-Service-一起开源"><a href="#为什么-Agent-Foundation-从-Harness-到-Service-一起开源" class="headerlink" title="为什么 Agent Foundation 从 Harness 到 Service 一起开源"></a>为什么 Agent Foundation 从 Harness 到 Service 一起开源</h2><p>在 <a href="/2026/08/16/next-generation-agent-foundation/" title="下一代 Agent Foundation：标准化 Agent 与世界的边界">《下一代 Agent Foundation：标准化 Agent 与世界的边界》</a> 中，我把关注点从 Agent loop 移向了它与外部系统的连接：什么时候运行、如何获得上下文、产生什么副作用，以及等待之后如何继续。可定制的 Harness 很重要，把它接入组织既有工作过程的服务边界同样重要。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/converge-ai-labs/agent-foundation/blob/main/spec/README.md">Agent Foundation 的架构</a>提供两条使用路径：应用可以直接嵌入 Harness，也可以通过 Service 使用托管能力。Service 的 worker 复用同一个 Harness，而不是另建一套执行引擎。</p>
+<p>这对应不同程度的接管需求：</p>
+<ul>
+<li><strong>Harness</strong> 提供可嵌入的执行能力，通过插件、自定义工具和 Provider 扩展行为。</li>
+<li><strong>Service</strong> 在执行能力之上管理资源、权限和持久化运行，承担调度与恢复等托管职责。</li>
+<li><strong>Console、API 和客户端</strong>提供管理与使用入口，让人和应用能够接入这套服务。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/converge-ai-labs/agent-foundation/">项目 README</a>提供了 Docker Compose 启动路径，也保留了从源码开发和扩展各个组件的方式。直接使用与深入修改，不应该是两套互不相通的产品。</p>
+<p>如果只开放交互界面，使用者仍然无法决定底层行为；如果只开放 Harness，想提供组织级服务的人仍然需要自己建设托管层；如果只提供托管接口，执行逻辑不合适时，用户又会被限制在接口允许的范围内。</p>
+<p>这就是我们选择把这几层一起开放的原因。定制需求不应该到提示词或某个 API 的边界就被迫停止。</p>
+<p>Agent Foundation 目前仍处于活跃的 <code>0.x</code> 开发阶段，API 和配置可能继续变化。我们提供的是构建和运行 Agent 系统的基础，不是一套已经验证了所有组织协作设想的成品。具体如何组织共同记忆、怎样让贡献进入工作进程、哪些决定应当由人承担，仍然需要在真实场景中探索。</p>
+<h2 id="为不同的工作方式保留空间"><a href="#为不同的工作方式保留空间" class="headerlink" title="为不同的工作方式保留空间"></a>为不同的工作方式保留空间</h2><p>我不认为所有组织最终都应该运行同一种 Agent，也不认为某个基础设施项目能够替大家决定最佳的组织形态。</p>
+<p>我期待的恰恰是相反的方向：个人、团队和社区可以根据自己的目标，逐步形成不同的 Agent 和协作方式。有人使用完整的托管服务，有人维护自己的部署，有人深入修改 Harness，有人围绕已有能力构建产品。</p>
+<p>自治也不意味着彼此成为孤岛。在 <a href="/2026/08/17/agent-federation/" title="Agent 联邦：从云 Agent Foundation 到 Human-Agent Society">《Agent 联邦：从云 Agent Foundation 到 Human-Agent Society》</a> 中，我进一步设想了不同管理域保留自身身份、记忆和授权策略，再通过公共契约协作的方向。那是对跨域协作的推演；本文回到更基础的一步：每个群体首先应该能够掌控自己的 Agent 系统。</p>
+<p>如果 Agent 会成为长期积累知识、执行事务和开展协作的基础设施，那么人们就应该能够拥有和改变它。</p>
+<p>这也是我们开源 Agent Foundation 的理由。我们希望减少每个团队都要重复承担的基础工程，同时把工作方式的决定权留给真正使用它的人。</p>
+<p>至于未来的组织会变成什么样，我更愿意通过这些实践去寻找答案，而不是先把答案写进一个封闭产品里。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%80%E6%BA%90/" class="print-no-link">#开源</a>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/AI-Native/" class="print-no-link">#AI Native</a>
+      
+        <a href="/tags/%E7%BB%84%E7%BB%87%E6%80%9D%E8%80%83/" class="print-no-link">#组织思考</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>组织应该拥有自己的 Agent 基础设施</div>
+      <div>https://blog.wh1isper.top/2026/10/07/own-your-agent-infrastructure/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年10月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/10/07/ai-coding-understanding-through-practice/" title="AI 编程中，人的理解从哪里来">
+                        <span class="hidden-mobile">AI 编程中，人的理解从哪里来</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
