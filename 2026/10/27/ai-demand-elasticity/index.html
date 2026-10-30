@@ -1,0 +1,839 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="生产率提高以后，市场会需要多少新增工作，人们又会选择自己完成这些工作，还是购买专业团队交付的结果？这两个问题，决定了 AI 的普及会形成怎样的生产组织与工具市场。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 普及之后，还需要多少人工作？">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/10/27/ai-demand-elasticity/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="生产率提高以后，市场会需要多少新增工作，人们又会选择自己完成这些工作，还是购买专业团队交付的结果？这两个问题，决定了 AI 的普及会形成怎样的生产组织与工具市场。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wh1isper.top/img/2026-10-27-ai-demand-elasticity/01-demand-and-labor.webp">
+<meta property="og:image" content="https://blog.wh1isper.top/img/2026-10-27-ai-demand-elasticity/02-make-or-buy.webp">
+<meta property="og:image" content="https://blog.wh1isper.top/img/2026-10-27-ai-demand-elasticity/04-future-directions.webp">
+<meta property="article:published_time" content="2026-10-27T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-30T07:35:33.131Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="组织思考">
+<meta property="article:tag" content="需求弹性">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.wh1isper.top/img/2026-10-27-ai-demand-elasticity/01-demand-and-labor.webp">
+  
+  
+  
+  <title>AI 普及之后，还需要多少人工作？ - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/10/27/ai-demand-elasticity/">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI 普及之后，还需要多少人工作？","url":"https://blog.wh1isper.top/2026/10/27/ai-demand-elasticity/","datePublished":"2026-10-27T04:00:00.000Z","dateModified":"2026-10-30T07:35:33.131Z","author":{"@type":"Person","name":"Wh1isper"},"publisher":{"@type":"Person","name":"Wh1isper"},"description":"生产率提高以后，市场会需要多少新增工作，人们又会选择自己完成这些工作，还是购买专业团队交付的结果？这两个问题，决定了 AI 的普及会形成怎样的生产组织与工具市场。","image":"https://blog.wh1isper.top/img/post-bg-coffee.jpeg"}</script>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/AI-Weekly/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>AI Weekly</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-coffee.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="关于需求、专业分工，以及谁需要 AI 生产工具的一些想法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-10-27 12:00" pubdate>
+          2026年10月27日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">关于需求、专业分工，以及谁需要 AI 生产工具的一些想法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>最近我在想，我们对于 AI 普及的想象，是不是把两件需要分别解释的事当成了必然：一件是工具越来越强以后，市场会产生足够多的新工作，让原来的人继续参与生产；另一件是越来越多人有能力使用工具以后，他们就会愿意自己完成工作，于是今天的白领成为使用 AI 的白领，原来没有专业能力的人也加入进来，最终每个人都需要自己的 AI 生产工具。</p>
+<p>我觉得这两个前提都值得重新考虑，因为我们期待 AI 把十个人的工作交给一个人完成，却很少继续追问剩下九个人要做什么；我们又期待工具让普通人掌握专业能力，却同样没有解释，当专业团队也能以更低的价格提供服务时，普通人为什么一定会选择自己做。在 <a href="/2026/03/16/some-thoughts/" title="零散的想法，无AI">《零散的想法，无AI》</a> 中，我讨论过更强的个人生产能力如何改变组织，现在想继续想清楚的，就是这种变化究竟会扩大多少生产活动，又会把生产交给谁。</p>
+<span id="more"></span>
+
+<h2 id="生产能力有了，需求从哪里来"><a href="#生产能力有了，需求从哪里来" class="headerlink" title="生产能力有了，需求从哪里来"></a>生产能力有了，需求从哪里来</h2><p><img src="/img/2026-10-27-ai-demand-elasticity/01-demand-and-labor.webp" srcset="/img/loading.gif" lazyload alt="同等质量下的假设算例：订单翻倍，单位人工投入降至十分之一，总工时仍减少 80%。"></p>
+<p>先看第一件事，如果一种质量不变的服务原来每月交付一百单、每单需要十小时，引入 AI 后把包括审核和返工在内的人工投入降到每单一小时，那么即使订单翻倍，总工时仍然会从一千小时降到两百小时，只有订单增长到原来的十倍，才能用到原来那么多人工；在人均工作时长不变的情况下，市场需要多少人，取决于业务增长与单位人工投入下降共同作用的结果，因此完全可能出现服务更多了、客户更多了，参与生产的人反而更少的情况。</p>
+<p>这里涉及的一个概念是<a target="_blank" rel="noopener" href="https://openstax.org/books/principles-economics-3e/pages/5-3-elasticity-and-pricing">需求价格弹性</a>，也就是在其他条件不变时，价格变化会带来多大比例的需求量变化；价格小幅下降 1%，需求量增加超过 1%，称为富有弹性，增加不足 1% 则称为缺乏弹性。James Bessen 在 <a target="_blank" rel="noopener" href="https://www.nber.org/papers/w24235">《AI and Jobs: The Role of Demand》</a>里讨论的正是这种需求响应与自动化的关系：技术节省了每单位产出需要的劳动，同时也可能通过降价扩大市场，而扩大出来的市场能否吸收被节省的劳动，决定了这类生产活动最终需要多少人。</p>
+<p>从生产率到新增需求，中间还隔着最终服务的价格，因为客户支付的是整个交付过程的费用，写代码变快以后，需求确认、接入和维护仍然可能占据很大一部分成本，服务价格也就未必按写代码的效率同比下降。要期待降价带来足够多的新业务，就需要同时解释两件事：效率提升有多少传到了客户支付的价格上，以及客户在这个新价格下究竟会多购买多少服务。</p>
+<p>我比较怀疑的，是把“人们总有更多需求”直接作为答案，因为有些工作首先受业务本身约束，例如在企业数量、申报规则和频次不变的情况下，整理申报材料变便宜，并不会让同一家企业需要完成十倍的申报；另一些工作的生成成本虽然可以不断下降，使用它们却仍然需要人的时间，一个团队能生成一百份报告，与这个团队有能力读完、判断并执行一百份报告，之间还有很大的距离。</p>
+<p>新增需求当然也可以来自过去买不起服务的人，例如一家小企业终于能够负担以前太贵的内部系统，这时确实多了一项原来没有发生的交易；但需要继续算的是，这个系统交付之后还需要多少人工，以及有多少家这样的企业会真正购买，而不能因为软件数量增加了，就把增加的软件直接换算成同比例增加的开发岗位。<a target="_blank" rel="noopener" href="https://www.aeaweb.org/articles?id=10.1257/jep.33.2.3">Acemoglu 与 Restrepo 关于自动化和新任务的讨论</a>，也把人在新任务中承担的工作作为劳动需求恢复的重要来源，这意味着“出现了以前没人做的事”之后，还要继续问“这些事需要多少人来做”。</p>
+<p>所以，需求弹性给我的启发，是把新增需求放回需要解释的位置：如果我们认为原来的劳动会被新的经济活动吸收，就应该找到这些活动在哪里、为什么现在能够成立，以及它们需要多少人工，而不是在论证工具时使用“一人完成十人的工作”，到了估算市场时，又默认那十个人都在同样的位置上。</p>
+<h2 id="工具变容易以后，谁会亲自做"><a href="#工具变容易以后，谁会亲自做" class="headerlink" title="工具变容易以后，谁会亲自做"></a>工具变容易以后，谁会亲自做</h2><p><img src="/img/2026-10-27-ai-demand-elasticity/02-make-or-buy.webp" srcset="/img/loading.gif" lazyload alt="自己做与购买服务都能使用 AI，需要比较执行、验证、维护与报价、沟通、验收的完整成本。"></p>
+<p>即使新需求真的足够多，谁来完成这些工作仍然是另一个问题。一个原来买不起软件的企业，可能因为开发工具变容易而自己做，也可能因为专业团队的报价下降而开始买，两条路径都能扩大软件的使用范围，但前者增加了直接使用开发工具的人，后者增加的是专业团队的客户；如果我们做的是生产工具，这两种增长对应的购买者就很不一样。</p>
+<p>这里有一个容易被忽略的比较：<strong>AI 降低了一个人自己做事的成本，也让专业团队有条件以更低的价格提供服务，因此“自己做变便宜了”之后，还需要比较“买别人做的结果是不是更划算”。</strong>假设一家企业需要一个内部系统，AI 可以帮助它很快生成初版，但如果企业仍然需要有人弄清楚业务规则、判断系统是否正确、处理之后的变化，那么自己做的成本就还包含这些人的时间；而一个反复交付同类系统的团队，如果能够把这部分经验和工具复用到不同客户上，就可能在更快开发的同时，把完整服务卖得更便宜。</p>
+<p>在这样的工作里，我认为专业分工有继续存在的理由，因为客户想要的是业务能够运行，参与开发则是获得这个结果的一种手段，当购买服务比自己组织交付更省事、更划算时，工具能力的提升反而可能让更多客户愿意把工作交出去。这个专业团队可以属于外部供应商，也可以是企业内部负责某类工作的几个人，关键在于有一群人持续掌握这套生产过程，其他人通过他们获得结果。</p>
+<p>自己完成工作也有很具体的成立条件：如果一个人的需求变化频繁，他可以直接判断结果是否正确，而每次向别人解释和等待交付都要付出明显成本，那么工具越容易使用，他就越有理由亲自做，因为此时被节省的除了执行时间，还有反复交接的时间。比如一个熟悉自己业务的人用 AI 写一次性的数据处理脚本，只要结果容易检查，把任务留在自己手里就可能比完整地交给另一支团队更直接。</p>
+<p>我想判断的是这两类工作的边界会怎样变化：在需要长期维护、专业判断和持续交付的地方，工具可能主要增强专业团队；在个人能够定义需求、检查结果并承担后续处理的地方，工具则更可能扩大直接生产者的范围。如果未来 AI 连需求澄清、验证和维护也一起解决了，自助完成工作的范围还会继续扩张，因此专业团队是否会成为主要的交付者，要看它们承担的那部分工作究竟还有多少值得由人来组织。</p>
+<h2 id="享受结果的人，和组织生产的人"><a href="#享受结果的人，和组织生产的人" class="headerlink" title="享受结果的人，和组织生产的人"></a>享受结果的人，和组织生产的人</h2><p>把这两件事放到一起，我最关心的一种可能性就清楚了：某些白领工作的新增需求不足以抵消单位人工投入的下降，同时这些工作中仍然需要持续组织和判断的部分，由更小的专业团队承担，于是大量客户通过这些团队消费 AI 参与生产的结果，技术已经进入更多经济活动，直接使用专业生产工具的人却可能减少。需求增长足够快时，这些团队也可能越来越多，因此决定操作者总数的，仍然是有多少工作需要完成，而不能只看单个团队变小了多少。</p>
+<p>这会改变我对 AI 产品用户的理解，因为一个人能够从 AI 中获益，未必意味着他需要管理模型、组合工具和维护执行流程；假设一个团队为几十家企业交付系统，那么真正需要专业开发环境的是交付团队，而那些企业购买的是系统和服务，如果我们把几十家企业都算成专业工具的潜在用户，就已经把购买结果与组织生产当成了同一件事。</p>
+<p>对生产工具而言，这样的市场仍然可以很有价值，因为专业团队可能愿意为更可靠的执行、更深入的系统连接和更高的交付效率付费，它们的使用强度也可能随着客户增加而上升；只是这里的价值来自帮助实际承担生产的人完成更多工作，产品需要理解这些人的工作方式，而不能仅仅依靠“所有人以后都会用 AI”来解释自己为什么会拥有更多用户。</p>
+<p>我现在愿意保留的判断是：AI 能力的普及，可以通过更多人自己完成工作实现，也可以通过更便宜的专业服务实现，而这两条路径对生产者数量、工具购买者和组织方式的影响并不相同。对于准备做产品的人来说，需要找到的是哪一群人会持续组织生产、他们为什么愿意承担这项工作，以及我们能帮助他们解决什么；至于一个人因为生产工具进步而更容易获得结果之后，会选择亲自生产还是把时间花在别处，本身就是这个市场需要回答的问题。</p>
+<h2 id="我们可以往哪里走"><a href="#我们可以往哪里走" class="headerlink" title="我们可以往哪里走"></a>我们可以往哪里走</h2><p><img src="/img/2026-10-27-ai-demand-elasticity/04-future-directions.webp" srcset="/img/loading.gif" lazyload alt="三个可以探索的发展方向：提供算力、为企业和专业团队做平台、进入企业内部开展 AI 实践。"></p>
+<p>沿着前面的判断继续想，如果专业生产越来越多地由小团队承担，而其他人主要通过这些团队获得结果，那么对我们来说，值得考虑的就是怎样参与这种生产组织：提供它依赖的计算能力，帮助它建立自己的工作平台，或者进入组织内部，成为实际使用 AI 推动业务的人。我会优先考虑这三个方向，因为它们分别对应生产需要的资源、组织生产的方法，以及把生产能力用到具体问题上的人。</p>
+<p>第一个方向是提供算力和相关基础设施，把客户放在那些真正运行 AI 工作的组织和团队上，围绕他们持续发生的计算需求提供服务，而不直接经营面向每个人的生产工具或某一种具体结果的交付。对这个方向来说，我更关心的是一个团队在承担更多业务以后需要运行多少计算、怎样稳定地获得这些计算能力，以及我们能否把它提供得更有效率，因为这里的需求来自生产活动本身，衡量它的尺度也就可以从有多少人购买工具，转向有多少工作通过这套基础设施完成。</p>
+<p>第二个方向是做平台，给企业和专业团队定制工作方式，把他们的数据、工具、执行流程和验收要求组织到一起，使他们能够用 AI 承担更完整的交付。如果一个团队已经知道客户要什么、什么样的结果可以交付，却反复花时间把自己的方法翻译成通用产品允许的操作，那么帮助它把这些方法直接变成可运行的流程，就是我认为值得做的事情；我们服务的是有明确生产目标的人，平台的价值也来自这些人能够怎样工作，以及他们能否持续调整自己的工作方式。</p>
+<p>第三个方向更接近个人选择：成为大企业里面真正使用 AI 的人，参与把原来的业务改造成更少的人也能够运行的流程，争取留在组织下一阶段仍然需要的工作里。这里我关心的是一个人能否把业务知识、工具能力和结果判断结合起来，例如知道一项工作为什么存在、哪些部分可以交给 AI、什么结果需要重新处理，并且能够推动整套流程在企业里运转，因为当组织重新决定需要哪些岗位时，已经参与建设和运行新流程，与继续等待原来的任务被分配下来，是两种很不同的位置。</p>
+<p>这三个方向也是我想继续实践的事情：提供计算资源，帮助专业生产者建立平台，或者亲自进入生产组织，把 AI 变成真实的工作能力；它们共同要求我们找到实际发生的生产活动，理解谁在承担工作、谁在购买结果，再决定自己应该提供什么，而不是先假定所有人都会成为专业工具的用户，然后围绕这个假定建设产品。</p>
+<p><em>配图由 GPT Image 2 生成，用于解释文中的假设与观点。</em></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://openstax.org/books/principles-economics-3e/pages/5-3-elasticity-and-pricing">OpenStax — Principles of Economics 3e, 5.3 Elasticity and Pricing</a>：需求价格弹性与价格变化。</li>
+<li><a target="_blank" rel="noopener" href="https://www.nber.org/papers/w24235">James Bessen — AI and Jobs: The Role of Demand</a>，NBER Working Paper 24235，2018：自动化、需求响应与行业劳动投入。</li>
+<li><a target="_blank" rel="noopener" href="https://www.aeaweb.org/articles?id=10.1257/jep.33.2.3">Daron Acemoglu、Pascual Restrepo — Automation and New Tasks: How Technology Displaces and Reinstates Labor</a>，Journal of Economic Perspectives，2019：既有任务的替代与新任务带来的劳动需求。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/%E7%BB%84%E7%BB%87%E6%80%9D%E8%80%83/" class="print-no-link">#组织思考</a>
+      
+        <a href="/tags/%E9%9C%80%E6%B1%82%E5%BC%B9%E6%80%A7/" class="print-no-link">#需求弹性</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI 普及之后，还需要多少人工作？</div>
+      <div>https://blog.wh1isper.top/2026/10/27/ai-demand-elasticity/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年10月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/10/30/ai-labor-and-social-reproduction/" title="当生产不再需要那么多人，生活靠什么维系？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">当生产不再需要那么多人，生活靠什么维系？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/10/25/ai-weekly-2026-10-25/" title="AI 行业周报 · 2026 年 10 月第 4 周（10/19 - 10/25）">
+                        <span class="hidden-mobile">AI 行业周报 · 2026 年 10 月第 4 周（10/19 - 10/25）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

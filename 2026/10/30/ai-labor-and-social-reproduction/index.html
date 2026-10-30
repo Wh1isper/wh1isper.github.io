@@ -1,0 +1,877 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper 与 AI 的讨论整理">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="AI 节省劳动之后，新增就业能否支撑稳定生活？这篇讨论整理从人口下降和投资繁荣出发，追问中产形成的路径、生产资料的所有权，以及人能否分享不再依赖自身劳动的生产能力。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="当生产不再需要那么多人，生活靠什么维系？">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/10/30/ai-labor-and-social-reproduction/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="AI 节省劳动之后，新增就业能否支撑稳定生活？这篇讨论整理从人口下降和投资繁荣出发，追问中产形成的路径、生产资料的所有权，以及人能否分享不再依赖自身劳动的生产能力。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-10-30T07:30:00.000Z">
+<meta property="article:modified_time" content="2026-10-30T07:35:33.131Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="劳动">
+<meta property="article:tag" content="中产阶层">
+<meta property="article:tag" content="社会再生产">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>当生产不再需要那么多人，生活靠什么维系？ - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/10/30/ai-labor-and-social-reproduction/">
+  <meta property="og:image" content="https://blog.wh1isper.top/img/post-bg-coffee.jpeg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"当生产不再需要那么多人，生活靠什么维系？","url":"https://blog.wh1isper.top/2026/10/30/ai-labor-and-social-reproduction/","datePublished":"2026-10-30T07:30:00.000Z","dateModified":"2026-10-30T07:35:33.131Z","author":{"@type":"Person","name":"Wh1isper 与 AI 的讨论整理"},"publisher":{"@type":"Person","name":"Wh1isper 与 AI 的讨论整理"},"description":"AI 节省劳动之后，新增就业能否支撑稳定生活？这篇讨论整理从人口下降和投资繁荣出发，追问中产形成的路径、生产资料的所有权，以及人能否分享不再依赖自身劳动的生产能力。","image":"https://blog.wh1isper.top/img/post-bg-coffee.jpeg"}</script>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/AI-Weekly/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>AI Weekly</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-coffee.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从 AI 的劳动替代，到中产阶层的再生产"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-10-30 15:30" pubdate>
+          2026年10月30日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从 AI 的劳动替代，到中产阶层的再生产</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>本文根据 Wh1isper 与 AI（gpt-6-astra）的讨论整理。文章保留讨论中逐步形成的逻辑，区分研究结论、条件推演与价值判断。</p>
+</blockquote>
+<p>在 <a href="/2026/10/27/ai-demand-elasticity/" title="AI 普及之后，还需要多少人工作？">《AI 普及之后，还需要多少人工作？》</a> 之后，讨论继续向前推进：如果 AI 能让更少的人完成更多工作，而新增需求又不足以吸收被节省的劳动，那么剩下的人靠什么生活？</p>
+<p>最初的猜想是，也许只有等到人口下降、劳动力短缺，AI 的大规模应用才能顺畅发生。随后，问题转向了资本主义的再生产、繁荣之后的衰退，以及一个更具体的担忧：即使经济继续增长，普通人通过工作进入中产的路径，会不会越来越窄？</p>
+<p>最后，讨论停在了一个让人感到无力的矛盾上：<strong>生产越来越不需要人的劳动，人却仍然需要出售劳动，才能获得生活资料。</strong></p>
+<p>以下推演关注三个条件同时存在的情景：劳动替代快于新任务与需求扩张，生产率收益较为集中，而多数人的生活保障仍主要依附于就业。问题是，这些条件如何相互作用，以及其中哪些连接可以改变。</p>
+<span id="more"></span>
+
+<h2 id="人口下降提供的是缓冲，不是采用-AI-的前提"><a href="#人口下降提供的是缓冲，不是采用-AI-的前提" class="headerlink" title="人口下降提供的是缓冲，不是采用 AI 的前提"></a>人口下降提供的是缓冲，不是采用 AI 的前提</h2><p>企业采用 AI，首先比较的是完整成本与交付能力。假设同样的业务原来需要一百人，现在二十人加一套系统就能完成，并且计入审核、返工和维护后仍然更便宜，那么即使社会上劳动力充足，企业也有采用它的理由。竞争对手降价，还可能让这种采用成为维持经营的条件。</p>
+<p>人口下降改变的是社会吸收替代冲击的方式。假设退休后只剩八十人，而 AI 恰好让八十人完成原来一百人的工作，自动化就在填补缺口。如果系统让二十人就能完成工作，劳动力自然减少仍不足以吸收全部调整。</p>
+<p>真正相关的变量，是需要交付的服务与能够提供劳动的人之间的关系。劳动者和消费者同步减少，业务量可能也会减少；劳动者减少而照护等服务需求仍然很大，自动化才更容易成为维持原有生活水平的手段。岗位也必须匹配：节省文案和报表工时，不会自动补上需要到场照护的人手。</p>
+<p>因此，人口收缩可以为劳动替代提供缓冲窗口。它无法保证技术替代的速度、岗位和收入变化恰好与人口变化吻合，更不能成为要求人们等待生活改善的理由。</p>
+<h2 id="企业节省的成本，也是别人的收入"><a href="#企业节省的成本，也是别人的收入" class="headerlink" title="企业节省的成本，也是别人的收入"></a>企业节省的成本，也是别人的收入</h2><p>沿着这个判断继续推演，就会遇到资本再生产的问题：产品需要卖出去，收入才能支持下一轮生产和投资。一家企业通过减少人工获得竞争优势，被减少的人工却也是其他企业的消费者。</p>
+<p>这里不能直接推导出“工资减少，购买力就等额消失”。节省的支出可能变成利润，也可能通过降价留给消费者；利润又可能进入投资、消费或经由税收转化为公共支出。真正需要解释的是，收入转移给谁、他们如何支出，以及这些支出能否接住扩张的生产能力。</p>
+<p><a target="_blank" rel="noopener" href="https://www.nber.org/papers/w25684">Acemoglu 与 Restrepo 关于自动化和新任务的研究</a>，把生产率提高、原有劳动任务被替代，以及新任务形成分别处理。这个区分很重要：更多产出、更高利润与更多劳动需求，并不是同一个变量。</p>
+<p>本文所讨论的风险，是生产能力扩张与广泛购买力增长之间发生脱节。企业能够制造更多东西，并不意味着收入受到影响的人能够购买它们。部分企业持续盈利，也完全可能与部分人的生活恶化同时发生。</p>
+<p>再往前一步，就是社会再生产的问题。这里用它指人们维持生活、恢复劳动能力、完成教育与照护，并养育下一代的过程。如果生产率提高主要表现为一部分人失去收入、另一部分人继续高强度工作，那么社会更有能力生产，也未必更有能力安排人的生活。</p>
+<p><strong>生产节省了多少劳动，与人们获得了多少可以自主支配的时间，是两笔需要分别核算的账。</strong></p>
+<h2 id="投资繁荣可以暂时支撑收入，却不能代替长期分配"><a href="#投资繁荣可以暂时支撑收入，却不能代替长期分配" class="headerlink" title="投资繁荣可以暂时支撑收入，却不能代替长期分配"></a>投资繁荣可以暂时支撑收入，却不能代替长期分配</h2><p>建设生产能力，本身就会创造需求。在一个 AI 投资扩张的情景里，购买芯片、建设机房、招聘人员和采购软件，都能形成真实的订单与收入。终端应用尚未产生足够收益时，建设阶段也可以很繁荣。</p>
+<p>当建设放缓，新增采购和招聘减少，已经建好的设备仍然能够提供服务。如果应用收入没有及时接上，企业就可能面临回报不足，继而削减投资，影响供应商和相关就业。</p>
+<p>这是“繁荣—扩张—调整”的一种可能机制。但我们讨论的劳动与分配问题，比投资周期还多一层：建设阶段创造的劳动收入退出之后，应用阶段可能恰好以减少人工为目标，未必创造同样规模、同样分布的劳动收入。</p>
+<p>甚至在资本端完成调整之后，生活端的问题仍然可能存在。假设一套设备被低价收购，新所有者因为购入成本降低而实现盈利，这解决了原来投资过贵的问题，却没有自动给被替代的劳动者提供新的收入来源。</p>
+<p>因此，技术成功、投资者盈利与普通人的生活改善，需要分别判断。解释投资如何创造就业，也不能顺势假定收益最终会自然、均匀地流向多数人。</p>
+<h2 id="真正的担忧，是中产的形成路径变窄"><a href="#真正的担忧，是中产的形成路径变窄" class="headerlink" title="真正的担忧，是中产的形成路径变窄"></a>真正的担忧，是中产的形成路径变窄</h2><p>讨论到这里，“还会不会有新工作”已经不够具体。</p>
+<p>做一个假设：一百个收入稳定、有积累和晋升路径的专业岗位消失，同时出现十个报酬更高的核心岗位，以及九十个收入较低、波动更大、缺少晋升路径的岗位。就业人数没有变化，支撑中产生活的岗位却大幅减少了。</p>
+<p>这里说的中产，是一种生活条件，而不是一个收入分位：不需要继承大量资产，靠专业劳动也能维持体面生活；收入有一定稳定性，能够安排住房、育儿和养老；经验积累可以改善处境，也有一定储蓄来应对失业和疾病。</p>
+<p>用这个定义看，失业率甚至工资的单点数值，都不足以衡量问题。一个人仍然有工作，也可能失去规划生活的能力。经济恢复增长，也可能没有恢复普通人逐步建立稳定生活的路径。</p>
+<p>AI 对这条路径的影响，需要从专业能力的变化来理解。假设一项工作原来需要多年训练，现在普通员工借助系统就能完成大部分，那么更多人可能获得进入高价值岗位的机会，企业也可能发现员工更容易被替换。前者扩大能力与机会，后者削弱劳动者的议价能力；生产率提高本身没有决定收益归谁。</p>
+<p><a target="_blank" rel="noopener" href="https://www.nber.org/papers/w32140">Autor 在《Applying AI to Rebuild Middle Class Jobs》中</a>提出，AI 可以帮助具有互补知识的劳动者承担过去集中于少数专家的任务，从而扩大中等技能、中等收入岗位。他把这视为一种可能的发展方向，而非必然发生的预测。</p>
+<p>由此可以提出一个更具体的判断标准：<strong>AI 究竟增强了劳动者独立交付、转换雇主和争取报酬的能力，还是主要增强了企业替换劳动者的能力？</strong> 工具更容易使用，只回答了能力问题的一部分。</p>
+<h2 id="比现有中产下滑更隐蔽的，是新一代进不来"><a href="#比现有中产下滑更隐蔽的，是新一代进不来" class="headerlink" title="比现有中产下滑更隐蔽的，是新一代进不来"></a>比现有中产下滑更隐蔽的，是新一代进不来</h2><p>中产还有一个时间维度：现有中产能否维持位置，与新一代能否进入，并不是同一个问题。</p>
+<p>设想一个依赖在岗培养的行业。资深人员借助 AI 完成更多工作，企业因此减少初级岗位。行业收入可能继续增长，资深员工也可能受益，但新人获得实践、反馈和客户经验的机会减少了。如果没有新的培养路径补上，几年以后，这个行业就更难持续产生下一批专业人员。</p>
+<p>这是一种职业阶梯收缩的情景。它不要求所有白领同时失业，也不要求经济整体停止增长。少数人仍然可以成功，问题在于这条路径还能容纳多少人。</p>
+<p>因此，“中产再生产受阻”比笼统的“中产消失”更能表达这里的担忧：已有位置的人可能暂时还在，社会持续产生新中产的机制却在变弱。</p>
+<p>给个人的建议可以是学习新工具、理解业务、争取进入仍有需求的岗位。这些建议有实际意义，但回答的是个人如何改善相对位置。<strong>让更多人学会竞争，与提供足够多能够支撑稳定生活的位置，是两个不同的任务。</strong></p>
+<p>这也是无力感的一种来源：一个人可以更努力地适应，却无法仅凭自己的适应，决定整个社会还需要多少这样的岗位。</p>
+<h2 id="不再需要劳动，不等于所有权自动消失"><a href="#不再需要劳动，不等于所有权自动消失" class="headerlink" title="不再需要劳动，不等于所有权自动消失"></a>不再需要劳动，不等于所有权自动消失</h2><p>讨论继续走向一个更极端的命题：如果资本最终不再需要人的劳动来增值，资本本身是否也就不存在了？</p>
+<p>在马克思的价值理论中，生产资料转移其价值，活劳动创造新价值与剩余价值。<a target="_blank" rel="noopener" href="https://www.marxists.org/archive/marx/works/1867-c1/ch08.htm">《资本论》关于不变资本与可变资本的分析</a>明确区分了这两种作用。沿着这一理论，把整个生产过程完全不再需要活劳动作为极限假设，资本依赖剩余劳动实现价值增殖的基础就会受到根本挑战。这是特定理论框架下的推演，不等于某家自动化企业的账面利润会立即归零。</p>
+<p>更重要的是，增殖机制受到挑战，也不会自动取消生产资料的所有权与排他权。</p>
+<p>设想一座完全自动化的农场。它不需要雇工就能生产粮食，只能说明生产这些粮食需要的劳动减少了。农场属于谁、谁能取得粮食、谁有权决定分配，仍然需要另一套规则。</p>
+<p>所以，即使把某种极限状态称为“不再是原来意义上的资本主义”，概念的变化也没有替人们解决生活资料的获取。技术可以改变生产过程，所有权与分配规则仍然需要被具体安排。</p>
+<p>更迫近的风险甚至不需要完全自动化。只要维持生产需要的劳动明显减少，生产资料又集中于少数主体，多数人缺乏足够的资产收入，而生活保障仍主要依附于就业，矛盾就已经成立。</p>
+<p><strong>残酷的地方在于：生产不再需要你的劳动，生活却仍然要求你主要靠出售劳动来维持。</strong></p>
+<h2 id="节省下来的劳动，最终变成了什么"><a href="#节省下来的劳动，最终变成了什么" class="headerlink" title="节省下来的劳动，最终变成了什么"></a>节省下来的劳动，最终变成了什么</h2><p>用一个思想实验，可以把分歧说得更清楚：假设在计入设备、能源、维护等成本后，一个社会维持同等生活水平所需的劳动减少了一半。</p>
+<table>
+<thead>
+<tr>
+<th>分配方式</th>
+<th>节省劳动如何体现</th>
+<th>需要回答的问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>更多人分享生产率收益</td>
+<td>缩短工时，通过收入与公共服务安排维持生活水平</td>
+<td>如何分担工作、成本与收益？</td>
+</tr>
+<tr>
+<td>收益主要归生产资料所有者</td>
+<td>部分人保留工作，其他人失去劳动收入</td>
+<td>没有工作的人如何取得生活资料？</td>
+</tr>
+</tbody></table>
+<p>两种情景具有相同的生产率前提。差别来自工作、收入、所有权和公共保障的安排。</p>
+<p>更广泛的生产资料所有权、劳动者分享生产率收益、缩短工时，以及让基本公共服务减少对就业身份的依赖，都可以作为讨论方向。它们分别涉及融资、治理、执行与利益协调，不能用一个政策名称替代具体设计。</p>
+<p>判断这些安排时，可以抓住三个问题：谁拥有生产系统？谁能决定收益的分配？缺少劳动收入的人，是否仍有稳定取得基本生活资料的权利？</p>
+<p>人口收缩或许能缓冲部分调整，新增需求和新任务也可能重新吸收劳动。但人的生活不应当只能等待这些力量恰好抵消替代冲击。更不能把一部分人在过渡中的损失，直接视为技术进步必须支付的代价。</p>
+<h2 id="从“还需要多少人”到“人凭什么生活”"><a href="#从“还需要多少人”到“人凭什么生活”" class="headerlink" title="从“还需要多少人”到“人凭什么生活”"></a>从“还需要多少人”到“人凭什么生活”</h2><p>这次讨论从人口下降开始，经由投资繁荣和再生产问题，最终落在了中产形成的路径与生产资料的分配上。</p>
+<p>它留下的核心判断是：当劳动替代快于新机会形成，而生产率收益又没有转化为广泛的生活保障时，生产能力与人们维持生活的能力就可能脱节。企业和经济指标可以恢复，普通人通过劳动建立稳定生活的路径却未必一同恢复。</p>
+<p>这份无力感不一定来自对技术的恐惧。它也可以来自一种更具体的认识：个人越努力提高生产效率，越能看到生产对人工投入的依赖下降；自己却无法同时决定被节省的劳动最终变成谁的收入、时间与自由。</p>
+<p>个人适应依然重要，分配问题也依然需要在个人之外被回答。两者不能互相替代。</p>
+<p>当维持社会生活所需的劳动减少时，更值得争取的结果，是人们获得更多能够自主安排的时间，而不是一部分人先失去生活的依据。</p>
+<p><strong>人的生活，不应当以“还能为资本增值”来证明其正当性。</strong></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>以下资料分别支持劳动任务、专业能力与价值理论的讨论；文中的人口、投资和职业阶梯情景用于说明机制。</p>
+<ol>
+<li>Daron Acemoglu、Pascual Restrepo，<a target="_blank" rel="noopener" href="https://www.nber.org/papers/w25684">Automation and New Tasks: How Technology Displaces and Reinstates Labor</a>，2019。区分自动化的劳动替代效应与新任务形成带来的劳动需求。</li>
+<li>David Autor，<a target="_blank" rel="noopener" href="https://www.nber.org/papers/w32140">Applying AI to Rebuild Middle Class Jobs</a>，2024。讨论 AI 扩展人类专业能力、重建中等技能岗位的可能方向。</li>
+<li>Karl Marx，<a target="_blank" rel="noopener" href="https://www.marxists.org/archive/marx/works/1867-c1/ch08.htm">Capital, Volume I — Constant Capital and Variable Capital</a>。本文引用的英译版第八章，讨论生产资料价值的转移与活劳动创造新价值的区别。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E5%8A%B3%E5%8A%A8/" class="print-no-link">#劳动</a>
+      
+        <a href="/tags/%E4%B8%AD%E4%BA%A7%E9%98%B6%E5%B1%82/" class="print-no-link">#中产阶层</a>
+      
+        <a href="/tags/%E7%A4%BE%E4%BC%9A%E5%86%8D%E7%94%9F%E4%BA%A7/" class="print-no-link">#社会再生产</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>当生产不再需要那么多人，生活靠什么维系？</div>
+      <div>https://blog.wh1isper.top/2026/10/30/ai-labor-and-social-reproduction/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper 与 AI 的讨论整理</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年10月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/10/27/ai-demand-elasticity/" title="AI 普及之后，还需要多少人工作？">
+                        <span class="hidden-mobile">AI 普及之后，还需要多少人工作？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
