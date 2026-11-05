@@ -23,8 +23,8 @@ date: 2026-02-15 00:00:01
 
 ### 近期
 
-- Coding Agent [@youware.com](https://youware.com)
-- Building LLM applications and tools in [ZeroLab](https://github.com/ai-zerolab).
+- AI Engineer @Converge.AI
+- Building [agent-foundation](https://a13n.dev): Build, run, and manage AI agents at scale on your own infrastructure.
 
 ### 捐赠
 
