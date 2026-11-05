@@ -1,0 +1,882 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="2026-10-26 至 2026-11-01 AI 行业周报：头部大厂、创业公司、基础模型、论文与研究进展、开源项目与社区讨论、其他趋势，共 20 条事件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 行业周报 · 2026 年 11 月第 1 周（10&#x2F;26 - 11&#x2F;01）">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/11/01/ai-weekly-2026-11-01/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="2026-10-26 至 2026-11-01 AI 行业周报：头部大厂、创业公司、基础模型、论文与研究进展、开源项目与社区讨论、其他趋势，共 20 条事件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-11-01T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-11-05T11:36:52.540Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="AI Weekly">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>AI 行业周报 · 2026 年 11 月第 1 周（10/26 - 11/01） - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/11/01/ai-weekly-2026-11-01/">
+  <meta property="og:image" content="https://blog.wh1isper.top/img/post-bg-unix-linux.jpg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI 行业周报 · 2026 年 11 月第 1 周（10/26 - 11/01）","url":"https://blog.wh1isper.top/2026/11/01/ai-weekly-2026-11-01/","datePublished":"2026-11-01T15:00:00.000Z","dateModified":"2026-11-05T11:36:52.540Z","author":{"@type":"Person","name":"Wh1isper"},"publisher":{"@type":"Person","name":"Wh1isper"},"description":"2026-10-26 至 2026-11-01 AI 行业周报：头部大厂、创业公司、基础模型、论文与研究进展、开源项目与社区讨论、其他趋势，共 20 条事件。","image":"https://blog.wh1isper.top/img/post-bg-unix-linux.jpg"}</script>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/AI-Weekly/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>AI Weekly</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-unix-linux.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="2026-10-26 至 2026-11-01 AI 行业动态整理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-11-01 23:00" pubdate>
+          2026年11月1日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">2026-10-26 至 2026-11-01 AI 行业动态整理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="AI-行业周报-·-2026-年-11-月第-1-周（10-26-11-01）"><a href="#AI-行业周报-·-2026-年-11-月第-1-周（10-26-11-01）" class="headerlink" title="AI 行业周报 · 2026 年 11 月第 1 周（10&#x2F;26 - 11&#x2F;01）"></a>AI 行业周报 · 2026 年 11 月第 1 周（10&#x2F;26 - 11&#x2F;01）</h1><blockquote>
+<p>覆盖 2026-10-26 至 2026-11-01；截至北京时间 11 月 1 日 20:00 检索核验，收录 20 条事件。完成 13 个方向检索，优先采用官方公告、论文首发记录和具名媒体报道，剔除跨周旧闻、日期矛盾、无明确日期及未核实的发布信息。论文日期采用 arXiv 首次提交日期，融资采用公告日期；研究结果与性能数字按作者或厂商披露口径表述。</p>
+</blockquote>
+<p>本周主线是 AI 从模型能力扩展到可持续运行的工作流：企业服务商把模型与业务系统连接，云平台补齐 Agent 的资源管理和执行隔离，研究界则关注多智能体状态更新、视觉证据与可验证安全。交互式世界模型与复杂音效生成继续拓展多模态应用边界。</p>
+<h2 id="一、头部大厂"><a href="#一、头部大厂" class="headerlink" title="一、头部大厂"></a>一、头部大厂</h2><h3 id="国内"><a href="#国内" class="headerlink" title="国内"></a>国内</h3><ul>
+<li><p><strong>百度 APP 升级搜索、AI 镜头与互动应用</strong>（2026-10-30）</p>
+<p>百度在产品沟通会上介绍搜索框、AI 镜头、GUI 可视化和互动应用升级，推动搜索从回答问题走向多步任务交付。搜索 AI API 同步升级，提供 API、MCP、Skill 接入；报道所列每千次 4.9 元为限时活动价格。来源：<a target="_blank" rel="noopener" href="https://www.chinanews.com.cn/cj/2026/10-30/10723499.shtml">中国新闻网</a>。</p>
+</li>
+</ul>
+<h3 id="海外"><a href="#海外" class="headerlink" title="海外"></a>海外</h3><ul>
+<li><p><strong>OpenAI 与 ServiceNow 扩大企业工作流合作</strong>（2026-10-28）</p>
+<p>双方计划把 OpenAI 模型与 Agent 接入 ServiceNow 的开发、IT 服务和安全工作流，并连接 ChatGPT、Codex 与企业业务系统。合作重点落在应用构建、请求处理与安全事务执行，体现模型供应商与企业软件平台进一步结合。来源：<a target="_blank" rel="noopener" href="https://openai.com/index/openai-servicenow-partnership-expansion">OpenAI</a>。</p>
+</li>
+<li><p><strong>Anthropic 提交拟议 IPO 的 S-1 注册文件</strong>（2026-10-26）</p>
+<p>Anthropic 公告已向美国 SEC 提交 S-1，拟在纳斯达克以“ANT”为代码上市。发行股数与价格区间尚未确定，注册文件尚未生效；本条记录申报进展，上市与募资结果仍待后续公告。来源：<a target="_blank" rel="noopener" href="https://www.anthropic.com/news/s1-sec">Anthropic</a>。</p>
+</li>
+<li><p><strong>Anthropic 扩大美国政府客户优惠与实施支持</strong>（2026-10-27）</p>
+<p>与 GSA 的新协议为 Claude Enterprise、Claude for Government 和 API 提供 40% 折扣，覆盖范围扩展至州、地方、部落及属地政府。公司同时推出实施支持项目，帮助公共部门把采购转化为具体业务应用；云渠道优惠将在随后数月逐步接入。来源：<a target="_blank" rel="noopener" href="https://www.anthropic.com/news/expanding-partnership-gsa">Anthropic</a>。</p>
+</li>
+<li><p><strong>Anthropic 将 AI for Science 扩展至基金会和研究机构</strong>（2026-10-28）</p>
+<p>项目公布与 20 家科学基金会、机构和研究团体的合作，通过免费 Claude 额度支持研究。合作范围包括基础科学、生物医学和科研公共基础设施，强调开放数据、软件及标准的产出。来源：<a target="_blank" rel="noopener" href="https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions">Anthropic</a>。</p>
+</li>
+<li><p><strong>Gemini 支持在对话中直接预览和编辑文件</strong>（2026-10-29）</p>
+<p>用户可生成并修改文档、PDF、演示文稿、表格与代码，支持手动编辑、选中内容提问和让 Gemini 定向修改。PDF 能力覆盖网页与移动端，其余列出的文件格式目前主要在网页端提供。来源：<a target="_blank" rel="noopener" href="https://blog.google/innovation-and-ai/products/gemini-app/edit-files-directly/">Google</a>。</p>
+</li>
+</ul>
+<h2 id="二、创业公司"><a href="#二、创业公司" class="headerlink" title="二、创业公司"></a>二、创业公司</h2><h3 id="国内-1"><a href="#国内-1" class="headerlink" title="国内"></a>国内</h3><p>（本周暂无重要进展）</p>
+<h3 id="海外-1"><a href="#海外-1" class="headerlink" title="海外"></a>海外</h3><ul>
+<li><p><strong>Serval 宣布完成 1.5 亿美元 C 轮融资</strong>（2026-10-29）</p>
+<p>该轮由红杉领投，公司公告估值为 30 亿美元，累计融资达到 2.77 亿美元。资金将支持企业自动化 Agent Catalyst，以及把自动化工程师嵌入客户组织的 ProServal 服务，面向 IT、人力、财务和安全等跨部门流程。来源：<a target="_blank" rel="noopener" href="https://www.businesswire.com/news/home/20261029114967/en/Serval-Raises-%24150M-Series-C-at-%243B-Valuation-Led-by-Sequoia">公司新闻稿</a>、<a target="_blank" rel="noopener" href="https://www.fenwick.com/insights/experience/fenwick-represents-serval-150m-series-c-funding">交易律师 Fenwick 确认</a>。</p>
+</li>
+</ul>
+<h2 id="三、基础模型"><a href="#三、基础模型" class="headerlink" title="三、基础模型"></a>三、基础模型</h2><ul>
+<li><p><strong>Google 发布 Gemini 4 Carbon，先向可信网络防御伙伴开放</strong>（2026-10-28）</p>
+<p>Google 将 Carbon 定位为加强网络安全与长程 Agent 任务的前沿模型，披露了漏洞发现、利用与修复等测试成绩。开放采取分阶段方式，本周先覆盖部分防御方与 Fairwind 伙伴；开发者、企业及消费者的更广泛接入仍在后续安排中。来源：<a target="_blank" rel="noopener" href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/">Google</a>。</p>
+</li>
+<li><p><strong>DeepMind 推出 Genie 4 交互式世界模型研究预览</strong>（2026-10-27）</p>
+<p>Genie 4 将环境画面、原生音频和互动对话共同生成，支持通过键盘及自然语言改变模拟世界。官方将其应用方向指向机器人和 Agent 训练环境及互动体验，目前先向可信测试者提供研究预览，并开放候补名单。来源：<a target="_blank" rel="noopener" href="https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/">Google DeepMind</a>。</p>
+</li>
+<li><p><strong>ElevenLabs 上线 SFX v3 音效模型</strong>（2026-10-29）</p>
+<p>新模型面向单条提示中的多个声音、音乐与人声组合，厂商报告其指令遵循与音质较 SFX v2 改进。SFX v3 已在 ElevenCreative 和 ElevenAPI 提供，可用于视频、游戏及其他需要完整场景音效的创作流程。来源：<a target="_blank" rel="noopener" href="https://elevenlabs.io/blog/sound-effects-v3">ElevenLabs</a>。</p>
+</li>
+</ul>
+<h2 id="四、论文与研究进展"><a href="#四、论文与研究进展" class="headerlink" title="四、论文与研究进展"></a>四、论文与研究进展</h2><ul>
+<li><p><strong>EB-MAS：把可审计的信念更新加入多智能体安全层</strong>（2026-10-28）</p>
+<p>论文提出显式存储 Agent 的证据性状态，通过更新算子与“认知防火墙”约束缺乏证据的状态变化，并讨论虚假共识、串谋和错误信息传播风险。其贡献是运行时状态与更新接口的设计框架，为检索、记忆、工具和同伴通信之间的安全治理提供切入点。来源：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2610.38869">arXiv:2610.38869</a>。</p>
+</li>
+<li><p><strong>EVAN：用证据消融负例改善多模态推理</strong>（2026-10-29）</p>
+<p>研究先识别依赖视觉证据的样本，再遮蔽关键图像区域，诱导模型暴露语言先验造成的错误回答；训练时把这些回答作为有界辅助负信号。作者报告该方法在多模态推理基准上改善了模态失衡，重点在于让奖励更准确地约束视觉证据使用。来源：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2610.39237">arXiv:2610.39237</a>。</p>
+</li>
+<li><p><strong>Verse：为混合多智能体场景提供语义与可达性验证</strong>（2026-10-26）</p>
+<p>框架以熟悉的编程语法描述车辆、无人机、地图和传感器，再编译为混合自动机，按实际到达的模式构建执行树并检查安全断言。作者报告在标准笔记本上用 90 秒验证含 7 个 Agent、37 个模式的场景；部分多智能体测试以更宽松的可达集换取速度提升。来源：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2610.35680">arXiv:2610.35680</a>。</p>
+</li>
+<li><p><strong>Hy-Nomas：以连续指令和相机控制生成交互世界</strong>（2026-10-27）</p>
+<p>技术报告介绍采用 8B 扩散骨干的世界模型，通过动作感知因果注意力和结构化提示，在多轮交互中保留相关历史、限制动作指令的时间作用范围。作者介绍多阶段训练与蒸馏，并在论文中声明发布配套权重、代码和基准；本条以论文首次提交日期计入本周。来源：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2610.36729">arXiv:2610.36729</a>。</p>
+</li>
+</ul>
+<h2 id="五、开源项目与社区讨论"><a href="#五、开源项目与社区讨论" class="headerlink" title="五、开源项目与社区讨论"></a>五、开源项目与社区讨论</h2><ul>
+<li><p><strong>GitHub Agentic Workflows 正式可用</strong>（2026-10-28）</p>
+<p>开发者可用自然语言 Markdown 定义仓库自动化任务，在 GitHub Actions 中处理问题分诊、文档维护、质量检查与代码评审。官方强调默认只读、沙箱执行、网络防火墙和安全输出校验，并扩展自托管运行器及多引擎选择。来源：<a target="_blank" rel="noopener" href="https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available/">GitHub Changelog</a>。</p>
+</li>
+<li><p><strong>AWS 发布 AgentCore CLI 1.0</strong>（2026-10-28）</p>
+<p>重建后的 CLI 统一命令结构，支持从终端管理 Agent 的运行时、记忆、身份、网关和支付等资源，也可直接通过 ID 或 ARN 操作现有资源。JSON 输出、区域选择和迁移命令使其更适合脚本化运维与持续交付。来源：<a target="_blank" rel="noopener" href="https://aws.amazon.com/about-aws/whats-new/2026/10/amazon-bedrock-agentcore-cli-version-1-0-available/">AWS</a>。</p>
+</li>
+<li><p><strong>Vercel AI Gateway 引入 Virtual Models</strong>（2026-10-28）</p>
+<p>应用通过稳定的虚拟模型 ID 调用任务，实际模型、回退顺序与零数据保留配置集中在网关侧管理。团队可在不修改代码和重新部署应用的情况下切换模型配置，将模型选择从代码常量转为可管理的运行时策略。来源：<a target="_blank" rel="noopener" href="https://vercel.com/blog/ai-gateway-virtual-models">Vercel</a>。</p>
+</li>
+<li><p><strong>Akamai 发布模型推理服务与 Agent 沙箱</strong>（2026-10-27）</p>
+<p>Akamai Inference 与 Akamai Agent Sandbox 分别补齐托管模型服务和隔离执行环境，把模型运行、企业数据接入与 Agent 执行边界放在同一云平台内。对企业应用而言，关注点延伸至代码能访问哪些资源，以及执行环境如何与安全治理结合。来源：<a target="_blank" rel="noopener" href="https://www.akamai.com/newsroom/press-release/akamai-launches-ai-inference-service-and-agent-execution-environment">Akamai</a>。</p>
+</li>
+<li><p><strong>HN 讨论：优秀开发者为何对 Agent 式开发保持谨慎</strong>（2026-10-29）</p>
+<p>围绕同名文章的讨论集中在代码责任、可验证性、技能积累与开发者对生成结果的信任。值得关注的是“如何确认系统可靠”的工程问题；该讨论提供从业者视角，其评论与热度不能作为行业整体采用率的统计依据。来源：<a target="_blank" rel="noopener" href="https://news.ycombinator.com/item?id=50289162">Hacker News 讨论</a>。</p>
+</li>
+</ul>
+<h2 id="六、其他趋势"><a href="#六、其他趋势" class="headerlink" title="六、其他趋势"></a>六、其他趋势</h2><ul>
+<li><p><strong>AI 训练偏好信号进入共同规范探索</strong>（2026-10-30）</p>
+<p>OpenAI 宣布将尊重网站通过 robots.txt 表达的共同训练偏好信号，计划在随后数月实施，并保留现有爬虫控制。同日发布的 IETF Internet-Draft 描述按用途标记偏好、复用现有 robots.txt 语法的方案；当前阶段是草案与厂商采纳承诺，实际约束仍依赖后续实现。来源：<a target="_blank" rel="noopener" href="https://openai.com/index/helping-websites-express-ai-training-preferences">OpenAI 公告</a>、<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/draft-kelley-aipref-training-preference-signal-00">IETF 草案</a>。</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI-Weekly/" class="category-chain-item">AI Weekly</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/AI-Weekly/" class="print-no-link">#AI Weekly</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI 行业周报 · 2026 年 11 月第 1 周（10/26 - 11/01）</div>
+      <div>https://blog.wh1isper.top/2026/11/01/ai-weekly-2026-11-01/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年11月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/11/05/ai-talent-selection-and-development/" title="人人都要适应 AI，谁来承担人的成长？">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">人人都要适应 AI，谁来承担人的成长？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/10/30/ai-labor-and-social-reproduction/" title="当生产不再需要那么多人，生活靠什么维系？">
+                        <span class="hidden-mobile">当生产不再需要那么多人，生活靠什么维系？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
