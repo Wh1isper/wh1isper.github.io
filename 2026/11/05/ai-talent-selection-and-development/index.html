@@ -1,0 +1,870 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#1e293b">
+  <meta name="author" content="Wh1isper 与 AI 的讨论整理">
+  <meta name="keywords" content="LLM,AI Agent,Coding Agent,大模型,软件架构,技术博客,AGI,数据可观测性">
+  
+    <meta name="description" content="当社会不断更新对人才的要求，却主要通过筛选现成的人来回应变化，成为新型人才的成本就被留给了个人。本文从选拔与培养的区别出发，讨论 AI 时代的成长机会、风险分担，以及那声叹气背后的社会性矛盾。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人人都要适应 AI，谁来承担人的成长？">
+<meta property="og:url" content="https://blog.wh1isper.top/2026/11/05/ai-talent-selection-and-development/">
+<meta property="og:site_name" content="Wh1isper&#39;s Blog">
+<meta property="og:description" content="当社会不断更新对人才的要求，却主要通过筛选现成的人来回应变化，成为新型人才的成本就被留给了个人。本文从选拔与培养的区别出发，讨论 AI 时代的成长机会、风险分担，以及那声叹气背后的社会性矛盾。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-11-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-11-08T12:39:50.822Z">
+<meta property="article:author" content="Wh1isper">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="组织思考">
+<meta property="article:tag" content="人才培养">
+<meta property="article:tag" content="教育">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>人人都要适应 AI，谁来承担人的成长？ - Wh1isper&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.wh1isper.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":52,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#3b82f6","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"UxmZ2XxzB27R72DeVnkWCjqQ-gzGzoHsz","app_key":"HpkitfFmB6ANUfvUkWOqP43C","server_url":"https://uxmz2xxz.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Wh1isper's Blog" type="application/atom+xml">
+  <link rel="canonical" href="https://blog.wh1isper.top/2026/11/05/ai-talent-selection-and-development/">
+  <meta property="og:image" content="https://blog.wh1isper.top/img/post-bg-coffee.jpeg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"人人都要适应 AI，谁来承担人的成长？","url":"https://blog.wh1isper.top/2026/11/05/ai-talent-selection-and-development/","datePublished":"2026-11-04T16:00:00.000Z","dateModified":"2026-11-08T12:39:50.822Z","author":{"@type":"Person","name":"Wh1isper 与 AI 的讨论整理"},"publisher":{"@type":"Person","name":"Wh1isper 与 AI 的讨论整理"},"description":"当社会不断更新对人才的要求，却主要通过筛选现成的人来回应变化，成为新型人才的成本就被留给了个人。本文从选拔与培养的区别出发，讨论 AI 时代的成长机会、风险分担，以及那声叹气背后的社会性矛盾。","image":"https://blog.wh1isper.top/img/post-bg-coffee.jpeg"}</script>
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wh1isper</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/AI-Weekly/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>AI Weekly</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/atom.xml">
+                <i class="iconfont icon-rss"></i>
+                <span>RSS</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post-bg-coffee.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="选拔标准不断更新，培养的成本却留给个人"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-11-05 00:00" pubdate>
+          2026年11月5日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">选拔标准不断更新，培养的成本却留给个人</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>本文根据 Wh1isper 与 AI（gpt-6-astra）的讨论整理。</p>
+</blockquote>
+<p>读完何情何理的<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/01oECTr3MHrNVxX-RYWWiQ">《好奇心、执行力、科学素养：AI 时代真正稀缺的三样东西》</a>之后，我想到的，是这些被认为越来越重要的能力，究竟从哪里来。</p>
+<p>我们可以不断描述 AI 时代需要什么样的人，也可以据此更新考试、招聘和绩效评价。问题在于，描述一个理想的人，与让一个现实的人逐渐成长为这样的人，是两件不同的事。</p>
+<p>面对技术变化，最容易给出的回答是：人需要学习，需要转型，需要找到新的价值。听到这些话，人却可能只想叹气。他未必反对变化，也未必不愿意努力。他可能只是发现，社会提出了新的要求，却把满足要求之前的全部过程留给了自己。</p>
+<p><strong>如果每个机构都在寻找已经准备好的人，谁来承担让人准备好的过程？</strong></p>
+<p>我想沿着这个问题讨论一种社会性矛盾：当人才标准不断变化，组织却主要通过筛选现成的人来适应变化时，人的成长就可能成为一项无人充分承担、又要求每个人自行完成的工作。</p>
+<span id="more"></span>
+
+<h2 id="选拔识别的是表现，培养改变的是人"><a href="#选拔识别的是表现，培养改变的是人" class="headerlink" title="选拔识别的是表现，培养改变的是人"></a>选拔识别的是表现，培养改变的是人</h2><p>选拔与培养的区别，首先在于它们分别要完成什么。</p>
+<p>选拔面对一群当前状态不同的人，根据某些标准决定把机会交给谁。培养则需要提供经历、指导和反馈，改变人的能力。同一个人的能力，当然可以先被培养，再被选拔识别。问题在于，识别能力不能替代形成能力的过程。</p>
+<p>这也意味着，选拔并不需要相信人才是天生的。一个机构完全可以承认能力来自长期培养，同时决定只招已经被别人培养好的人。</p>
+<p>1968 年，Benjamin Bloom 在<a target="_blank" rel="noopener" href="https://files.eric.ed.gov/fulltext/ED053419.pdf">《Learning for Mastery》</a>中就讨论过这个问题：在只能支持少数人继续接受教育的条件下，学校和考试系统会投入大量精力淘汰多数人、识别少数人才。这些社会对人才的预测与选拔投入很多，对人才的发展投入却少得多。</p>
+<p>布鲁姆讨论的是教育。我认为，同一个区别也可以用来观察职业机会的分配：我们是在判断一个人目前能做什么，还是在安排一种过程，让他逐渐能够做更多事情？</p>
+<p>假设两个人参与同一个项目。一个已经有相关经验，另一个还不能独立完成任务。选拔可以合理地优先选择前者。但如果所有项目都只接纳已经能够独立完成的人，后者就很难获得形成经验的机会。</p>
+<p><strong>要得到机会，先证明能力；要形成能力，又需要机会。</strong></p>
+<p>当当前表现被直接用来决定一个人是否值得继续投入，这个循环就会把能力形成的过程挡在门外。最后被观察到的差距，既可能包含个人差异，也可能包含过去获得机会的差异。</p>
+<h2 id="对每个机构都合理的选择，未必能持续产生人才"><a href="#对每个机构都合理的选择，未必能持续产生人才" class="headerlink" title="对每个机构都合理的选择，未必能持续产生人才"></a>对每个机构都合理的选择，未必能持续产生人才</h2><p>站在单个机构的角度，优先选择成熟人才很容易理解。眼前有任务要交付，培养需要时间，也不保证成功。即使培养成功，人也可能离开，收益未必由承担成本的机构获得。</p>
+<p>如果能够直接找到合适的人，机构就可以使用学校、家庭、其他雇主或个人此前投入所形成的能力，而不必自行承担这些前期成本。</p>
+<p>这样的分工可以成立，前提是那些承担培养的环节确实有能力持续运转。问题出现在每个环节都希望自己需要的人，已经由别处提前准备好：学校要求学生已经善于自主学习，企业要求毕业生已经有项目经验，项目又要求参与者已经能够独立交付。</p>
+<p>筛选在每一个局部都可以有清楚的理由，培养却可能在这些环节之间落空。</p>
+<p>选拔标准能够引导学习，也能影响教育和培训的投入方向。但标准本身没有支付学习期间的生活成本，没有提供真实工作的参与机会，也没有保证失败之后仍然能够继续。</p>
+<p>所以，某个机构宣布需要更优秀的人，并不等于社会就会因此多出这样的人。更严格的筛选，也不能单独填补培养不足留下的缺口。</p>
+<p><strong>所谓重视人才，如果只体现在人才成熟之后愿意支付多少报酬，就还没有回答人才成熟之前由谁投入。</strong></p>
+<h2 id="AI-让要求变化得更快，人却需要时间成长"><a href="#AI-让要求变化得更快，人却需要时间成长" class="headerlink" title="AI 让要求变化得更快，人却需要时间成长"></a>AI 让要求变化得更快，人却需要时间成长</h2><p>这场矛盾早于 AI。AI 带来的新压力，在于一些工作的完成方式和能力价值可能发生变化，而人的成长需要经历一个过程。</p>
+<p>沿着我们正在讨论的情景：当一部分实现工作可以更快交给 AI，组织便可能更看重定义问题、判断结果和处理不确定性的能力。更新一份招聘要求很容易，从一个主要执行既定任务的人，成长为能够独立承担这些判断的人，却需要实际参与。</p>
+<p>在 <a href="/2026/10/07/ai-coding-understanding-through-practice/" title="AI 编程中，人的理解从哪里来">《AI 编程中，人的理解从哪里来》</a> 中，我讨论过，实践的意义不只是检验已有认识，也包括形成和修正认识。反复做一件事情，可以让人逐渐发现哪些判断有依据、哪些关系曾经被忽略，以及自己为什么会犯错。</p>
+<p>因此，真实工作既是使用能力的地方，也可以是能力形成的地方。让一个人承担有限的责任、看到结果、得到反馈，再逐渐扩大责任，是成长过程的一部分。</p>
+<p>如果组织只保留已经具备判断力的人，把其余工作交给 AI，却没有重新安排进入判断岗位的路径，那么它可能提高了眼前的交付效率，同时削弱下一批人获得经验的机会。这是需要警惕的一种组织选择，而非技术进步自动规定的结果。</p>
+<p>这里存在两个不同的时间尺度：新要求可以立即生效，人却不能立即重新长成。</p>
+<p>机构可以重新招聘、调整分工，或者等待合适的人出现。一个具体的人需要在转变期间继续生活。他无法等到完全适应新要求之后，再支付这段时间的住房、照护和其他开支。</p>
+<p>当培养没有被纳入组织安排，变化就容易成为对个人的单向要求：自己找到方向，自己完成转变，自己承担试错，等到证明已经适应之后，再来竞争新的位置。</p>
+<p><strong>技术降低了一部分执行成本，人的转变成本却没有因此被结清。</strong></p>
+<h2 id="自主性也可能变成另一张合格证"><a href="#自主性也可能变成另一张合格证" class="headerlink" title="自主性也可能变成另一张合格证"></a>自主性也可能变成另一张合格证</h2><p>还有一层矛盾，比“来不及学会新东西”更深。</p>
+<p>如果一个人的学习和工作长期围绕外部给定的题目、标准与评价展开，那么要求他突然自主发现问题、决定什么值得投入，就涉及整套工作关系的改变。他需要接触真实处境，有权作出一定范围的决定，也有机会从决定的结果中修正自己。</p>
+<p>仅仅把“主动”“有判断力”“能独立探索”写进评价标准，并没有完成这种改变。</p>
+<p>于是，一种看起来要求自主的评价，也可能延续原来的筛选逻辑：以前检查你能否完成给定任务，现在检查你是否已经具备独立定义任务的能力。两次检查之间，形成这种能力的过程仍然被省略了。</p>
+<p>这也是为什么正确的建议可能让人更加疲惫。建议描述的是理想状态，听者面对的却是自己与那个状态之间的距离。没有对应的参与机会和成长条件，新的描述就容易成为下一轮资格审查。</p>
+<p>一个人没有达到要求，可以被解释成不够主动、缺乏判断、不愿改变。至于他此前是否有机会承担判断、是否能够承受探索失败，反而从评价里消失了。</p>
+<p><strong>制度没有提供的成长过程，最后被表述成了个人缺少的品质。</strong></p>
+<p>继续争论下一种最值得学习的能力，无法充分回应这个问题。无论清单如何更新，都还需要有人承担从不会到会、从依赖指导到能够独立行动的过程。</p>
+<h2 id="工具变容易，不等于成长条件已经齐备"><a href="#工具变容易，不等于成长条件已经齐备" class="headerlink" title="工具变容易，不等于成长条件已经齐备"></a>工具变容易，不等于成长条件已经齐备</h2><p>AI 可以降低一些尝试的门槛。一个人更容易把想法做成原型，更容易获得解释，也更容易接触过去需要大量实现工作才能观察到的结果。这些变化有实际价值。</p>
+<p>但在前面的讨论里，培养包含的条件比工具更多：可以持续投入的时间、真实问题与反馈、承担责任的机会，以及失败之后仍然能够继续的余地。</p>
+<p>同样能使用一个工具，两个人所能承担的探索过程可能完全不同。一个有稳定收入和团队支持，能够把几次失败当作工作的一部分；另一个必须尽快获得收入，每次尝试都在消耗有限的积蓄。前者继续做下去，并不能单独证明他比后者更有热情。</p>
+<p>“工具已经给你了”之后，还需要追问其余条件。否则，技术上的可访问性会被误认为现实中的机会已经相同。</p>
+<p>更何况，形成能力之后能否获得持续回报，仍然是另一个问题。在 <a href="/2026/10/27/ai-demand-elasticity/" title="AI 普及之后，还需要多少人工作？">《AI 普及之后，还需要多少人工作？》</a> 中，我追问过，生产变容易以后，新增需求能否吸收被节省的劳动。在 <a href="/2026/10/30/ai-labor-and-social-reproduction/" title="当生产不再需要那么多人，生活靠什么维系？">《当生产不再需要那么多人，生活靠什么维系？》</a> 中，问题进一步变成了：更强的生产能力，怎样转化为普通人能够维持生活的条件？</p>
+<p>这些问题不能再被改写成“个人应该更有好奇心”。一个人可能已经认真探索、根据结果修正判断，最后发现需求不足，或者自己无法获得足够的回报。</p>
+<p><strong>让人能够成长，与让成长之后的人能够生活，需要分别被安排。</strong></p>
+<h2 id="那声叹气，是面对怎样的要求"><a href="#那声叹气，是面对怎样的要求" class="headerlink" title="那声叹气，是面对怎样的要求"></a>那声叹气，是面对怎样的要求</h2><p>沿着这条线，我更愿意把那声叹气理解为对一种关系的无力感。</p>
+<p>人被要求独自完成一整条链条：找到新的方向，形成新的能力，把能力变成有用的结果，再把结果变成足以维持生活的收入。社会可以不断提高每个环节的要求，却未必共同承担它们之间的风险。</p>
+<p>在这样的安排里，技术进步带来的可能性越多，个人甚至越容易被要求为自己的处境负责：既然工具已经这么强，为什么你还没有找到出路？</p>
+<p>但能够更快做出东西，无法单独决定有没有人需要它；知道什么值得做，也无法单独决定能否获得参与的机会。个人可以改变自己的行动，却不能独自决定机会如何分配、成长成本由谁承担，以及回报如何形成。</p>
+<p>所谓迷茫，就可能包含一种清楚的认识：我需要改变，也愿意改变，但改变所需的条件并不完全由我控制；最后的结果，却可能被全部归到我的适应能力上。</p>
+<p>这份无力感指向一个具体的问题：个人承担的责任与他能够支配的条件是否相称？</p>
+<p>把社会性矛盾反复解释成个人还不够优秀，会让一个本该共同回答的问题，变成每个人独自面对的考试。</p>
+<h2 id="社会需要的不只是更准确的筛选"><a href="#社会需要的不只是更准确的筛选" class="headerlink" title="社会需要的不只是更准确的筛选"></a>社会需要的不只是更准确的筛选</h2><p>选拔可以识别已经形成的能力，也可以分配有限的机会。一个社会还需要持续让更多人具备参与的能力，而不只是不断提高进入的门槛。</p>
+<p>如果我们认为未来需要更多能够自主判断的人，就需要让人在尚未完全具备这种能力时，获得适度参与、形成经验和修正错误的机会。培养必须有实际的承担者，成长期间的成本与风险也需要有分担方式。仅仅宣布需要怎样的人，并没有完成这项工作。</p>
+<p>这也提供了一个观察制度变化的尺度：当我们提高人才标准时，是否同时改善了达到标准的条件？当技术节省了一部分工作时，是否也重新安排了人获得经验的路径？当我们要求人承担更多自主决定时，是否给出了相应的时间、资源和决定权？</p>
+<p><strong>选拔能够决定谁暂时符合新要求，培养则关系到谁有机会逐渐符合要求。</strong></p>
+<p>当社会不断更新对人的要求，却主要通过筛选现成的人来回应变化，人的发展就会被留在制度安排之外：人人都必须适应，适应所需的过程却要各自解决。</p>
+<p>那声叹气背后的社会性矛盾，正在这里。</p>
+<p>我们不能一边要求人持续成为新的自己，一边只愿意接纳那个已经成长完成的人。</p>
+<h2 id="参考与讨论起点"><a href="#参考与讨论起点" class="headerlink" title="参考与讨论起点"></a>参考与讨论起点</h2><ol>
+<li>何情何理，Tao He，<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/01oECTr3MHrNVxX-RYWWiQ">《好奇心、执行力、科学素养：AI 时代真正稀缺的三样东西》</a>，2026 年 11 月 5 日。本文由这篇文章引出对能力形成条件的讨论，并将问题进一步放到选拔与培养的制度关系中。</li>
+<li>Benjamin S. Bloom，<a target="_blank" rel="noopener" href="https://files.eric.ed.gov/fulltext/ED053419.pdf">Learning for Mastery</a>，<em>Evaluation Comment</em>，1968 年 5 月，Vol. 1, No. 2。关于人才预测、选拔与发展的论述见正文第一页（ERIC 扫描件第 2 页）；本文关于 AI 与组织选择的推演由此展开。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E7%BB%84%E7%BB%87%E6%80%9D%E8%80%83/" class="print-no-link">#组织思考</a>
+      
+        <a href="/tags/%E4%BA%BA%E6%89%8D%E5%9F%B9%E5%85%BB/" class="print-no-link">#人才培养</a>
+      
+        <a href="/tags/%E6%95%99%E8%82%B2/" class="print-no-link">#教育</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>人人都要适应 AI，谁来承担人的成长？</div>
+      <div>https://blog.wh1isper.top/2026/11/05/ai-talent-selection-and-development/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Wh1isper 与 AI 的讨论整理</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年11月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/11/08/ai-weekly-2026-11-08/" title="AI 行业周报 · 2026 年 11 月第 2 周（11/02 - 11/08）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AI 行业周报 · 2026 年 11 月第 2 周（11/02 - 11/08）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/11/01/ai-weekly-2026-11-01/" title="AI 行业周报 · 2026 年 11 月第 1 周（10/26 - 11/01）">
+                        <span class="hidden-mobile">AI 行业周报 · 2026 年 11 月第 1 周（10/26 - 11/01）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"Wh1isper/wh1isper.github.io","repo-id":"MDEwOlJlcG9zaXRvcnkxNjUyNjUyMTA=","category":"Comments","category-id":"DIC_kwDOCdm_Os4CzNv3","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"bottom","lang":"zh-CN","strict":1};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"neutral"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
