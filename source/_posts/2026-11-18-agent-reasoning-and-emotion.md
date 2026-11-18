@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Agent 会推理，也会自己想出一个冷笑话吗？
+title: 大语言模型能用语言思考，却很难拥有情感
 date: 2026-11-18
 author: Wh1isper
 banner_img: /img/post-bg-coffee.jpeg
